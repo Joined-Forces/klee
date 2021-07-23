@@ -1,7 +1,7 @@
 import { Blueprint } from "./blueprint";
 
 function initialize() {
-    document.querySelectorAll('.ue-blueprint').forEach((canvas: HTMLCanvasElement) => {
+    document.querySelectorAll('canvas.ue-blueprint').forEach((canvas: HTMLCanvasElement) => {
         new Blueprint(canvas);
     });
 }
