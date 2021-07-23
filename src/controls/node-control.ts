@@ -56,7 +56,7 @@ export class NodeControl extends NodeControlBase implements DrawableControl {
         canvas.translate(this.position.x, this.position.y);
 
         canvas.fillStyle(this.fillStyle)
-        .font('12px \'Roboto\'')
+        .font('12px sans-serif')
         .roundedRectangle(0, 0, this.width, this.height, 5)
         .fill()
         
@@ -71,7 +71,7 @@ export class NodeControl extends NodeControlBase implements DrawableControl {
 
                 canvas.fillStyle(this.fillStyleText)
                 .textAlign('center')
-                .font('24px "Roboto"')
+                .font('24px sans-serif')
                 .fillText(operator, this.width * .5, this.height * .5 + 9);
 
         } else {
@@ -92,7 +92,7 @@ export class NodeControl extends NodeControlBase implements DrawableControl {
         canvas.fillStyle(this.fillStyleHeader)
         .roundedRectangle(0, 0, this.width, this.headerHeight, { radiusTopLeft: 5, radiusTopRight: 5, radiusBottomLeft: 0, radiusBottomRight: 0 })
         .fill()
-        .font("bold 12px \"Roboto\"")
+        .font("bold 12px sans-serif")
         .textAlign('left')
         .fillStyle(this.fillStyleText)
         .fillText(this.node.getName(), 30, 18);

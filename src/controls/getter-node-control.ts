@@ -41,7 +41,7 @@ export class GetterNodeControl extends NodeControlBase implements DrawableContro
         gradient.addColorStop(1, 'rgba('+headerColor+',0)');
         this.fillStyleHeader = gradient;
 
-        this.getContext().font = "bold 12px \"Roboto\"";
+        this.getContext().font = "bold 12px sans-serif";
         this.textWidth = this.getContext().measureText(this.node.getName()).width;
 
         super.initialize();

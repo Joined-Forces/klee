@@ -113,7 +113,7 @@ export class PinControl extends Control implements DrawableControl {
         else
             canvas.textAlign("right")
 
-        canvas.font('12px "Roboto"')
+        canvas.font('12px sans-serif')
         .fillStyle("#eee");
         
         return textX;

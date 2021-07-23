@@ -94,7 +94,7 @@ export class Blueprint {
 
     initialize() {
 
-        this.canvas.getContext().font = "18px \"Roboto\"";
+        this.canvas.getContext().font = "18px sans-serif";
 
         let background = new Background('/assets/sprites/bp_grid.png', this.camera);
         this.addControl(background);
