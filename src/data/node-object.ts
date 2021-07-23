@@ -4,6 +4,12 @@ import { NodeFunctionNames } from "./function-names";
 import { NodeClass } from "./node-class";
 
 export class NodeObjectHeader {
+
+    constructor(cls: string, name: string) {
+        this.class = cls;
+        this.name = name;
+    }
+
     class: string;
     name: string;
 }
@@ -129,7 +135,7 @@ export class NodeObject {
     }
 
     get isRerouteNode(): boolean {
-        return this.class == NodeClass.KNOT;
+        return this.class === NodeClass.KNOT;
     }
 
     getName(): string {
@@ -190,7 +196,7 @@ export class CallFunctionNodeObject extends NodeObject {
     }
 
     get isMathFunction(): boolean {
-        return this.functionReference.memberParent == NodeClass.KISMET_MATH_LIBRARY
+        return this.functionReference.memberParent === NodeClass.KISMET_MATH_LIBRARY
             && this.checkMathFunction(this.functionReference.memberName);
     }
 

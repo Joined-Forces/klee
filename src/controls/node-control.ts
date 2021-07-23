@@ -1,5 +1,4 @@
 import { Canvas2D } from "../canvas";
-import { NodeClass } from "../data/node-class";
 import { CallFunctionNodeObject, NodeObject } from "../data/node-object";
 import { DrawableControl } from "./interfaces/drawable";
 import { NodeControlBase } from "./node-control-base";

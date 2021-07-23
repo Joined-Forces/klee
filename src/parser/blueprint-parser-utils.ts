@@ -5,4 +5,8 @@ export class BlueprintParserUtils {
         return value;
     }
 
+    static stripLine(text: string): string {
+        text = text.replace('\t', '');
+        return text.trim();
+    }
 }
