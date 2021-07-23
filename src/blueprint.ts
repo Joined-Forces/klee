@@ -34,7 +34,9 @@ export class Blueprint {
     constructor(canvas: HTMLCanvasElement) {
         this.canvas = new Canvas2D(canvas);
         this.camera = new Camera(this.canvas);
-        this.controls = new Array<Control>();
+
+        this.clear();
+
         this.innerHTML = canvas.innerHTML;
 
         this.canvas.onMouseDown((ev: MouseEvent) => { return this.onMouseDown(ev) });
@@ -43,15 +45,37 @@ export class Blueprint {
         this.canvas.onMouseEnter((ev: MouseEvent) => { return this.onMouseEnter(ev) });
         this.canvas.onMouseLeave((ev: MouseEvent) => { return this.onMouseLeave(ev) });
         this.canvas.onContextMenu((ev: MouseEvent) => { return this.onContextMenu(ev) });
-        
-        this.parser = new BlueprintParser();
+        this.canvas.onKeydown((ev: KeyboardEvent) => { return this.onKeydown(ev) });
 
-        this.nodes = [];
-        this.pins = [];
+        this.parser = new BlueprintParser();
 
         this.initialize();
     }
 
+    clear() {
+        this.pins = new Array<PinControl>();
+        this.nodes = new Array<NodeControlBase>();
+        this.controls = new Array<Control>();
+    }
+
+    initialize() {
+        this.canvas.getContext().font = "18px sans-serif";
+
+        this.loadBlueprint(this.innerHTML);
+    }
+
+    loadBlueprint(blueprintText: string) {
+        this.clear();
+
+        let background = new Background('/assets/sprites/bp_grid.png', this.camera);
+        this.addControl(background);
+
+        let nodes = this.parser.parseBlueprint(blueprintText);
+        this.createView(nodes);
+    }
+
+
+    // TODO: Move this out
     onMouseDown(ev: MouseEvent) {
         if (ev.button == 2) {
             this.mouseDown = true;
@@ -60,10 +84,12 @@ export class Blueprint {
         }
     }
 
+    // TODO: Move this out
     onMouseUp(ev: MouseEvent) {
         this.mouseDown = false;
     }
 
+    // TODO: Move this out
     onMouseMove(ev: MouseEvent) {
         if (this.mouseDown) {
             let position = new Vector2(ev.x, ev.y);
@@ -77,32 +103,49 @@ export class Blueprint {
         return false;
     }
 
+    // TODO: Move this out
     onMouseEnter(ev: MouseEvent) {
         if (ev.buttons == 0) {
             this.mouseDown = false;
         }
     }
 
+    // TODO: Move this out
     onMouseLeave(ev: MouseEvent) {
         
     }
 
+    // TODO: Move this out
     onContextMenu(ev: MouseEvent) {
         ev.preventDefault();
         ev.stopPropagation();
     }
 
-    initialize() {
+    // TODO: Move this out
+    onKeydown(ev : KeyboardEvent) {
+        if(ev.ctrlKey) {
+            switch (ev.code) {
+                case "KeyC": this.copyBlueprintSelectionToClipboard();  // Copy
+                case "KeyV": this.pasteClipboardContentToCanvas();      // Paste
+            }
+        }
 
-        this.canvas.getContext().font = "18px sans-serif";
-
-        let background = new Background('/assets/sprites/bp_grid.png', this.camera);
-        this.addControl(background);
-
-        let nodes = this.parser.parse(this.innerHTML);
-
-        this.createView(nodes);
+        ev.preventDefault();
     }
+
+    copyBlueprintSelectionToClipboard() {
+        console.log("Copy selection");
+        navigator.clipboard.writeText('');
+    }
+
+    pasteClipboardContentToCanvas() {
+        // console.log((window as any).clipboardData.getData('Text'));
+        navigator.clipboard.readText().then((text) => {
+            if(!text) return;
+            this.loadBlueprint(text);
+        });
+    }
+
 
     createView(nodes: Array<NodeObject>) {
 

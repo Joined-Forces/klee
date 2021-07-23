@@ -15,6 +15,10 @@ export class Canvas2D {
         this._element = element;
         this._context = this._element.getContext('2d') as CanvasRenderingContext2D;
         this._PI_TIMES_TWO = Math.PI * 2;
+
+        // A tabindex higher than -1 is needed so that html element reseaves focus events
+        // which is required that the key events get fired.
+        this._element.tabIndex = 0;
     }
 
     onMouseDown(listener: (ev: MouseEvent) => any) {
@@ -39,6 +43,10 @@ export class Canvas2D {
 
     onContextMenu(listener: (ev: MouseEvent) => any) {
         this._element.addEventListener('contextmenu', listener, false);
+    }
+
+    onKeydown(listener: (ev: KeyboardEvent) => any) {
+        this._element.addEventListener('keydown', listener, false);
     }
 
     fillStyle(style: string | CanvasGradient | CanvasPattern) {
@@ -118,7 +126,7 @@ export class Canvas2D {
         return this;
     }
 
-    clear() {
+    clear() { // TODO: Check
         this._element.width = this._element.width;
         return this;
     }
