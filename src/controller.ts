@@ -2,7 +2,14 @@ import { Application } from "./application";
 import { Camera } from "./camera";
 import { Vector2 } from "./math/vector2";
 
+export enum UserAction {
+    Copy,
+    Paste
+}
+
 export class Controller {
+
+    private _actions = {};
 
     mouseDown: boolean;
     mouseDownPosition: Vector2;
@@ -21,6 +28,21 @@ export class Controller {
         element.addEventListener('mouseleave', this.onMouseLeave.bind(this), false);
         element.addEventListener('contextmenu', this.onContextMenu.bind(this), false);
         element.addEventListener('keydown', this.onKeydown.bind(this), false);
+    }
+
+    registerAction(action: UserAction, fnc: () => void) {
+        this._actions[action] = fnc;
+    }
+
+    onKeydown(ev : KeyboardEvent) {
+        if(ev.ctrlKey) {
+            switch (ev.code) {
+                case "KeyC": this._actions[UserAction.Copy](); break;  // Copy
+                case "KeyV": this._actions[UserAction.Paste](); break; // Paste
+            }
+        }
+
+        ev.preventDefault();
     }
 
     onMouseDown(ev: MouseEvent) {
@@ -61,30 +83,6 @@ export class Controller {
     onContextMenu(ev: MouseEvent) {
         ev.preventDefault();
         ev.stopPropagation();
-    }
-
-    onKeydown(ev : KeyboardEvent) {
-        if(ev.ctrlKey) {
-            switch (ev.code) {
-                case "KeyC": this.copyBlueprintSelectionToClipboard();  // Copy
-                case "KeyV": this.pasteClipboardContentToCanvas();      // Paste
-            }
-        }
-
-        ev.preventDefault();
-    }
-
-    copyBlueprintSelectionToClipboard() {
-        console.log("Copy selection");
-        navigator.clipboard.writeText('');
-    }
-
-    pasteClipboardContentToCanvas() {
-        // console.log((window as any).clipboardData.getData('Text'));
-        navigator.clipboard.readText().then((text) => {
-            if(!text) return;
-            //this.loadBlueprint(text);
-        });
     }
 }
 

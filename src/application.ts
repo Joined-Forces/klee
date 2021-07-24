@@ -1,5 +1,5 @@
 import { Canvas2D } from "./canvas";
-import { Controller } from "./controller";
+import { Controller, UserAction } from "./controller";
 import { BlueprintParser } from "./parser/blueprint-parser";
 import { Scene } from "./scene";
 
@@ -15,15 +15,35 @@ export class Application {
 
         this._canvas = new Canvas2D(element);
         Application._scene = new Scene(this._canvas);
-        this._controller = new Controller(element);
 
         this._parser = new BlueprintParser();
-        const nodes = this._parser.parseBlueprint(element.innerHTML);
+        this.loadBlueprintIntoScene(element.innerHTML);
 
-        Application._scene.load(nodes);
+        this._controller = new Controller(element);
+        this._controller.registerAction(UserAction.Copy, this.copyBlueprintSelectionToClipboard.bind(this));
+        this._controller.registerAction(UserAction.Paste, this.pasteClipboardContentToCanvas.bind(this));
     }
 
     static get scene() {
         return this._scene;
+    }
+
+    private copyBlueprintSelectionToClipboard() {
+        console.log("Copy selection");
+        navigator.clipboard.writeText('');
+    }
+
+    private pasteClipboardContentToCanvas() {
+        console.log("Paste from clipboard");
+
+        navigator.clipboard.readText().then((text) => {
+            if(!text) return;
+            this.loadBlueprintIntoScene(text);
+        });
+    }
+
+    private loadBlueprintIntoScene(text) {
+        const nodes = this._parser.parseBlueprint(text);
+        Application._scene.load(nodes);
     }
 }
