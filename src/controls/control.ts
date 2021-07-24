@@ -1,10 +1,10 @@
-import { Blueprint } from "../blueprint";
+import { Scene } from "../scene";
 import { Vector2 } from "../math/vector2";
 
 export class Control {
     position: Vector2;
     
-    _blueprint: Blueprint;
+    _blueprint: Scene;
     zIndex: number;
 
     constructor(x: number, y: number) {
@@ -18,7 +18,7 @@ export class Control {
         return this._blueprint;
     }
 
-    set blueprint(value: Blueprint) {
+    set blueprint(value: Scene) {
         this._blueprint = value;
     }
 
