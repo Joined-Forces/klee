@@ -4,8 +4,8 @@ import { BlueprintParserUtils } from "./blueprint-parser-utils";
 
 export class BlueprintParser {
 
-    private readonly OBJECT_STARTING_TAG = "Begin Object";
-    private readonly OBJECT_ENDING_TAG = "End Object";
+    private readonly _OBJECT_STARTING_TAG = "Begin Object";
+    private readonly _OBJECT_ENDING_TAG = "End Object";
 
     private _lines: string[];
 
@@ -30,7 +30,7 @@ export class BlueprintParser {
         for (let i = 0; i < this._lines.length; ++i) {
             let line = BlueprintParserUtils.stripLine(this._lines[i]);
 
-            if (line.startsWith(this.OBJECT_STARTING_TAG)) {
+            if (line.startsWith(this._OBJECT_STARTING_TAG)) {
                 const header = this.parseNodeHeader(line);
                 const lines = this.getLinesUntilEndTag(i);
                 const node = this.createNodeObject(header, lines);
@@ -67,13 +67,13 @@ export class BlueprintParser {
                 throw new Error("Invalid blueprint text. An 'Object' node was never closed. Missing 'End Object'");
             }
 
-            if(line.startsWith(this.OBJECT_STARTING_TAG)) {
+            if(line.startsWith(this._OBJECT_STARTING_TAG)) {
                 throw new Error("Invalid blueprint text. An 'Object' node was opened before the previous was closed. Missing 'End Object'");
             }
 
             lines.push(line);
 
-        } while (!line.startsWith(this.OBJECT_ENDING_TAG));
+        } while (!line.startsWith(this._OBJECT_ENDING_TAG));
 
         return lines;
     }
@@ -87,7 +87,7 @@ export class BlueprintParser {
             options[keyValuePair[0]] = keyValuePair[1].replace(/"/g, '');
         }
 
-        const prefixLength = this.OBJECT_STARTING_TAG.length;
+        const prefixLength = this._OBJECT_STARTING_TAG.length;
         const headerWithoutStartingTag = headerLine.substr(prefixLength, headerLine.length - prefixLength - 1);
         const headerArguments = headerWithoutStartingTag.trim().split(' ') || [];
 
