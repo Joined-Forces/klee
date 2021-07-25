@@ -25,4 +25,8 @@ export class Vector2 {
         else
             return new Vector2(this.x * vec, this.y * vec);
     }
+
+    toString(): string {
+        return `Vector2(x: ${this.x}, y: ${this.y})`;
+    }
 }
