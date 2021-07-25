@@ -10,8 +10,6 @@ export class GetterNodeControl extends NodeControlBase implements DrawableContro
     minWidth: number;
     textWidth: number;
 
-    strokeStyleBorder: string;
-
     fillStyle: string;
     fillStyleHeader: any;
     fillStyleText: string;
@@ -22,8 +20,6 @@ export class GetterNodeControl extends NodeControlBase implements DrawableContro
 
         this.fillStyle = "rgba(15,15,15,0.6)";
         this.fillStyleText = "rgb(210,210,210)";
-
-        this.strokeStyleBorder = "rgb(0,0,0)";
 
         this.headerHeight = -7;
 
@@ -48,18 +44,15 @@ export class GetterNodeControl extends NodeControlBase implements DrawableContro
     }
 
     draw(canvas: Canvas2D) {
-
         canvas.save();
         canvas.translate(this.position.x, this.position.y);
 
         canvas.fillStyle(this.fillStyle)
-        .roundedRectangle(0, -(this.height * .3), this.width, this.height, 18)
-        .fill()
-        .strokeStyle(this.strokeStyleBorder)
-        .lineWidth(1)
-        .roundedRectangle(0, -(this.height * .3), this.width, this.height, 18)
-        .stroke();
+            .roundedRectangle(0, -(this.height * .3), this.width, this.height, 18)
+            .fill()
+            // .roundedRectangle(0, -(this.height * .3), this.width, this.height, 18) // TODO: Find out why
 
+        this.drawStroke(canvas);
         this.drawPins(canvas);
 
         canvas.restore();

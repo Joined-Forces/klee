@@ -55,10 +55,10 @@ export class NodeControl extends NodeControlBase implements DrawableControl {
         canvas.translate(this.position.x, this.position.y);
 
         canvas.fillStyle(this.fillStyle)
-        .font('12px sans-serif')
-        .roundedRectangle(0, 0, this.width, this.height, 5)
-        .fill()
-        
+            .font('12px sans-serif')
+            .roundedRectangle(0, 0, this.width, this.height, 5)
+            .fill()
+
         if (this.node.isMathFunction) {
             let functionName = (this.node as CallFunctionNodeObject).functionReference.memberName;
             let operator = '';
@@ -69,19 +69,17 @@ export class NodeControl extends NodeControlBase implements DrawableControl {
                 operator = '÷';
 
                 canvas.fillStyle(this.fillStyleText)
-                .textAlign('center')
-                .font('24px sans-serif')
-                .fillText(operator, this.width * .5, this.height * .5 + 9);
+                    .textAlign('center')
+                    .font('24px sans-serif')
+                    .fillText(operator, this.width * .5, this.height * .5 + 9);
 
         } else {
             this.drawTitle(canvas);
         }
 
-        canvas.strokeStyle(this.strokeStyleBorder)
-        .lineWidth(1)
-        .roundedRectangle(0, 0, this.width, this.height, 5)
-        .stroke();
+        canvas.roundedRectangle(0, 0, this.width, this.height, 5);
         
+        this.drawStroke(canvas);
         this.drawPins(canvas);
 
         canvas.restore();
@@ -89,11 +87,11 @@ export class NodeControl extends NodeControlBase implements DrawableControl {
 
     drawTitle(canvas: Canvas2D) {
         canvas.fillStyle(this.fillStyleHeader)
-        .roundedRectangle(0, 0, this.width, this.headerHeight, { radiusTopLeft: 5, radiusTopRight: 5, radiusBottomLeft: 0, radiusBottomRight: 0 })
-        .fill()
-        .font("bold 12px sans-serif")
-        .textAlign('left')
-        .fillStyle(this.fillStyleText)
-        .fillText(this.node.getName(), 30, 18);
+            .roundedRectangle(0, 0, this.width, this.headerHeight, { radiusTopLeft: 5, radiusTopRight: 5, radiusBottomLeft: 0, radiusBottomRight: 0 })
+            .fill()
+            .font("bold 12px sans-serif")
+            .textAlign('left')
+            .fillStyle(this.fillStyleText)
+            .fillText(this.node.getName(), 30, 18);
     }
 }

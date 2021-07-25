@@ -5,7 +5,6 @@ import { NodeControlBase } from "./node-control-base";
 
 export class RerouteNodeView extends NodeControlBase implements DrawableControl {
 
-    strokeStyleBorder: string;
     fillStyle: string;
 
     constructor(node: NodeObject) {
@@ -14,9 +13,9 @@ export class RerouteNodeView extends NodeControlBase implements DrawableControl 
         this.height = 12;
 
         this.fillStyle = "rgb(255, 255, 255)";
-        this.strokeStyleBorder = "rgb(0,0,0)";
 
         this.headerHeight = 0;
+        this._stroke.lineWidth = 0.5;
 
         this.createPins();
     }
@@ -27,10 +26,9 @@ export class RerouteNodeView extends NodeControlBase implements DrawableControl 
 
     draw(canvas: Canvas2D) {
         canvas.fillStyle("rgb(255, 255, 255)")
-        .lineWidth(.5)
-        .strokeStyle(this.strokeStyleBorder)
-        .fillCircle(this.position.x + 6, this.position.y, 2.3)
-        .fillCircle(this.position.x, this.position.y, 6)
-        .strokeCircle(this.position.x, this.position.y, 6);
+            .fillCircle(this.position.x + 6, this.position.y, 2.3)
+            .fillCircle(this.position.x, this.position.y, 6)
+
+        this.drawStroke(canvas);
     }
 }

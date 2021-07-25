@@ -1,11 +1,16 @@
+import { Application } from "../application";
 import { Canvas2D } from "../canvas";
 import { Constants } from "../constants";
 import { PinCategory, PinDirection, PinProperty } from "../data/custom-property";
 import { NodeObject } from "../data/node-object";
+import { Vector2 } from "../math/vector2";
 import { Control } from "./control";
 import { PinControl } from "./pin-control";
 
 export class NodeControlBase extends Control {
+
+    private readonly _SELECTION_COLOR = 'rgb(231,158,0)';
+    private readonly _SELECTION_LINE_WIDTH = 2.5;
 
     private _node: NodeObject;
     protected headerHeight: number;
@@ -19,11 +24,30 @@ export class NodeControlBase extends Control {
     protected _inputPins: Array<PinControl>;
     protected _outputPins: Array<PinControl>;
 
+    private _selected: boolean;
+    protected _stroke: {
+        lineWidth: number,
+        style: string
+    }
+
     constructor(node: NodeObject) {
         super(node.nodePosX, node.nodePosY);
         this._node = node;
         this._inputPins = [];
         this._outputPins = [];
+        this._selected = false;
+        this._stroke = {
+            lineWidth: 1,
+            style: 'rgb(0,0,0)'
+        }
+    }
+
+    public get size(): Vector2 {
+        return new Vector2(this.width, this.height);
+    }
+
+    public set selected(isSelected: boolean) {
+        this._selected = isSelected;
     }
 
     initialize(): void { 
@@ -134,6 +158,15 @@ export class NodeControlBase extends Control {
         }
 
         return count;
+    }
+
+    protected drawStroke(canvas: Canvas2D) {
+        if(this._selected) {
+            canvas.lineWidth(this._SELECTION_LINE_WIDTH).strokeStyle(this._SELECTION_COLOR);
+        } else {
+            canvas.lineWidth(this._stroke.lineWidth).strokeStyle(this._stroke.style);
+        }
+        canvas.stroke();
     }
 
     get inputPins() {
