@@ -92,7 +92,7 @@ export class Canvas2D {
         return this;
     }
 
-    clear() { // TODO: Check
+    clear() { // TODO: Why?
         this._element.width = this._element.width;
         return this;
     }
@@ -109,6 +109,11 @@ export class Canvas2D {
 
     strokeRect(x: number, y: number, width: number, height: number) {
         this._context.strokeRect(x, y, width, height);
+        return this;
+    }
+
+    setLineDash(segments: Array<number>) {
+        this._context.setLineDash(segments);
         return this;
     }
 

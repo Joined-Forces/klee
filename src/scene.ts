@@ -26,12 +26,17 @@ export class Scene {
         this._camera = new Camera(this._canvas);
     }
 
+    // TODO: Move this out
     get camera() {
         return this._camera;
     }
 
     get canvas() {
         return this._canvas;
+    }
+
+    get nodes() {
+        return this._nodes;
     }
 
     refresh() {
@@ -49,7 +54,7 @@ export class Scene {
         });
     }
 
-    clear() {
+    unload() {
         this._pins = new Array<PinControl>();
         this._nodes = new Array<NodeControlBase>();
         this._controls = new Array<Control>();
@@ -57,7 +62,7 @@ export class Scene {
 
     load(nodes: NodeObject[]) {
 
-        this.clear();
+        this.unload();
 
         this._canvas.getContext().font = "18px sans-serif";
 
@@ -82,7 +87,7 @@ export class Scene {
 
         for (let i = 0; i < this._nodes.length; ++i) {
             this._pins = this._pins.concat(this._nodes[i].inputPins)
-            this._pins = this._pins.concat(this._nodes[i].outputPins)
+            this._pins = this._pins.concat(this._nodes[i].outputPins) // TODO Why?
         }
 
         for (let i = this._pins.length - 1; i >= 0; --i) {

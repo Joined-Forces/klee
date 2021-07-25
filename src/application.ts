@@ -6,15 +6,15 @@ import { Scene } from "./scene";
 export class Application {
 
     private static _scene: Scene;
+    private static _canvas: Canvas2D;
 
     private _controller: Controller;
-    private _canvas: Canvas2D;
     private _parser: BlueprintParser;
 
     constructor(element: HTMLCanvasElement) {
 
-        this._canvas = new Canvas2D(element);
-        Application._scene = new Scene(this._canvas);
+        Application._canvas = new Canvas2D(element);
+        Application._scene = new Scene(Application._canvas);
 
         this._parser = new BlueprintParser();
         this.loadBlueprintIntoScene(element.innerHTML);
@@ -26,6 +26,10 @@ export class Application {
 
     static get scene() {
         return this._scene;
+    }
+
+    static get canvas() {
+        return this._canvas;
     }
 
     private copyBlueprintSelectionToClipboard() {
