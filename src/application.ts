@@ -1,5 +1,5 @@
 import { Canvas2D } from "./canvas";
-import { Controller, UserAction } from "./controller";
+import { Controller } from "./controller";
 import { BlueprintParser } from "./parser/blueprint-parser";
 import { Scene } from "./scene";
 
@@ -23,8 +23,16 @@ export class Application {
         this.loadBlueprintIntoScene(element.innerHTML);
 
         this._controller = new Controller(element);
-        this._controller.registerAction(UserAction.Copy, this.copyBlueprintSelectionToClipboard.bind(this));
-        this._controller.registerAction(UserAction.Paste, this.pasteClipboardContentToCanvas.bind(this));
+        this._controller.registerAction({
+            ctrl: true,
+            keycode: 'KeyC',
+            callback: this.copyBlueprintSelectionToClipboard.bind(this)
+        });
+        this._controller.registerAction({
+            ctrl: true,
+            keycode: 'KeyV',
+            callback: this.pasteClipboardContentToCanvas.bind(this)
+        });
 
         this.initializeHtmlAttributes();
         window.addEventListener('resize', this.resizeCanvas.bind(this), false);

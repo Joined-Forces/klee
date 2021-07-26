@@ -2,12 +2,13 @@ import { Application } from "./application";
 import { BoundingBox } from "./math/boundingbox";
 import { Vector2 } from "./math/vector2";
 
-export enum UserAction {
-    Copy,
-    Paste
+export interface KeyAction {
+    keycode: string
+    ctrl: boolean;
+    callback: () => void
 }
 
-export enum MouseButton {
+enum MouseButton {
     Left,
     Middle,
     Right
@@ -15,7 +16,7 @@ export enum MouseButton {
 
 export class Controller {
 
-    private _actions = {};
+    private _actions: KeyAction[] = [];
 
     private _mouseDownData: {
         buttonType: MouseButton,
@@ -41,28 +42,15 @@ export class Controller {
         element.addEventListener('keydown', this.onKeydown.bind(this), false);
     }
 
-    registerAction(action: UserAction, fnc: () => void) {
-        this._actions[action] = fnc;
+    registerAction(action: KeyAction) {
+        this._actions.push(action);
     }
 
     onKeydown(ev : KeyboardEvent) {
-        let handled = false;
-        if(ev.ctrlKey) {
-            switch (ev.code) {
-                case "KeyC": {  // Copy
-                    this._actions[UserAction.Copy]();
-                    handled = true;
-                    break;
-                }
-                case "KeyV": { // Paste
-                    this._actions[UserAction.Paste]();
-                    handled = true;
-                    break;
-                }
-            }
-        }
+        for (const action of this._actions.filter(a => a.keycode === ev.code)) {
+            if(action.ctrl !== ev.ctrlKey) continue;
 
-        if(handled) {
+            action.callback();
             ev.preventDefault();
         }
     }
