@@ -40,6 +40,12 @@ export class Controller {
         element.addEventListener('mouseleave', this.onMouseLeave.bind(this), false);
         element.addEventListener('contextmenu', this.onContextMenu.bind(this), false);
         element.addEventListener('keydown', this.onKeydown.bind(this), false);
+
+        this.registerAction({
+            ctrl: true,
+            keycode: 'KeyA',
+            callback: this.selectAllNodes.bind(this),
+        })
     }
 
     registerAction(action: KeyAction) {
@@ -129,6 +135,11 @@ export class Controller {
 
         const intersectingControls = Application.scene.nodes.filter(n => BoundingBox.checkIntersection(pos, size, n.position, n.size)) || [];
         intersectingControls.forEach(c => c.selected = true);
+    }
+
+    selectAllNodes() {
+        Application.scene.nodes.forEach(c => c.selected = true);
+        Application.scene.refresh();
     }
 
     getMousePosition(ev): Vector2 {
