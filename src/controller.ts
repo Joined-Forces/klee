@@ -22,8 +22,11 @@ export class Controller {
         position: Vector2
     }
     private _mousePositionOfPreviousMove: Vector2;
+    private _element: HTMLCanvasElement;
 
     constructor(element: HTMLCanvasElement) {
+
+        this._element = element;
 
         // A tabindex higher than -1 is needed so that html element reseaves focus events
         // which is required that the key events get fired.
@@ -67,7 +70,7 @@ export class Controller {
     onMouseDown(ev: MouseEvent) {
         this._mouseDownData = {
             buttonType: ev.button,
-            position: new Vector2(ev.pageX, ev.pageY)
+            position: this.getMousePosition(ev)
         }
         this._mousePositionOfPreviousMove = this._mouseDownData.position;
 
@@ -84,7 +87,7 @@ export class Controller {
     onMouseMove(ev: MouseEvent) {
         if(!this._mouseDownData) { return; }
 
-        const currentMousePosition = new Vector2(ev.pageX, ev.pageY);
+        const currentMousePosition = this.getMousePosition(ev);
 
         if (this._mouseDownData.buttonType === MouseButton.Right) {
             const delta = currentMousePosition.subtract(this._mousePositionOfPreviousMove);
@@ -138,6 +141,10 @@ export class Controller {
 
         const intersectingControls = Application.scene.nodes.filter(n => BoundingBox.checkIntersection(pos, size, n.position, n.size)) || [];
         intersectingControls.forEach(c => c.selected = true);
+    }
+
+    getMousePosition(ev): Vector2 {
+        return new Vector2(ev.pageX - this._element.offsetLeft, ev.pageY - this._element.offsetTop);
     }
 }
 
