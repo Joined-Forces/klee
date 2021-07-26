@@ -39,9 +39,15 @@ export class BlueprintParser {
             if (line.startsWith(this._OBJECT_STARTING_TAG)) {
                 const header = this.parseNodeHeader(line);
                 const lines = this.getLinesUntilEndTag(i);
-                const node = this.createNodeObject(header, line, lines);
 
-                nodes.push(node);
+                try {
+                    const node = this.createNodeObject(header, line, lines);
+                    nodes.push(node);
+                } catch (error) {
+                    console.error(error);
+                    throw new Error(`Unable to parse node: ${header.name}`);
+                }
+
                 i += lines.length;
             }
         }
@@ -51,9 +57,18 @@ export class BlueprintParser {
 
     private createNodeObject(header: NodeObjectHeader, headerLine: string, bodyLines: string[]): NodeObject {
 
-        let node = this._nodeObjects[header.class]() || new NodeObject();
+        let node: NodeObject;
+        const particularImplementation = this._nodeObjects[header.class];
+        if(!particularImplementation) {
+            console.warn(`There is no particular implementation for class ${header.class}. Falling back to the generic node class.` );
+            node = new NodeObject();
+        }
+        else {
+            node = particularImplementation();
+        }
+
         node.name = header.name;
-        node.class = header.class;
+        node.class = <any>header.class;
 
         node.parse(headerLine, bodyLines);
 

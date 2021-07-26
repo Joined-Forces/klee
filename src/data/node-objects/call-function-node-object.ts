@@ -24,7 +24,7 @@ export class CallFunctionNodeObject extends NodeObject {
     }
 
     get isMathFunction(): boolean {
-        return this.functionReference.memberParent === NodeClass.KISMET_MATH_LIBRARY
+        return <any>this.functionReference.memberParent == NodeClass.KISMET_MATH_LIBRARY
             && this.checkMathFunction(this.functionReference.memberName);
     }
 

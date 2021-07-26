@@ -22,14 +22,12 @@ export class ColorUtils {
             case PinCategory.float:
                 return 'rgb(158, 250, 68)';
             case PinCategory.struct:
-                switch (pin.pinSubCategoryObject) {
-                    case NodeClass.VECTOR:
-                        return 'rgb(253, 200, 35)';
-                    case NodeClass.ROTATOR:
-                        return 'rgb(159, 178, 253)';
-                    default:
-                        return 'rgb(0, 88, 200)';
+                const map = {
+                    [NodeClass.VECTOR]: 'rgb(253, 200, 35)',
+                    [NodeClass.ROTATOR]: 'rgb(159, 178, 253)'
                 }
+                return map[pin.pinSubCategoryObject] || 'rgb(0, 88, 200)';
+
             case PinCategory.name:
                 return 'rgb(150, 97, 185)';
             case PinCategory.object:
