@@ -36,6 +36,11 @@ export class Application {
             keycode: 'KeyV',
             callback: this.pasteClipboardContentToCanvas.bind(this)
         });
+        this._controller.registerAction({
+            ctrl: false,
+            keycode: 'Home',
+            callback: this.recenterCamera.bind(this),
+        })
 
         window.addEventListener('resize', this.refresh.bind(this), false);
     }
@@ -51,6 +56,7 @@ export class Application {
     private initializeHtmlAttributes() {
         this._element.style.width = '100%';
         this._element.style.minHeight = '600px';
+        this._element.style.outline = 'none';
     }
 
     private refresh() {
@@ -80,6 +86,10 @@ export class Application {
         const nodes = this._parser.parseBlueprint(text);
         Application._scene.load(nodes);
 
+        this.recenterCamera();
+    }
+
+    recenterCamera() {
         // Move camera to the center of all nodes
         Application._scene.camera.centreAbsolutePosition(Application._scene.calculateCentroid());
         this.refresh();
