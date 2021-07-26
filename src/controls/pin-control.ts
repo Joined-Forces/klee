@@ -1,5 +1,6 @@
 import { Canvas2D } from "../canvas";
-import { PinCategory, PinDirection, PinProperty } from "../data/custom-property";
+import { PinCategory, PinDirection } from "../data/custom-property";
+import { PinProperty } from "../data/pin-property";
 import { Vector2 } from "../math/vector2";
 import { Control } from "./control";
 import { DrawableControl } from "./interfaces/drawable";

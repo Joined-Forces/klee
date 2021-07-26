@@ -10,7 +10,9 @@ import { NodeControl } from "./controls/node-control";
 import { PinControl } from "./controls/pin-control";
 import { RerouteNodeView } from "./controls/reroute-node";
 import { PinDirection } from "./data/custom-property";
-import { KnotNodeObject, NodeObject, VariableGetNodeObject } from "./data/node-object";
+import { NodeObject } from "./data/node-object";
+import { KnotNodeObject } from "./data/node-objects/knot-node-object";
+import { VariableGetNodeObject } from "./data/node-objects/variable-get-node-object";
 
 export class Scene {
 
@@ -36,7 +38,7 @@ export class Scene {
     }
 
     get nodes() {
-        return this._nodes;
+        return this._nodes || [];
     }
 
     refresh() {

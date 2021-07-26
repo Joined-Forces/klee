@@ -1,5 +1,6 @@
 import { Canvas2D } from "../canvas";
-import { CallFunctionNodeObject, NodeObject } from "../data/node-object";
+import { CallFunctionNodeObject } from "../data/node-objects/call-function-node-object";
+import { NodeObject } from "../data/node-object";
 import { DrawableControl } from "./interfaces/drawable";
 import { NodeControlBase } from "./node-control-base";
 import { ColorUtils } from "./utils/color-utils";
@@ -37,7 +38,7 @@ export class NodeControl extends NodeControlBase implements DrawableControl {
         if (this.node.isMathFunction) {
             this.headerHeight = 0;
         }
-        
+
         let headerColor = ColorUtils.getNodeColorForClass(this.node.class);
 
         let gradient = this.getContext().createLinearGradient(0, 0, 150, 0);
@@ -78,7 +79,7 @@ export class NodeControl extends NodeControlBase implements DrawableControl {
         }
 
         canvas.roundedRectangle(0, 0, this.width, this.height, 5);
-        
+
         this.drawStroke(canvas);
         this.drawPins(canvas);
 

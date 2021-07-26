@@ -1,5 +1,11 @@
+import { CallFunctionNodeObject } from "../data/node-objects/call-function-node-object";
+import { IfThenElseNodeObject } from "../data/node-objects/if-then-else-node-object";
+import { InputAxisNodeObject } from "../data/node-objects/input-axis-node-object";
+import { KnotNodeObject } from "../data/node-objects/knot-node-object";
 import { NodeClass } from "../data/node-class";
-import { CallFunctionNodeObject, VariableGetNodeObject, IfThenElseNodeObject, InputAxisNodeObject, KnotNodeObject, NodeObject, NodeObjectHeader } from "../data/node-object";
+import { NodeObject } from "../data/node-object";
+import { NodeObjectHeader } from "../data/node-object-header";
+import { VariableGetNodeObject } from "../data/node-objects/variable-get-node-object";
 import { BlueprintParserUtils } from "./blueprint-parser-utils";
 
 export class BlueprintParser {

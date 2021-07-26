@@ -1,8 +1,9 @@
-import { Application } from "../application";
 import { Canvas2D } from "../canvas";
 import { Constants } from "../constants";
-import { PinCategory, PinDirection, PinProperty } from "../data/custom-property";
+import { PinCategory, PinDirection } from "../data/custom-property";
 import { NodeObject } from "../data/node-object";
+import { VariableGetNodeObject } from "../data/node-objects/variable-get-node-object";
+import { PinProperty } from "../data/pin-property";
 import { Vector2 } from "../math/vector2";
 import { Control } from "./control";
 import { PinControl } from "./pin-control";
@@ -50,6 +51,10 @@ export class NodeControlBase extends Control {
         this._selected = isSelected;
     }
 
+    public get selected(): boolean {
+        return this._selected;
+    }
+
     initialize(): void { 
         let pinRows = Math.max(this.getPinRows(this._inputPins), this.getPinRows(this._outputPins));
         let preferedHeight = pinRows * 24 + this.headerHeight + 6;
@@ -79,8 +84,16 @@ export class NodeControlBase extends Control {
         for (let i = 0; i < properties.length; ++i) {
             if (properties[i] instanceof PinProperty) {
                 let pinProperty = properties[i] as PinProperty;
-                if (pinProperty.isHidden)
+
+                if (this._node instanceof VariableGetNodeObject) {
+                    if (pinProperty.pinName === "self" && (this._node as VariableGetNodeObject).variableReference.selfContext) {
+                        continue;
+                    }
+                }
+
+                if (pinProperty.isHidden) {
                     continue;
+                }
 
                 let pin = new PinControl(this, pinProperty);
 

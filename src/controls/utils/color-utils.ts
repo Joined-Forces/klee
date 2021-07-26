@@ -1,9 +1,10 @@
-import { PinCategory, PinProperty } from "../../data/custom-property";
+import { PinCategory } from "../../data/custom-property";
 import { NodeClass } from "../../data/node-class";
+import { PinProperty } from "../../data/pin-property";
 
 export class ColorUtils {
 
-    public static getNodeColorForClass(nodeClass: string): string {
+    public static getNodeColorForClass(nodeClass: NodeClass): string {
         switch (nodeClass) {
             case NodeClass.INPUT_AXIS_EVENT:
                 return '156, 36, 35';
