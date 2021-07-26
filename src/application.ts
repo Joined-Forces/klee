@@ -19,6 +19,9 @@ export class Application {
         Application._canvas = new Canvas2D(element);
         Application._scene = new Scene(Application._canvas);
 
+        this.initializeHtmlAttributes();
+        this.refresh();
+
         this._parser = new BlueprintParser();
         this.loadBlueprintIntoScene(element.innerHTML);
 
@@ -34,9 +37,7 @@ export class Application {
             callback: this.pasteClipboardContentToCanvas.bind(this)
         });
 
-        this.initializeHtmlAttributes();
-        window.addEventListener('resize', this.resizeCanvas.bind(this), false);
-        this.resizeCanvas();
+        window.addEventListener('resize', this.refresh.bind(this), false);
     }
 
     static get scene() {
@@ -52,7 +53,7 @@ export class Application {
         this._element.style.minHeight = '600px';
     }
 
-    private resizeCanvas() {
+    private refresh() {
         this._element.width = this._element.offsetWidth;
         this._element.height = this._element.offsetHeight;
         Application._scene.refresh();
@@ -78,5 +79,9 @@ export class Application {
     private loadBlueprintIntoScene(text) {
         const nodes = this._parser.parseBlueprint(text);
         Application._scene.load(nodes);
+
+        // Move camera to the center of all nodes
+        Application._scene.camera.centreAbsolutePosition(Application._scene.calculateCentroid());
+        this.refresh();
     }
 }

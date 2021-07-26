@@ -13,6 +13,7 @@ import { PinDirection } from "./data/custom-property";
 import { NodeObject } from "./data/node-object";
 import { KnotNodeObject } from "./data/node-objects/knot-node-object";
 import { VariableGetNodeObject } from "./data/node-objects/variable-get-node-object";
+import { Vector2 } from "./math/vector2";
 
 export class Scene {
 
@@ -26,6 +27,8 @@ export class Scene {
     constructor(canvas: Canvas2D) {
         this._canvas = canvas;
         this._camera = new Camera(this._canvas);
+
+        this.unload();
     }
 
     // TODO: Move this out
@@ -73,6 +76,7 @@ export class Scene {
 
         for (let i = 0; i < nodes.length; ++i) {
             let node = nodes[i];
+
             let view: NodeControlBase;
 
             if (node instanceof KnotNodeObject) {
@@ -126,6 +130,18 @@ export class Scene {
         this._controls.push(control)
 
         control.initialize();
+    }
+
+    calculateCentroid(): Vector2 {
+        let centroid = new Vector2(0, 0);
+
+        this.nodes.forEach(node => {
+            centroid = new Vector2(
+                centroid.x - node.position.x - node.size.x / 2,
+                centroid.y - node.position.y - node.size.y / 2);
+        });
+
+        return new Vector2(centroid.x / this.nodes.length, centroid.y / this.nodes.length);
     }
 }
 
