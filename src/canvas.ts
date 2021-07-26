@@ -1,3 +1,5 @@
+import { Vector2 } from "./math/vector2";
+
 export interface RoundedCornerValues {
     radiusTopLeft: number;
     radiusTopRight: number;
@@ -138,6 +140,14 @@ export class Canvas2D {
 
     strokeText(text: string, x: number, y: number, maxWidth?: number) {
         this._context.strokeText(text, x, y, maxWidth);
+        return this;
+    }
+
+    shadow(offset: Vector2, blur: number, color: string) {
+        this._context.shadowOffsetX = offset.x;
+        this._context.shadowOffsetY = offset.y;
+        this._context.shadowBlur = blur;
+        this._context.shadowColor = color;
         return this;
     }
 

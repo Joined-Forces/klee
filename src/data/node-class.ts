@@ -5,6 +5,7 @@ export enum NodeClass {
     IF_THEN_ELSE = "/Script/BlueprintGraph.K2Node_IfThenElse",
     VARIABLE_GET = "/Script/BlueprintGraph.K2Node_VariableGet",
     INPUT_AXIS_EVENT = "/Script/BlueprintGraph.K2Node_InputAxisEvent",
+    COMMENT = "/Script/UnrealEd.EdGraphNode_Comment",
     KISMET_MATH_LIBRARY = "/Script/Engine.KismetMathLibrary",
     VECTOR = "/Script/CoreUObject.Vector",
     ROTATOR = "/Script/CoreUObject.Rotator",

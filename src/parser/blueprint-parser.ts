@@ -7,6 +7,7 @@ import { NodeObject } from "../data/node-object";
 import { NodeObjectHeader } from "../data/node-object-header";
 import { VariableGetNodeObject } from "../data/node-objects/variable-get-node-object";
 import { BlueprintParserUtils } from "./blueprint-parser-utils";
+import { CommentNodeObject } from "../data/node-objects/comment-node-object";
 
 export class BlueprintParser {
 
@@ -20,7 +21,8 @@ export class BlueprintParser {
         [NodeClass.INPUT_AXIS_EVENT]: () => new InputAxisNodeObject(),
         [NodeClass.CALL_FUNCTION]: () => new CallFunctionNodeObject(),
         [NodeClass.VARIABLE_GET]: () => new VariableGetNodeObject(),
-        [NodeClass.IF_THEN_ELSE]: () => new IfThenElseNodeObject()
+        [NodeClass.IF_THEN_ELSE]: () => new IfThenElseNodeObject(),
+        [NodeClass.COMMENT]: () => new CommentNodeObject(),
     }
 
     constructor() {}

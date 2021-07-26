@@ -14,6 +14,8 @@ import { NodeObject } from "./data/node-object";
 import { KnotNodeObject } from "./data/node-objects/knot-node-object";
 import { VariableGetNodeObject } from "./data/node-objects/variable-get-node-object";
 import { Vector2 } from "./math/vector2";
+import { CommentNodeObject } from "./data/node-objects/comment-node-object";
+import { CommentNodeControl } from "./controls/comment-node";
 
 export class Scene {
 
@@ -83,6 +85,8 @@ export class Scene {
                 view = new RerouteNodeView(node);
             } else if (node instanceof VariableGetNodeObject) {
                 view = new GetterNodeControl(node);
+            } else if (node instanceof CommentNodeObject) {
+                view = new CommentNodeControl(node);
             } else {
                 view = new NodeControl(node);
             }
