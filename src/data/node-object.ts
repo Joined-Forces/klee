@@ -12,24 +12,30 @@ export class NodeObject {
     nodeGUID: string;
 
     customProperties: Array<CustomProperty>;
+    private _sourceText: string[];
 
     constructor() {
         this.customProperties = new Array<CustomProperty>();
     }
 
-    parse(objectLines: string[]) {
     public get class(): NodeClass {
         return this._class;
+    }
+
+    public get sourceText(): string[] {
+        return this._sourceText;
     }
 
     public set class(v: NodeClass) {
         this._class = v;
     }
 
+    parse(headerLine: string, bodyLines: string[]) {
+        this._sourceText = Array<string>(headerLine).concat(bodyLines);
         let line: string;
 
-        for (let i = 0; i < objectLines.length; ++i) {
-            line = objectLines[i];
+        for (let i = 0; i < bodyLines.length; ++i) {
+            line = bodyLines[i];
 
             if (line.startsWith('CustomProperties')) {
                 let propertyLine = line.substr("CustomProperties".length).trim();

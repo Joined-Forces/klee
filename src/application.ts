@@ -34,7 +34,10 @@ export class Application {
 
     private copyBlueprintSelectionToClipboard() {
         console.log("Copy selection");
-        navigator.clipboard.writeText('');
+
+        let textLines = [];
+        Application._scene.nodes.filter(n => n.selected).forEach(n => textLines = [].concat(textLines, n.node.sourceText));
+        navigator.clipboard.writeText(textLines.join('\n'));
     }
 
     private pasteClipboardContentToCanvas() {

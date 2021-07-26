@@ -39,7 +39,7 @@ export class BlueprintParser {
             if (line.startsWith(this._OBJECT_STARTING_TAG)) {
                 const header = this.parseNodeHeader(line);
                 const lines = this.getLinesUntilEndTag(i);
-                const node = this.createNodeObject(header, lines);
+                const node = this.createNodeObject(header, line, lines);
 
                 nodes.push(node);
                 i += lines.length;
@@ -49,13 +49,13 @@ export class BlueprintParser {
         return nodes;
     }
 
-    private createNodeObject(header: NodeObjectHeader, body: string[]): NodeObject {
+    private createNodeObject(header: NodeObjectHeader, headerLine: string, bodyLines: string[]): NodeObject {
 
         let node = this._nodeObjects[header.class]() || new NodeObject();
         node.name = header.name;
         node.class = header.class;
 
-        node.parse(body);
+        node.parse(headerLine, bodyLines);
 
         return node;
     }
