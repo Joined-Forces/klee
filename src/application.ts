@@ -10,8 +10,11 @@ export class Application {
 
     private _controller: Controller;
     private _parser: BlueprintParser;
+    private _element: HTMLCanvasElement;
 
     constructor(element: HTMLCanvasElement) {
+
+        this._element = element;
 
         Application._canvas = new Canvas2D(element);
         Application._scene = new Scene(Application._canvas);
@@ -22,6 +25,10 @@ export class Application {
         this._controller = new Controller(element);
         this._controller.registerAction(UserAction.Copy, this.copyBlueprintSelectionToClipboard.bind(this));
         this._controller.registerAction(UserAction.Paste, this.pasteClipboardContentToCanvas.bind(this));
+
+        this.initializeHtmlAttributes();
+        window.addEventListener('resize', this.resizeCanvas.bind(this), false);
+        this.resizeCanvas();
     }
 
     static get scene() {
@@ -30,6 +37,17 @@ export class Application {
 
     static get canvas() {
         return this._canvas;
+    }
+
+    private initializeHtmlAttributes() {
+        this._element.style.width = '100%';
+        this._element.style.minHeight = '600px';
+    }
+
+    private resizeCanvas() {
+        this._element.width = this._element.offsetWidth;
+        this._element.height = this._element.offsetHeight;
+        Application._scene.refresh();
     }
 
     private copyBlueprintSelectionToClipboard() {
