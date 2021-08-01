@@ -84,11 +84,12 @@ export class BlueprintParser {
 
         do {
             lineNumber++;
-            line = BlueprintParserUtils.stripLine(this._lines[lineNumber]);
 
             if(lineNumber >= this._lines.length) {
                 throw new Error("Invalid blueprint text. An 'Object' node was never closed. Missing 'End Object'");
             }
+
+            line = BlueprintParserUtils.stripLine(this._lines[lineNumber]);
 
             if(line.startsWith(this._OBJECT_STARTING_TAG)) {
                 throw new Error("Invalid blueprint text. An 'Object' node was opened before the previous was closed. Missing 'End Object'");

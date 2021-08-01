@@ -11,13 +11,17 @@ import { PinControl } from "./controls/pin-control";
 import { RerouteNodeView } from "./controls/reroute-node";
 import { PinDirection } from "./data/custom-property";
 import { NodeObject } from "./data/node-object";
-import { KnotNodeObject } from "./data/node-objects/knot-node-object";
-import { VariableGetNodeObject } from "./data/node-objects/variable-get-node-object";
 import { Vector2 } from "./math/vector2";
-import { CommentNodeObject } from "./data/node-objects/comment-node-object";
 import { CommentNodeControl } from "./controls/comment-node";
+import { NodeClass } from "./data/node-class";
 
 export class Scene {
+
+    private _nodeObjects = {
+        [NodeClass.KNOT]: (dn) => new RerouteNodeView(dn),
+        [NodeClass.VARIABLE_GET]: (dn) => new GetterNodeControl(dn),
+        [NodeClass.COMMENT]: (dn) => new CommentNodeControl(dn),
+    }
 
     private _canvas: Canvas2D;
     private _camera: Camera;
@@ -67,39 +71,36 @@ export class Scene {
         this._controls = new Array<Control>();
     }
 
-    load(nodes: NodeObject[]) {
-
+    load(dataNodes: NodeObject[]) {
         this.unload();
 
-        this._canvas.getContext().font = "18px sans-serif";
+        this.createBackground();
 
+        this.createControlNodes(dataNodes);
+
+        // Collects pins from all node controls
+        this.nodes.forEach(n => this._pins = this._pins.concat(n.inputPins, n.outputPins));
+
+        // Creates connection lines between pins
+        this.createConnectionLines();
+    }
+
+    private createBackground() {
         let background = new Background('/assets/sprites/bp_grid.png', this.camera);
         this.addControl(background);
+    }
 
-        for (let i = 0; i < nodes.length; ++i) {
-            let node = nodes[i];
+    private createControlNodes(dataNodes: NodeObject[]) {
+        for (const dataNode of dataNodes) {
+            const instantiateControl = this._nodeObjects[dataNode.class] || ((dn) => new NodeControl(dn));
+            const control: NodeControlBase = instantiateControl(dataNode);
 
-            let view: NodeControlBase;
-
-            if (node instanceof KnotNodeObject) {
-                view = new RerouteNodeView(node);
-            } else if (node instanceof VariableGetNodeObject) {
-                view = new GetterNodeControl(node);
-            } else if (node instanceof CommentNodeObject) {
-                view = new CommentNodeControl(node);
-            } else {
-                view = new NodeControl(node);
-            }
-
-            this._nodes.push(view);
-            this.addControl(view);
+            this._nodes.push(control);
+            this.addControl(control);
         }
+    }
 
-        for (let i = 0; i < this._nodes.length; ++i) {
-            this._pins = this._pins.concat(this._nodes[i].inputPins)
-            this._pins = this._pins.concat(this._nodes[i].outputPins) // TODO Why?
-        }
-
+    private createConnectionLines() {
         for (let i = this._pins.length - 1; i >= 0; --i) {
             let pin = this._pins[i];
             if (pin.pinProperty.direction !== PinDirection.EGPD_Output)
@@ -129,7 +130,7 @@ export class Scene {
         }
     }
 
-    addControl(control: Control) {
+    private addControl(control: Control) {
         control.blueprint = this;
         this._controls.push(control)
 
