@@ -16,7 +16,7 @@ export class Background extends Control implements DrawableControl {
 
         this.zIndex = -1000;
 
-        this.imageURL = imageURL;    
+        this.imageURL = imageURL;
         this.camera = camera;
         this.ready = false;
     }

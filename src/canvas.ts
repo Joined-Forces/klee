@@ -94,8 +94,10 @@ export class Canvas2D {
         return this;
     }
 
-    clear() { // TODO: Why?
-        this._element.width = this._element.width;
+    clear() {
+        // Use the identity matrix while clearing the canvas
+        this._context.setTransform(1, 0, 0, 1, 0, 0);
+        this._context.clearRect(0, 0, this._element.width, this._element.height);
         return this;
     }
 
