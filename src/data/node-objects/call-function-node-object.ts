@@ -4,7 +4,32 @@ import { NodeObject } from "../node-object";
 
 export class CallFunctionNodeObject extends NodeObject {
 
-    private static readonly MATH_FUNCTIONS = ['Multiply_VectorFloat'];
+    private static readonly MATH_FUNCTIONS = [
+        'Multiply',
+        'Divide',
+        'Add',
+        'Subtract',
+        'Percent',
+        'FMax', 'Max',
+        'FMin', 'Min',
+        'Dot',
+        'Less',
+        'LessEqual',
+        'Greater',
+        'GreaterEqual',
+        'Abs',
+        'Exp',
+        'Sqrt',
+        'Square',
+        'Not',
+        'NotEqual',
+        'EqualEqual',
+        'BooleanOR',
+        'BooleanXOR',
+        'BooleanNOR',
+        'BooleanAND',
+        'BooleanNAND',
+    ];
 
     functionReference: NodeDataReference;
 
@@ -29,6 +54,6 @@ export class CallFunctionNodeObject extends NodeObject {
     }
 
     private checkMathFunction(memberName: string): boolean {
-        return CallFunctionNodeObject.MATH_FUNCTIONS.indexOf(memberName) >= 0;
+        return CallFunctionNodeObject.MATH_FUNCTIONS.filter(f => memberName.startsWith(f)).length > 0;
     }
 }
