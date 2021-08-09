@@ -3,19 +3,31 @@ import { Vector2 } from "./math/vector2";
 
 export class Camera {
 
-    canvas: Canvas2D;
-    position: Vector2;
+    private _canvas: Canvas2D;
+    private _position: Vector2;
 
     constructor(canvas: Canvas2D) {
-        this.canvas = canvas;
-        this.position = new Vector2(0, 0);
+        this._canvas = canvas;
+        this._position = new Vector2(0, 0);
+    }
+
+    public get position(): Vector2 {
+        return this._position;
     }
 
     prepareViewport() {
-        this.canvas.translate(this.position.x, this.position.y);
+        this._canvas.translate(this._position.x, this._position.y);
     }
 
     moveRelative(value: Vector2) {
-        this.position = this.position.add(value);
+        this._position = this._position.add(value);
+    }
+
+    centreAbsolutePosition(value: Vector2) {
+        this._position = new Vector2(
+            value.x + this._canvas.width / 2,
+            value.y + this._canvas.height / 2);
+
+        this.prepareViewport();
     }
 }

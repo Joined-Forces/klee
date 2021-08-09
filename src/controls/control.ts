@@ -1,28 +1,28 @@
-import { Blueprint } from "../blueprint";
 import { Vector2 } from "../math/vector2";
 
-export class Control {
-    position: Vector2;
-    
-    _blueprint: Blueprint;
-    zIndex: number;
+export abstract class Control {
 
-    constructor(x: number, y: number) {
+    private _position: Vector2;
+    private _zIndex: number;
+
+    constructor(x: number, y: number, zIndex?: number) {
         this.position = new Vector2(x, y);
-        this.zIndex = 0;
+        this._zIndex = zIndex || 0;
     }
 
-    initialize(): void { }
-
-    get blueprint() {
-        return this._blueprint;
+    get position() {
+        return this._position;
     }
 
-    set blueprint(value: Blueprint) {
-        this._blueprint = value;
+    set position(value: Vector2) {
+        this._position = value;
     }
 
-    getContext(): CanvasRenderingContext2D {
-        return this._blueprint.canvas.getContext();
+    get zIndex() {
+        return this._zIndex;
+    }
+
+    set zIndex(value: number) {
+        this._zIndex = value;
     }
 }

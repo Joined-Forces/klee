@@ -1,85 +1,62 @@
-import { NodeControl } from "../controls/node-control";
-import { NodeClass } from "../data/node-class";
-import { CallFunctionNodeObject, VariableGetNodeObject, IfThenElseNodeObject, InputAxisNodeObject, KnotNodeObject, NodeObject, NodeObjectHeader } from "../data/node-object";
+import { NodeControl } from "../controls/nodes/node.control";
+import { BlueprintParserUtils } from "./blueprint-parser-utils";
+import { GenericNodeParser } from "./node-parsers/generic-node.parser";
+import { ParsingNodeData } from "./parsing-node-data";
 
 export class BlueprintParser {
 
-    private _nodes: Array<NodeControl>;
+    private readonly _OBJECT_STARTING_TAG = "Begin Object";
+    private readonly _OBJECT_ENDING_TAG = "End Object";
 
-    constructor() {
-        this._nodes = new Array<NodeControl>();
-    }
+    private _lines: string[];
 
-    parse(blueprintData: string) : Array<NodeObject> {
-        return this.parseBlueprint(blueprintData);
-    }
+    constructor() {}
 
-    private parseBlueprint(blueprintData: string): Array<NodeObject> {
-        let nodes: Array<NodeObject> = [];
+    parseBlueprint(blueprintData: string): Array<NodeControl> {
 
-        let lines = blueprintData.replace(/\r/g, '').split('\n');
-        
-        for (let i = 0; i < lines.length; ++i) {
-            let line = this.stripLine(lines[i]);
+        let controls = new Array<NodeControl>();
 
-            if (line.startsWith("Begin Object")) {
-                let header = this.parseNodeHeader(line);
-                let node = this.createNodeObject(header.class);
+        this._lines = blueprintData
+            .replace(/\r/g, '')
+            .split('\n');
 
-                node.name = header.name;
-                node.class = header.class;
-                
+        for (let i = 0; i < this._lines.length; ++i) {
+            let line = BlueprintParserUtils.stripLine(this._lines[i]);
+            if (line.startsWith(this._OBJECT_STARTING_TAG)) {
+                const lines = this.getLinesUntilEndTag(i);
+                i += lines.length;
 
-                let headerLine = line;
-                let objectLines = [];
+                lines.unshift(line);
 
-                while (!line.startsWith("End Object")) {
-                    ++i;
-                    line = this.stripLine(lines[i]);
-                    objectLines.push(line);
-                }
-
-                node.parse(objectLines);
-                nodes.push(node);
+                controls.push(new GenericNodeParser().parse(new ParsingNodeData(lines)));
             }
         }
 
-        return nodes;
+        return controls;
     }
 
-    private parseNodeHeader(headerLine: string): NodeObjectHeader {
-        let header = new NodeObjectHeader();
-        let prefixLength = "Begin Object".length - 1;
-        let dataString = headerLine.substr(prefixLength, headerLine.length - prefixLength - 1);
+    private getLinesUntilEndTag(lineNumber: number): string[] {
 
-        let data = dataString.trim().split(' ');
-        for (let i = 0; i < data.length; ++i) {
-            let dataset = data[i].split("=");
-            let key = dataset[0];
-            let value = dataset[1];
+        let lines = Array<string>();
+        let line = "";
 
-            switch (key) {
-                case "Class": header.class = value.replace(/"/g, ''); break;
-                case "Name": header.name = value.replace(/"/g, ''); break;
+        do {
+            lineNumber++;
+
+            if(lineNumber >= this._lines.length) {
+                throw new Error("Invalid blueprint text. An 'Object' node was never closed. Missing 'End Object'");
             }
-        }
 
-        return header;
-    }
+            line = BlueprintParserUtils.stripLine(this._lines[lineNumber]);
 
-    private createNodeObject(className: string) {
-        switch (className) {
-            case NodeClass.KNOT: return new KnotNodeObject();
-            case NodeClass.INPUT_AXIS_EVENT: return new InputAxisNodeObject();
-            case NodeClass.CALL_FUNCTION: return new CallFunctionNodeObject();
-            case NodeClass.VARIABLE_GET: return new VariableGetNodeObject();
-            case NodeClass.IF_THEN_ELSE: return new IfThenElseNodeObject();
-            default: return new NodeObject();
-        }
-    }
+            if(line.startsWith(this._OBJECT_STARTING_TAG)) {
+                throw new Error("Invalid blueprint text. An 'Object' node was opened before the previous was closed. Missing 'End Object'");
+            }
 
-    private stripLine(text: string) {
-        text = text.replace('\t', '');
-        return text.trim();
+            lines.push(line);
+
+        } while (!line.startsWith(this._OBJECT_ENDING_TAG));
+
+        return lines;
     }
 }

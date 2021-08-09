@@ -1,3 +1,5 @@
+import { Vector2 } from "./math/vector2";
+
 export interface RoundedCornerValues {
     radiusTopLeft: number;
     radiusTopRight: number;
@@ -15,30 +17,6 @@ export class Canvas2D {
         this._element = element;
         this._context = this._element.getContext('2d') as CanvasRenderingContext2D;
         this._PI_TIMES_TWO = Math.PI * 2;
-    }
-
-    onMouseDown(listener: (ev: MouseEvent) => any) {
-        this._element.addEventListener('mousedown', listener, false);
-    }
-
-    onMouseUp(listener: (ev: MouseEvent) => any) {
-        this._element.addEventListener('mouseup', listener, false);
-    }
-
-    onMouseMove(listener: (ev: MouseEvent) => any) {
-        this._element.addEventListener('mousemove', listener, false);
-    }
-
-    onMouseEnter(listener: (ev: MouseEvent) => any) {
-        this._element.addEventListener('mouseenter', listener, false);
-    }
-
-    onMouseLeave(listener: (ev: MouseEvent) => any) {
-        this._element.addEventListener('mouseleave', listener, false);
-    }
-
-    onContextMenu(listener: (ev: MouseEvent) => any) {
-        this._element.addEventListener('contextmenu', listener, false);
     }
 
     fillStyle(style: string | CanvasGradient | CanvasPattern) {
@@ -61,9 +39,7 @@ export class Canvas2D {
         return this;
     }
 
-
     roundedRectangle(x: number, y: number, width: number, height: number, radius: number | RoundedCornerValues) {
-
         let radiusTopLeft: number;
         let radiusTopRight: number;
         let radiusBottomLeft: number;
@@ -119,7 +95,9 @@ export class Canvas2D {
     }
 
     clear() {
-        this._element.width = this._element.width;
+        // Use the identity matrix while clearing the canvas
+        this._context.setTransform(1, 0, 0, 1, 0, 0);
+        this._context.clearRect(0, 0, this._element.width, this._element.height);
         return this;
     }
 
@@ -135,6 +113,11 @@ export class Canvas2D {
 
     strokeRect(x: number, y: number, width: number, height: number) {
         this._context.strokeRect(x, y, width, height);
+        return this;
+    }
+
+    setLineDash(segments: Array<number>) {
+        this._context.setLineDash(segments);
         return this;
     }
 
@@ -159,6 +142,14 @@ export class Canvas2D {
 
     strokeText(text: string, x: number, y: number, maxWidth?: number) {
         this._context.strokeText(text, x, y, maxWidth);
+        return this;
+    }
+
+    shadow(offset: Vector2, blur: number, color: string) {
+        this._context.shadowOffsetX = offset.x;
+        this._context.shadowOffsetY = offset.y;
+        this._context.shadowBlur = blur;
+        this._context.shadowColor = color;
         return this;
     }
 

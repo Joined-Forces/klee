@@ -1,8 +1,10 @@
 export class BlueprintParserUtils {
 
     static parseString(value: string): string {
-        value = value.replace(/(?<!\\)["']/g, '');
-        return value;
+        return value.replace(/(?<!\\)["']/g, '');
     }
 
+    static stripLine(text: string): string {
+        return text.replace('\t', '').trim();
+    }
 }
