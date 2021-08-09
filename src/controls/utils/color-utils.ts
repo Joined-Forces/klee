@@ -1,6 +1,11 @@
-import { PinCategory } from "../../data/custom-property";
 import { NodeClass } from "../../data/node-class";
-import { PinProperty } from "../../data/pin-property";
+import { PinCategory } from "../../data/pin/pin-category";
+import { PinProperty } from "../../data/pin/pin-property";
+
+export enum StructClass {
+    VECTOR = "/Script/CoreUObject.Vector",
+    ROTATOR = "/Script/CoreUObject.Rotator",
+}
 
 export class ColorUtils {
 
@@ -16,17 +21,17 @@ export class ColorUtils {
     }
 
     public static getPinColor(pin: PinProperty): string {
-        switch (pin.pinCategory) {
+        switch (pin.category) {
             case PinCategory.bool:
                 return 'rgb(146, 1, 1)';
             case PinCategory.float:
                 return 'rgb(158, 250, 68)';
             case PinCategory.struct:
                 const map = {
-                    [NodeClass.VECTOR]: 'rgb(253, 200, 35)',
-                    [NodeClass.ROTATOR]: 'rgb(159, 178, 253)'
+                    [StructClass.VECTOR]: 'rgb(253, 200, 35)',
+                    [StructClass.ROTATOR]: 'rgb(159, 178, 253)'
                 }
-                return map[pin.pinSubCategoryObject] || 'rgb(0, 88, 200)';
+                return map[pin.subCategoryObject] || 'rgb(0, 88, 200)';
 
             case PinCategory.name:
                 return 'rgb(150, 97, 185)';
@@ -36,5 +41,4 @@ export class ColorUtils {
                 return 'rgb(230, 230, 230)';
         }
     }
-
 }

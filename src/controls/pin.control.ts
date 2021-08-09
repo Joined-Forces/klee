@@ -1,31 +1,37 @@
 import { Canvas2D } from "../canvas";
-import { PinCategory, PinDirection } from "../data/custom-property";
-import { PinProperty } from "../data/pin-property";
+import { PinCategory } from "../data/pin/pin-category";
+import { PinDirection } from "../data/pin/pin-direction";
+import { PinProperty } from "../data/pin/pin-property";
 import { Vector2 } from "../math/vector2";
 import { Control } from "./control";
 import { DrawableControl } from "./interfaces/drawable";
-import { NodeControlBase } from "./node-control-base";
 import { ColorUtils } from "./utils/color-utils";
 
+
 export class PinControl extends Control implements DrawableControl {
-    private _parent: NodeControlBase;
+
+    private _parentPosition: Vector2;
     private _pinProperty: PinProperty;
 
     private _isInput: boolean;
     private _color: string;
 
-    constructor(parent: NodeControlBase, pin: PinProperty) {
+    constructor(parentPosition: Vector2, pin: PinProperty) {
         super(0, 0);
-        this._parent = parent;
+        this._parentPosition = parentPosition;
         this._pinProperty = pin;
 
         this._isInput = this._pinProperty.direction !== PinDirection.EGPD_Output;
         this._color = ColorUtils.getPinColor(this._pinProperty);
     }
 
+    get pinProperty(): PinProperty {
+        return this._pinProperty;
+    }
+
     draw(canvas: Canvas2D): void {
 
-        let pinCategory = this.pinProperty.pinCategory;
+        let pinCategory = this.pinProperty.category;
         canvas.fillStyle(this._color).strokeStyle(this._color);
 
         switch (pinCategory) {
@@ -38,13 +44,12 @@ export class PinControl extends Control implements DrawableControl {
             default:
                 this.drawPin(canvas);
         }
-            
     }
 
     private drawPin(canvas: Canvas2D) {
         let textX = this.setupTextDrawing(canvas);
 
-        canvas.fillText(this._pinProperty.getPinName(), textX, this.position.y + 4)
+        canvas.fillText(this._pinProperty.formattedName, textX, this.position.y + 4)
         .fillStyle(this._color)
         .fillCircle(this.position.x + 6, this.position.y, 2.3);
 
@@ -116,18 +121,14 @@ export class PinControl extends Control implements DrawableControl {
 
         canvas.font('12px sans-serif')
         .fillStyle("#eee");
-        
+
         return textX;
     }
 
     getAbsolutPosition(): Vector2 {
         return new Vector2(
-            this._parent.position.x + this.position.x,
-            this._parent.position.y + this.position.y
+            this._parentPosition.x + this.position.x,
+            this._parentPosition.y + this.position.y
         );
-    }
-
-    get pinProperty(): PinProperty {
-        return this._pinProperty;
     }
 }

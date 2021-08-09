@@ -2,33 +2,20 @@ import { Camera } from "./camera";
 import { Canvas2D } from "./canvas";
 import { Background } from "./controls/background";
 import { Control } from "./controls/control";
-import { GetterNodeControl } from "./controls/getter-node-control";
 import { DrawableControl, isDrawableControl } from "./controls/interfaces/drawable";
-import { NodeConnection } from "./controls/node-connection";
-import { NodeControlBase } from "./controls/node-control-base";
-import { NodeControl } from "./controls/node-control";
-import { PinControl } from "./controls/pin-control";
-import { RerouteNodeView } from "./controls/reroute-node";
-import { PinDirection } from "./data/custom-property";
-import { NodeObject } from "./data/node-object";
+import { NodeConnectionControl } from "./controls/node-connection.control";
+import { NodeControl } from "./controls/nodes/node.control";
 import { Vector2 } from "./math/vector2";
-import { CommentNodeControl } from "./controls/comment-node";
-import { NodeClass } from "./data/node-class";
+import { PinDirection } from "./data/pin/pin-direction";
+import { NodePinsCreator } from "./controls/utils/node-pins-creator";
 
 export class Scene {
 
-    private _nodeObjects = {
-        [NodeClass.KNOT]: (dn) => new RerouteNodeView(dn),
-        [NodeClass.VARIABLE_GET]: (dn) => new GetterNodeControl(dn),
-        [NodeClass.COMMENT]: (dn) => new CommentNodeControl(dn),
-    }
-
     private _canvas: Canvas2D;
     private _camera: Camera;
-    private _controls: Array<Control>;
 
-    private _nodes: Array<NodeControlBase>;
-    private _pins: Array<PinControl>;
+    private _controls: Array<Control>;
+    private _nodes: Array<NodeControl>;
 
     constructor(canvas: Canvas2D) {
         this._canvas = canvas;
@@ -66,20 +53,16 @@ export class Scene {
     }
 
     unload() {
-        this._pins = new Array<PinControl>();
-        this._nodes = new Array<NodeControlBase>();
+        this._nodes = new Array<NodeControl>();
         this._controls = new Array<Control>();
     }
 
-    load(dataNodes: NodeObject[]) {
+    load(dataNodes: NodeControl[]) {
         this.unload();
 
         this.createBackground();
 
         this.createControlNodes(dataNodes);
-
-        // Collects pins from all node controls
-        this.nodes.forEach(n => this._pins = this._pins.concat(n.inputPins, n.outputPins));
 
         // Creates connection lines between pins
         this.createConnectionLines();
@@ -87,22 +70,21 @@ export class Scene {
 
     private createBackground() {
         let background = new Background('/assets/sprites/bp_grid.png', this.camera);
-        this.addControl(background);
+        this._controls.push(background);
     }
 
-    private createControlNodes(dataNodes: NodeObject[]) {
-        for (const dataNode of dataNodes) {
-            const instantiateControl = this._nodeObjects[dataNode.class] || ((dn) => new NodeControl(dn));
-            const control: NodeControlBase = instantiateControl(dataNode);
-
+    private createControlNodes(controls: NodeControl[]) {
+        for (const control of controls) {
             this._nodes.push(control);
-            this.addControl(control);
+            this._controls.push(control);
         }
     }
 
     private createConnectionLines() {
-        for (let i = this._pins.length - 1; i >= 0; --i) {
-            let pin = this._pins[i];
+        const pins = Array.from(NodePinsCreator.pinsControls);
+
+        for (let i = pins.length - 1; i >= 0; --i) {
+            let pin = pins[i];
             if (pin.pinProperty.direction !== PinDirection.EGPD_Output)
                 continue;
 
@@ -114,27 +96,20 @@ export class Scene {
 
             for (let n = 0; n < pin.pinProperty.linkedTo.length; ++n) {
                 let link = pin.pinProperty.linkedTo[n];
-                let otherPin = this._pins.find(p => p.pinProperty.pinID === link.pinID);
+                let otherPin = pins.find(p => p.pinProperty.id === link.pinID);
 
                 if (!otherPin)
                     continue;
 
-                let connection = new NodeConnection(pin, otherPin);
-                this.addControl(connection);
+                let connection = new NodeConnectionControl(pin, otherPin);
+                this._controls.push(connection);
             }
 
-            let index = this._pins.indexOf(pin);
+            let index = pins.indexOf(pin);
             if (index >= 0) {
-                this._pins.splice(index, 1);
+                pins.splice(index, 1);
             }
         }
-    }
-
-    private addControl(control: Control) {
-        control.blueprint = this;
-        this._controls.push(control)
-
-        control.initialize();
     }
 
     calculateCentroid(): Vector2 {
@@ -149,4 +124,3 @@ export class Scene {
         return new Vector2(centroid.x / this.nodes.length, centroid.y / this.nodes.length);
     }
 }
-
