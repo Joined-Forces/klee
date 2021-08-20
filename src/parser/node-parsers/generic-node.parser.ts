@@ -14,6 +14,7 @@ import { HeadedNodeControl } from "../../controls/nodes/headed-node-control";
 import { Vector2 } from "../../math/vector2";
 import { IfThenElseNodeParser } from "./if-then-else-node.parser";
 import { KnotNodeParser } from "./knot-node.parser";
+import { CustomEventNodeParser } from "./custom-event-node.parser";
 
 
 export class GenericNodeParser extends NodeParser {
@@ -26,6 +27,7 @@ export class GenericNodeParser extends NodeParser {
         [NodeClass.COMMENT]: () => new CommentNodeParser(),
         [NodeClass.CALL_FUNCTION]: () => new CallFunctionNodeParser(),
         [NodeClass.VARIABLE_GET]: () => new VariableGetNodeParser(),
+        [NodeClass.CUSTOM_EVENT]: () => new CustomEventNodeParser(),
         [NodeClass.INPUT_AXIS_EVENT]: () => new InputAxisNodeParser(),
         [NodeClass.IF_THEN_ELSE]: () => new IfThenElseNodeParser(),
         [NodeClass.KNOT]: () => new KnotNodeParser(),
@@ -54,6 +56,7 @@ export class GenericNodeParser extends NodeParser {
             class: header.class,
             name: header.name,
             title: header.name,
+            subTitles: [],
             guid: undefined,
             pos: new Vector2(0, 0),
             sourceText: data.lines.join(),

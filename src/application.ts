@@ -69,7 +69,7 @@ export class Application {
         console.log("Copy selection");
 
         let textLines = [];
-        Application._scene.nodes.filter(n => n.selected).forEach(n => textLines = [].concat(textLines, n.node.sourceText));
+        Application._scene.nodes.filter(n => n.selected).forEach(n => textLines = [].concat(textLines, n.sourceText));
         navigator.clipboard.writeText(textLines.join('\n'));
     }
 

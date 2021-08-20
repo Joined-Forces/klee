@@ -12,6 +12,7 @@ export class ColorUtils {
     public static getNodeColorForClass(nodeClass: NodeClass): string {
         switch (nodeClass) {
             case NodeClass.INPUT_AXIS_EVENT:
+            case NodeClass.CUSTOM_EVENT:
                 return '156, 36, 35';
             case NodeClass.IF_THEN_ELSE:
                 return '150, 150, 150';

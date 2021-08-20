@@ -6,6 +6,7 @@ import { MathFunctionNodeParser } from "./math-function-node.parser";
 import { NodeDataReferenceParser } from "../node-data-reference.parser";
 import { NodeParser } from "../node.parser";
 import { ParsingNodeData } from "../parsing-node-data";
+import { insertSpacesBetweenCapitalizedWords } from "../../utils/text-utils";
 
 
 export class CallFunctionNodeParser extends NodeParser {
@@ -17,7 +18,7 @@ export class CallFunctionNodeParser extends NodeParser {
             "FunctionReference": (node: CallFunctionNode, v: string) => {
                 const parser = new NodeDataReferenceParser();
                 node.functionReference = parser.parse(v);
-                node.title = node.functionReference.memberName;
+                node.title = insertSpacesBetweenCapitalizedWords(node.functionReference.memberName);
             },
         });
     }

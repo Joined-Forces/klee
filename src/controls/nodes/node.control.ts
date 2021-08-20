@@ -48,7 +48,11 @@ export abstract class NodeControl extends Control {
         return this._selected;
     }
 
-    get node(): Node {
+    public get sourceText(): string {
+        return this._node.sourceText;
+    }
+
+    protected get node(): Node {
         return this._node;
     }
 
