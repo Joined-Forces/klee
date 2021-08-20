@@ -6,7 +6,7 @@ import { Node } from "../../data/nodes/node";
 import { ParsingNodeData } from "../parsing-node-data";
 import { CallFunctionNodeParser } from "./call-function-node.parser";
 import { InputAxisNodeParser } from "./input-axis-node.parser";
-import { VariableGetNodeParser } from "./variable-get-node.parser";
+import { VariableNodeParser } from "./variable-node.parser";
 import { PinPropertyParser } from "../pin-property.parser";
 import { CustomProperty } from "../../data/custom-property";
 import { NodeControl } from "../../controls/nodes/node.control";
@@ -27,7 +27,8 @@ export class GenericNodeParser extends NodeParser {
     } = {
         [NodeClass.COMMENT]: () => new CommentNodeParser(),
         [NodeClass.CALL_FUNCTION]: () => new CallFunctionNodeParser(),
-        [NodeClass.VARIABLE_GET]: () => new VariableGetNodeParser(),
+        [NodeClass.VARIABLE_GET]: () => new VariableNodeParser(),
+        [NodeClass.VARIABLE_SET]: () => new VariableNodeParser(),
         [NodeClass.EVENT]: () => new EventNodeParser(),
         [NodeClass.CUSTOM_EVENT]: () => new CustomEventNodeParser(),
         [NodeClass.INPUT_AXIS_EVENT]: () => new InputAxisNodeParser(),

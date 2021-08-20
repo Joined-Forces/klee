@@ -38,6 +38,8 @@ export class PinProperty extends CustomProperty {
     advancedView: boolean;
     ophanedPin: boolean;
 
+    hideName: boolean;
+
     get isLinked(): boolean {
         return (this.linkedTo && this.linkedTo.length > 0);
     }
@@ -47,6 +49,7 @@ export class PinProperty extends CustomProperty {
     }
 
     private getFriendlyName(): string {
+        if (this.hideName) { return ''; }
         if (this.friendlyName) {
             return this.friendlyName;
         }

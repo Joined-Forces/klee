@@ -4,6 +4,7 @@ export enum NodeClass {
     CALL_FUNCTION = "/Script/BlueprintGraph.K2Node_CallFunction",
     IF_THEN_ELSE = "/Script/BlueprintGraph.K2Node_IfThenElse",
     VARIABLE_GET = "/Script/BlueprintGraph.K2Node_VariableGet",
+    VARIABLE_SET = "/Script/BlueprintGraph.K2Node_VariableSet",
     EVENT = "/Script/BlueprintGraph.K2Node_Event",
     CUSTOM_EVENT = "/Script/BlueprintGraph.K2Node_CustomEvent",
     INPUT_AXIS_EVENT = "/Script/BlueprintGraph.K2Node_InputAxisEvent",
