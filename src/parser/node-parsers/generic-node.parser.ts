@@ -15,6 +15,7 @@ import { Vector2 } from "../../math/vector2";
 import { IfThenElseNodeParser } from "./if-then-else-node.parser";
 import { KnotNodeParser } from "./knot-node.parser";
 import { CustomEventNodeParser } from "./custom-event-node.parser";
+import { EventNodeParser } from "./event-node.parser";
 
 
 export class GenericNodeParser extends NodeParser {
@@ -27,6 +28,7 @@ export class GenericNodeParser extends NodeParser {
         [NodeClass.COMMENT]: () => new CommentNodeParser(),
         [NodeClass.CALL_FUNCTION]: () => new CallFunctionNodeParser(),
         [NodeClass.VARIABLE_GET]: () => new VariableGetNodeParser(),
+        [NodeClass.EVENT]: () => new EventNodeParser(),
         [NodeClass.CUSTOM_EVENT]: () => new CustomEventNodeParser(),
         [NodeClass.INPUT_AXIS_EVENT]: () => new InputAxisNodeParser(),
         [NodeClass.IF_THEN_ELSE]: () => new IfThenElseNodeParser(),
@@ -59,7 +61,7 @@ export class GenericNodeParser extends NodeParser {
             subTitles: [],
             guid: undefined,
             pos: new Vector2(0, 0),
-            sourceText: data.lines.join(),
+            sourceText: data.lines.join('\n'),
             customProperties: []
         }
 

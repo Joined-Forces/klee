@@ -10,10 +10,10 @@ import { Constants } from "../../constants";
 
 export class HeadedNodeControl extends NodeControl implements DrawableControl {
 
-    private static readonly _NODE_HEADER_TITLE_HEIGHT = 24;
-    private static readonly _NODE_HEADER_SUBTITLE_HEIGHT = 14;
     private static readonly _NODE_HEADER_PADDING_TOP = 15;
-    private static readonly _NODE_HEADER_SPACE_BETWEEN_TITLE_AND_SUBTITLE = 5;
+    private static readonly _NODE_HEADER_TITLE_HEIGHT = 23;
+    private static readonly _NODE_HEADER_SUBTITLE_HEIGHT = 14;
+    private static readonly _NODE_HEADER_SPACE_BETWEEN_TITLE_AND_SUBTITLE = 4;
     private static readonly _NODE_HEADER_PADDING_LEFT = 29;
     private static readonly _NODE_HEADER_ICONS_WIDTH = 92;
 
@@ -24,20 +24,18 @@ export class HeadedNodeControl extends NodeControl implements DrawableControl {
         super(node);
 
         let largestTitleWidth = Application.canvas.getContext().measureText(this.node.title).width;
-        if(this.node.subTitles) {
+        if (this.node.subTitles && this.node.subTitles.length > 0) {
             for (const subTitle of this.node.subTitles) {
                 largestTitleWidth = Math.max(largestTitleWidth, Application.canvas.getContext().measureText(subTitle.text).width);
             }
-        }
-
-        this.width = largestTitleWidth + HeadedNodeControl._NODE_HEADER_ICONS_WIDTH;
-        this._fillStyleHeader = this.getHeaderFillStyle();
-
-        if(this.node.subTitles) {
             this._headerHeight += (HeadedNodeControl._NODE_HEADER_SPACE_BETWEEN_TITLE_AND_SUBTITLE - 2) + (HeadedNodeControl._NODE_HEADER_SUBTITLE_HEIGHT * node.subTitles.length);
         }
 
+        this.width = largestTitleWidth + HeadedNodeControl._NODE_HEADER_ICONS_WIDTH;
+
         this.createPins(new Vector2(0, this._headerHeight));
+
+        this._fillStyleHeader = this.getHeaderFillStyle();
     }
 
     draw(canvas: Canvas2D) {
@@ -71,7 +69,7 @@ export class HeadedNodeControl extends NodeControl implements DrawableControl {
             .fillText(this.node.title, HeadedNodeControl._NODE_HEADER_PADDING_LEFT, HeadedNodeControl._NODE_HEADER_PADDING_TOP);
 
 
-        if(this.node.subTitles) {
+        if (this.node.subTitles && this.node.subTitles.length > 0) {
             let y = HeadedNodeControl._NODE_HEADER_PADDING_TOP + HeadedNodeControl._NODE_HEADER_SPACE_BETWEEN_TITLE_AND_SUBTITLE;
             for (const subTitle of this.node.subTitles.sort((a, b) => (b.orderIndex || 0) - (a.orderIndex || 0))) {
                 y += HeadedNodeControl._NODE_HEADER_SUBTITLE_HEIGHT;

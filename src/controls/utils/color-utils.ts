@@ -13,6 +13,7 @@ export class ColorUtils {
         switch (nodeClass) {
             case NodeClass.INPUT_AXIS_EVENT:
             case NodeClass.CUSTOM_EVENT:
+            case NodeClass.EVENT:
                 return '156, 36, 35';
             case NodeClass.IF_THEN_ELSE:
                 return '150, 150, 150';
