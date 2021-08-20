@@ -16,6 +16,11 @@ export class NodePinsCreator {
         return NodePinsCreator._pinsControls;
     }
 
+    public static resetPinsControls(): void {
+        NodePinsCreator._pinsControls = new Array<PinControl>();
+    }
+
+
     private static readonly _PINS_PADDING_HORIZONTAL = 20;
     private static readonly _PINS_PADDING_TOP = 12;
     private static readonly _SPACING_BETWEEN_INPUT_AND_OUTPUT_PINS = 40;

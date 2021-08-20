@@ -83,6 +83,7 @@ export class Application {
     }
 
     private loadBlueprintIntoScene(text) {
+        Application._scene.unload();
         const nodes = this._parser.parseBlueprint(text);
         Application._scene.load(nodes);
 

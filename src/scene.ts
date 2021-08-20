@@ -20,8 +20,8 @@ export class Scene {
     constructor(canvas: Canvas2D) {
         this._canvas = canvas;
         this._camera = new Camera(this._canvas);
-
-        this.unload();
+        this._nodes = new Array<NodeControl>();
+        this._controls = new Array<Control>();
     }
 
     // TODO: Move this out
@@ -53,13 +53,12 @@ export class Scene {
     }
 
     unload() {
+        NodePinsCreator.resetPinsControls();
         this._nodes = new Array<NodeControl>();
         this._controls = new Array<Control>();
     }
 
     load(dataNodes: NodeControl[]) {
-        this.unload();
-
         this.createBackground();
 
         this.createControlNodes(dataNodes);
