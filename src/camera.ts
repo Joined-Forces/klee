@@ -16,7 +16,7 @@ export class Camera {
     }
 
     prepareViewport() {
-        this._canvas.translate(this._position.x, this._position.y);
+        this._canvas.translate(Math.floor(this._position.x), Math.floor(this._position.y));
     }
 
     moveRelative(value: Vector2) {

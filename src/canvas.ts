@@ -15,7 +15,7 @@ export class Canvas2D {
 
     constructor(element: HTMLCanvasElement) {
         this._element = element;
-        this._context = this._element.getContext('2d') as CanvasRenderingContext2D;
+        this._context = this._element.getContext('2d', { alpha: false }) as CanvasRenderingContext2D;
         this._PI_TIMES_TWO = Math.PI * 2;
     }
 
