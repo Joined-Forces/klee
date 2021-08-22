@@ -33,13 +33,13 @@ export class Controller {
         // which is required that the key events get fired.
         element.tabIndex = 0;
 
-        element.addEventListener('mousedown', this.onMouseDown.bind(this), false);
-        element.addEventListener('mouseup', this.onMouseUp.bind(this), false);
-        element.addEventListener('mousemove', this.onMouseMove.bind(this), false);
-        element.addEventListener('mouseenter', this.onMouseEnter.bind(this), false);
-        element.addEventListener('mouseleave', this.onMouseLeave.bind(this), false);
-        element.addEventListener('contextmenu', this.onContextMenu.bind(this), false);
-        element.addEventListener('keydown', this.onKeydown.bind(this), false);
+        element.onmousedown = (ev) => this.onMouseDown(ev);
+        element.onmouseup = (ev) => this.onMouseUp(ev);
+        element.onmousemove = (ev) => this.onMouseMove(ev);
+        element.onmouseenter = (ev) => this.onMouseEnter(ev);
+        element.onmouseleave = (ev) => this.onMouseLeave(ev);
+        element.onkeydown = (ev) => this.onKeydown(ev);
+        element.oncontextmenu = (ev) => this.onContextMenu(ev);
 
         this.registerAction({
             ctrl: true,
@@ -74,6 +74,14 @@ export class Controller {
     }
 
     onMouseUp(ev: MouseEvent) {
+        const currentMousePosition = this.getMousePosition(ev);
+        const delta = currentMousePosition.subtract(this._mouseDownData.position);
+        if (delta.x == 0 && delta.y == 0) {
+            const cameraPos = Application.scene.camera.position;
+            const mouseAbsolutePos = new Vector2(this._mouseDownData.position.x - cameraPos.x, this._mouseDownData.position.y - cameraPos.y);
+            this.selectIntersectingControls(mouseAbsolutePos, new Vector2(0,0));
+        }
+
         this._mouseDownData = null;
         Application.scene.refresh();
     }
@@ -117,6 +125,7 @@ export class Controller {
     onContextMenu(ev: MouseEvent) {
         ev.preventDefault();
         ev.stopPropagation();
+        return false;
     }
 
     drawMouseSelection(x: number, y: number, sizeX: number, sizeY: number) {
