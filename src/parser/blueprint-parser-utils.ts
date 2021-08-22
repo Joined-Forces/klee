@@ -7,4 +7,21 @@ export class BlueprintParserUtils {
     static stripLine(text: string): string {
         return text.replace('\t', '').trim();
     }
+
+    static parseColor(value: string): string {
+        value = value.replace(/[()]/g, '');
+        let colorData = value.split(',')
+
+        let colorArray = [];
+        for (let data of colorData) {
+            let keyValue = data.split('=');
+
+            let value = (keyValue[0] != 'A') ? Math.floor(Number.parseFloat(keyValue[1]) * 255) : Number.parseFloat(keyValue[1]);
+            colorArray.push(value);
+        }
+
+        let colorString = "rgba(" + colorArray.join(',') + ")";
+
+        return colorString;
+    }
 }
