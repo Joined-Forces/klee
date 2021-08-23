@@ -27,6 +27,7 @@ export class GenericNodeParser extends NodeParser {
     } = {
         [NodeClass.COMMENT]: () => new CommentNodeParser(),
         [NodeClass.CALL_FUNCTION]: () => new CallFunctionNodeParser(),
+        [NodeClass.CommutativeAssociativeBinaryOperator]: () => new CallFunctionNodeParser(),
         [NodeClass.VARIABLE_GET]: () => new VariableNodeParser(),
         [NodeClass.VARIABLE_SET]: () => new VariableNodeParser(),
         [NodeClass.EVENT]: () => new EventNodeParser(),

@@ -7,6 +7,7 @@ import { ParsingNodeData } from "../parsing-node-data";
 import { PinProperty } from "../../data/pin/pin-property";
 import { PinDirection } from "../../data/pin/pin-direction";
 import { NodeClass } from "../../data/node-class";
+import { SetterNodeControl } from "../../controls/nodes/setter-node-control";
 
 
 export class VariableNodeParser extends NodeParser {
@@ -32,10 +33,11 @@ export class VariableNodeParser extends NodeParser {
         if(isSetter) {
             variableNode.variableType = VariableType.Setter;
             data.node.title = "SET";
-        };
-
-        this.removeSelftargetingPins(variableNode, isSetter);
-
+            this.removeSelftargetingPins(variableNode, true);
+            return new SetterNodeControl(data.node);
+        } else {
+            this.removeSelftargetingPins(variableNode, false);
+        }
         return new HeadlessNodeControl(data.node);
     }
 
