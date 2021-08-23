@@ -11,13 +11,18 @@ import { insertSpacesBetweenCapitalizedWords } from "../../utils/text-utils";
 
 export class CallFunctionNodeParser extends NodeParser {
 
-    private readonly _KISMET_MATH_LIBRARY = "/Script/Engine.KismetMathLibrary";
+    private static readonly _KISMET_MATH_LIBRARY = "/Script/Engine.KismetMathLibrary";
+    private static readonly _DEFAULT_FUNC_BACKGROUND_COLOR = '78, 117, 142';
+    private static readonly _DEFAULT_PURE_FUNC_BACKGROUND_COLOR = '95, 160, 90';
+
 
     constructor() {
         super({
-            "FunctionReference": (node: CallFunctionNode, v: string) => {
+            "bIsPureFunc": (node: CallFunctionNode, value: string) => { node.isPureFunc = (value === "True"); },
+            "bIsConstFunc": (node: CallFunctionNode, value: string) => { node.isConstFunc = (value === "True"); },
+            "FunctionReference": (node: CallFunctionNode, value: string) => {
                 const parser = new NodeDataReferenceParser();
-                node.functionReference = parser.parse(v);
+                node.functionReference = parser.parse(value);
                 node.title = insertSpacesBetweenCapitalizedWords(node.functionReference.memberName);
             },
         });
@@ -31,7 +36,9 @@ export class CallFunctionNodeParser extends NodeParser {
 
         this.removeSelftargetingPins(node);
 
-        if (node.functionReference.memberParent === this._KISMET_MATH_LIBRARY) {
+        node.backgroundColor = node.isPureFunc === true ? CallFunctionNodeParser._DEFAULT_PURE_FUNC_BACKGROUND_COLOR : CallFunctionNodeParser._DEFAULT_FUNC_BACKGROUND_COLOR;
+
+        if (node.functionReference.memberParent === CallFunctionNodeParser._KISMET_MATH_LIBRARY) {
             return new MathFunctionNodeParser().parse(data);
         }
 
