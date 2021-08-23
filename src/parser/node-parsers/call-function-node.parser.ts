@@ -50,7 +50,10 @@ export class CallFunctionNodeParser extends NodeParser {
             if (node.customProperties[i] instanceof PinProperty === false) continue;
 
             const pinProperty = node.customProperties[i] as PinProperty;
-            if(pinProperty.name === "self" && !pinProperty.isLinked) {
+            // if(pinProperty.name === "self" && !pinProperty.isLinked) {
+            //     node.customProperties.splice(i, 1);
+            // }
+            if(pinProperty.hidden) {
                 node.customProperties.splice(i, 1);
             }
         }

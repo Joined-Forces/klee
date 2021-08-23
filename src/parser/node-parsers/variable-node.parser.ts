@@ -49,7 +49,11 @@ export class VariableNodeParser extends NodeParser {
                 pinProperty.hideName = true;
             }
 
-            if(pinProperty.name === "self" && node.variableReference.selfContext) {
+            // if(pinProperty.name === "self" && node.variableReference.selfContext) {
+            //     node.customProperties.splice(i, 1);
+            // }
+
+            if(pinProperty.hidden) {
                 node.customProperties.splice(i, 1);
             }
         }
