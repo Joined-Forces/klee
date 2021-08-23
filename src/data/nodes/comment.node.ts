@@ -4,5 +4,4 @@ export interface CommentNode extends Node {
     width: number;
     height: number;
     comment: string;
-    color: string;
 }

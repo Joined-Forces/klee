@@ -21,23 +21,10 @@ export class CommentNodeControl extends NodeControl implements DrawableControl {
         this.width = node.width;
         this.height = node.height;
 
-        this.applyCommentColor(node.color);
+        this.applyCommentColor(node.backgroundColor);
     }
 
-    applyCommentColor(nodeColor: string) {
-        if (nodeColor == undefined || nodeColor == '') 
-            nodeColor = CommentNodeControl._DEFAULT_COMMENT_COLOR;
-
-        let color = new Color(nodeColor);
-        
-        color.applyGamma();
-        color.A = color.A * 0.3;
-        this.bodyBackgroundColor = color.toRGBAString();
-        color.darken(0.3);
-        this.headerBackgroundColor = color.toRGBString();
-    }
-
-    draw(canvas: Canvas2D) {
+    public draw(canvas: Canvas2D) {
 
         canvas.save();
 
@@ -57,7 +44,20 @@ export class CommentNodeControl extends NodeControl implements DrawableControl {
         canvas.restore();
     }
 
-    drawTitle(canvas: Canvas2D) {
+    private applyCommentColor(nodeColor: string) {
+        if (nodeColor == undefined || nodeColor == '')
+            nodeColor = CommentNodeControl._DEFAULT_COMMENT_COLOR;
+
+        let color = new Color(nodeColor);
+
+        color.applyGamma();
+        color.A = color.A * 0.3;
+        this.bodyBackgroundColor = color.toRGBAString();
+        color.darken(0.3);
+        this.headerBackgroundColor = color.toRGBString();
+    }
+
+    private drawTitle(canvas: Canvas2D) {
 
         const textPosition = new Vector2(9, 23);
         const headerHeight = 32;

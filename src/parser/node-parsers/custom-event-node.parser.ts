@@ -38,6 +38,8 @@ export class CustomEventNodeParser extends NodeParser {
         [ReplicationType.RunOnOwningClient]: 'Executes On Owning Client',
     }
 
+    private static readonly _DEFAULT_BACKGROUND_COLOR = '156, 36, 35';
+
     constructor() {
         super({
             "CustomFunctionName": (node: CustomEventNode, value: string) => {
@@ -61,6 +63,7 @@ export class CustomEventNodeParser extends NodeParser {
 
     public parse(data: ParsingNodeData): NodeControl {
         this.parseProperties(data);
+        data.node.backgroundColor = CustomEventNodeParser._DEFAULT_BACKGROUND_COLOR;
         return new HeadedNodeControl(data.node);
     }
 

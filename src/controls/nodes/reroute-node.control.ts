@@ -17,7 +17,7 @@ export class RerouteNodeControl extends NodeControl implements DrawableControl {
     }
 
     draw(canvas: Canvas2D) {
-        canvas.fillStyle("rgb(255, 255, 255)")
+        canvas.fillStyle(`rgb(${this.node.backgroundColor})`)
             .fillCircle(this.position.x + 6, this.position.y, 2.3)
             .fillCircle(this.position.x, this.position.y, 6)
 
