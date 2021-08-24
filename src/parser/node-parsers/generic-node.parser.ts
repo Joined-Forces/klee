@@ -16,6 +16,7 @@ import { IfThenElseNodeParser } from "./if-then-else-node.parser";
 import { KnotNodeParser } from "./knot-node.parser";
 import { CustomEventNodeParser } from "./custom-event-node.parser";
 import { EventNodeParser } from "./event-node.parser";
+import { InputKeyNodeParser } from "./inputkey-node.parser";
 
 
 export class GenericNodeParser extends NodeParser {
@@ -34,6 +35,7 @@ export class GenericNodeParser extends NodeParser {
         [NodeClass.INPUT_AXIS_EVENT]: () => new InputAxisNodeParser(),
         [NodeClass.IF_THEN_ELSE]: () => new IfThenElseNodeParser(),
         [NodeClass.KNOT]: () => new KnotNodeParser(),
+        [NodeClass.INPUT_KEY]: () => new InputKeyNodeParser(),
     }
 
     private readonly _customPropertyParsers: {

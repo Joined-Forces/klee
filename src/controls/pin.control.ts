@@ -47,42 +47,51 @@ export class PinControl extends Control implements DrawableControl {
     }
 
     private drawPin(canvas: Canvas2D) {
+        canvas.save();
+        canvas.translate(this.position.x, this.position.y);
         let textX = this.setupTextDrawing(canvas);
 
-        canvas.fillText(this._pinProperty.formattedName, textX, this.position.y + 4)
+        canvas.fillText(this._pinProperty.formattedName, textX, 4)
         .fillStyle(this._color)
-        .fillCircle(this.position.x + 6, this.position.y, 2.3);
+        .fillCircle(6, 0, 2.3);
 
         if (this._pinProperty.isLinked) {
-            canvas.fillCircle(this.position.x, this.position.y, 6)
+            canvas.fillCircle(0, 0, 6)
         } else {
             canvas.strokeStyle(this._color)
             .lineWidth(2)
-            .strokeCircle(this.position.x, this.position.y, 4.8)
+            .strokeCircle(0, 0, 4.8)
         }
 
         canvas.strokeStyle("#000")
         .lineWidth(.5)
-        .strokeCircle(this.position.x, this.position.y, 6);
+        .strokeCircle(0, 0, 6);
+
+        canvas.restore();
     }
 
-    private drawExecutionPin(canvas: Canvas2D) {
-        canvas.save()
-        .translate(this.position.x, this.position.y - 7);
+    private drawExecutionPin(canvas: Canvas2D, drawText: boolean = false) {
+        canvas.save();
+        canvas.translate(this.position.x, this.position.y - 7);
+
+        if (drawText) {
+            let textX = this.setupTextDrawing(canvas);
+            canvas.fillText(this._pinProperty.formattedName, textX, 10);
+        }
 
         canvas.strokeStyle('#fff')
         .fillStyle('#fff')
         .lineWidth(1.1)
         .beginPath()
-        .moveTo(-5, 0)
-        .lineTo(-1, 0)
-        .lineTo(6, 6)
-        .lineTo(6, 8)
-        .lineTo(-1, 14)
-        .lineTo(-5, 14)
-        .lineTo(-6, 13)
-        .lineTo(-6, 1)
-        .lineTo(-5, 0)
+        .moveTo(-3, 0)
+        .lineTo(1, 0)
+        .lineTo(8, 6)
+        .lineTo(8, 8)
+        .lineTo(1, 14)
+        .lineTo(-3, 14)
+        .lineTo(-4, 13)
+        .lineTo(-4, 1)
+        .lineTo(-3, 0)
         .closePath();
 
         if (this.pinProperty.isLinked)
@@ -110,11 +119,11 @@ export class PinControl extends Control implements DrawableControl {
     }
 
     private setupTextDrawing(canvas: Canvas2D) : number {
-        let textX = this.position.x - 12;
+        let textX = -12;
 
         if (this._isInput) {
             canvas.textAlign("left")
-            textX = this.position.x + 12;
+            textX = 12;
         }
         else
             canvas.textAlign("right")

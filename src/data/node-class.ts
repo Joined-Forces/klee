@@ -9,4 +9,5 @@ export enum NodeClass {
     CUSTOM_EVENT = "/Script/BlueprintGraph.K2Node_CustomEvent",
     INPUT_AXIS_EVENT = "/Script/BlueprintGraph.K2Node_InputAxisEvent",
     COMMENT = "/Script/UnrealEd.EdGraphNode_Comment",
+    INPUT_KEY = "/Script/BlueprintGraph.K2Node_InputKey"
 }
