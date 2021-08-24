@@ -1,4 +1,6 @@
+import { Application } from "../application";
 import { Canvas2D } from "../canvas";
+import { Constants } from "../constants";
 import { PinCategory } from "../data/pin/pin-category";
 import { PinDirection } from "../data/pin/pin-direction";
 import { PinProperty } from "../data/pin/pin-property";
@@ -6,12 +8,16 @@ import { Vector2 } from "../math/vector2";
 import { Control } from "./control";
 import { DrawableControl } from "./interfaces/drawable";
 import { ColorUtils } from "./utils/color-utils";
+import { DefaultValueBox } from "./utils/default-value-box";
 
 
 export class PinControl extends Control implements DrawableControl {
 
+    private static readonly _PIN_NAME_PADDING_LEFT = 12;
+
     private _parentPosition: Vector2;
     private _pinProperty: PinProperty;
+    private _defaultValueBox: DefaultValueBox;
 
     private _isInput: boolean;
     private _color: string;
@@ -29,7 +35,13 @@ export class PinControl extends Control implements DrawableControl {
         return this._pinProperty;
     }
 
-    draw(canvas: Canvas2D): void {
+    public postInit(): void {
+        if (this.pinProperty.shouldDrawDefaultValueBox) {
+            this._defaultValueBox = new DefaultValueBox(this._pinProperty, PinControl.formattedNameWidth(this._pinProperty), 0);
+        }
+    }
+
+    public draw(canvas: Canvas2D): void {
 
         let pinCategory = this.pinProperty.category;
         canvas.fillStyle(this._color).strokeStyle(this._color);
@@ -61,6 +73,8 @@ export class PinControl extends Control implements DrawableControl {
             canvas.strokeStyle(this._color)
             .lineWidth(2)
             .strokeCircle(0, 0, 4.8)
+
+            this.drawDefaultValueBox(canvas);
         }
 
         canvas.strokeStyle("#000")
@@ -118,12 +132,18 @@ export class PinControl extends Control implements DrawableControl {
         canvas.restore();
     }
 
+    private drawDefaultValueBox(canvas: Canvas2D) {
+        if(this._defaultValueBox) {
+            this._defaultValueBox.draw(canvas);
+        }
+    }
+
     private setupTextDrawing(canvas: Canvas2D) : number {
-        let textX = -12;
+        let textX = -PinControl._PIN_NAME_PADDING_LEFT;
 
         if (this._isInput) {
             canvas.textAlign("left")
-            textX = 12;
+            textX = PinControl._PIN_NAME_PADDING_LEFT;
         }
         else
             canvas.textAlign("right")
@@ -132,6 +152,14 @@ export class PinControl extends Control implements DrawableControl {
         .fillStyle("#eee");
 
         return textX;
+    }
+
+    public static formattedNameWidth(pin: PinProperty): number {
+        return Application.canvas.getContext().measureText(pin.formattedName).width + PinControl._PIN_NAME_PADDING_LEFT;
+    }
+
+    public static calculateTotalPinWidth(pin: PinProperty): number {
+        return PinControl.formattedNameWidth(pin) + Constants.DEFAULT_VALUE_BOX_MARGIN_LEFT + DefaultValueBox.defaultValueWidth(pin);
     }
 
     getAbsolutPosition(): Vector2 {
