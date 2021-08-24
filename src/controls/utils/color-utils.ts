@@ -9,19 +9,20 @@ export enum StructClass {
 
 export class ColorUtils {
 
-    public static getNodeColorForClass(nodeClass: NodeClass): string {
-        switch (nodeClass) {
-            case NodeClass.INPUT_AXIS_EVENT:
-            case NodeClass.CUSTOM_EVENT:
-            case NodeClass.EVENT:
-            case NodeClass.INPUT_KEY:
-                return '156, 36, 35';
-            case NodeClass.IF_THEN_ELSE:
-                return '150, 150, 150';
-            default:
-                return '109, 147, 104';
-        }
-    }
+    // TODO: Remove this method as soon as accepted ;)
+    //
+    // public static getNodeColorForClass(nodeClass: NodeClass): string {
+    //     switch (nodeClass) {
+    //         case NodeClass.INPUT_AXIS_EVENT:
+    //         case NodeClass.CUSTOM_EVENT:
+    //         case NodeClass.EVENT:
+    //             return '156, 36, 35';
+    //         case NodeClass.IF_THEN_ELSE:
+    //             return '150, 150, 150';
+    //         default:
+    //             return '109, 147, 104';
+    //     }
+    // }
 
     public static getPinColor(pin: PinProperty): string {
         switch (pin.category) {

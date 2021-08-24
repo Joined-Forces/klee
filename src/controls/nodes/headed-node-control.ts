@@ -38,7 +38,7 @@ export class HeadedNodeControl extends NodeControl implements DrawableControl {
         this._fillStyleHeader = this.getHeaderFillStyle();
     }
 
-    draw(canvas: Canvas2D) {
+    public draw(canvas: Canvas2D) {
 
         canvas.save();
 
@@ -81,10 +81,9 @@ export class HeadedNodeControl extends NodeControl implements DrawableControl {
     }
 
     private getHeaderFillStyle(): CanvasGradient {
-        const headerColor = ColorUtils.getNodeColorForClass(this.node.class);
         const gradient = Application.canvas.getContext().createLinearGradient(0, 0, 150, 0);
-        gradient.addColorStop(0, `rgb(${headerColor})`);
-        gradient.addColorStop(1, `rgba(${headerColor},0.15)`);
+        gradient.addColorStop(0, `rgb(${this.node.backgroundColor})`);
+        gradient.addColorStop(1, `rgba(${this.node.backgroundColor},0.15)`);
         return gradient;
     }
 }

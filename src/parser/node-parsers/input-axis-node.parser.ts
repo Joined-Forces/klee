@@ -6,6 +6,8 @@ import { ParsingNodeData } from "../parsing-node-data";
 
 export class InputAxisNodeParser extends NodeParser {
 
+    private static readonly _DEFAULT_BACKGROUND_COLOR = '156, 36, 35';
+
     constructor() {
         super({
             "InputAxisName": (node: InputAxisNode, value: string) => {
@@ -18,6 +20,7 @@ export class InputAxisNodeParser extends NodeParser {
 
     public parse(data: ParsingNodeData): NodeControl {
         this.parseProperties(data);
-        return new HeadedNodeControl(data.node as InputAxisNode);
+        data.node.backgroundColor = InputAxisNodeParser._DEFAULT_BACKGROUND_COLOR;
+        return new HeadedNodeControl(data.node);
     }
 }

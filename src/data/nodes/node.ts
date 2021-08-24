@@ -16,4 +16,5 @@ export interface Node {
     pos: Vector2;
     sourceText: string;
     customProperties: CustomProperty[];
+    backgroundColor: string;
 }

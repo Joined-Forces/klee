@@ -10,7 +10,7 @@ export class CommentNodeParser extends NodeParser {
 
     constructor() {
         super({
-            "CommentColor": (node: CommentNode, value: string) => { node.color = BlueprintParserUtils.parseColor(value); },
+            "CommentColor": (node: CommentNode, value: string) => { node.backgroundColor = BlueprintParserUtils.parseColor(value); },
             "NodeWidth": (node: CommentNode, value: string) => { node.width = Number.parseInt(value); },
             "NodeHeight": (node: CommentNode, value: string) => { node.height = Number.parseInt(value); },
             "NodeComment": (node: CommentNode, value: string) => { node.comment = value.replace(/"/g, ''); }
