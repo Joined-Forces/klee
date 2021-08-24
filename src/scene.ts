@@ -8,6 +8,8 @@ import { NodeControl } from "./controls/nodes/node.control";
 import { Vector2 } from "./math/vector2";
 import { PinDirection } from "./data/pin/pin-direction";
 import { NodePinsCreator } from "./controls/utils/node-pins-creator";
+import { NodePartialConnectionControl } from "./controls/partial-node-connection.control";
+import { PinControl } from "./controls/pin.control";
 
 export class Scene {
 
@@ -80,19 +82,22 @@ export class Scene {
     }
 
     private createConnectionLines() {
+        const connections: string[] = [];
+        const connectedPins: string[] = [];
         const pins = Array.from(NodePinsCreator.pinsControls);
 
         for (let i = pins.length - 1; i >= 0; --i) {
             let pin = pins[i];
-            if (pin.pinProperty.direction !== PinDirection.EGPD_Output)
+
+            if (!pin.pinProperty.isLinked) {
+                pins.splice(i, 1);
+                continue;
+            }
+
+            if (pin.pinProperty.direction != PinDirection.EGPD_Output)
                 continue;
 
-
-            let links = pin.pinProperty.linkedTo;
-
-            if (!links)
-                continue;
-
+            let wasConnected = false;
             for (let n = 0; n < pin.pinProperty.linkedTo.length; ++n) {
                 let link = pin.pinProperty.linkedTo[n];
                 let otherPin = pins.find(p => p.pinProperty.id === link.pinID);
@@ -100,19 +105,38 @@ export class Scene {
                 if (!otherPin)
                     continue;
 
-                let connection = new NodeConnectionControl(pin, otherPin);
-                this._controls.push(connection);
+                this._controls.push(new NodeConnectionControl(pin, otherPin));
+
+                connectedPins.push(pin.pinProperty.id);
+                connectedPins.push(otherPin.pinProperty.id);
+
+                wasConnected = true;
             }
 
-            let index = pins.indexOf(pin);
-            if (index >= 0) {
-                pins.splice(index, 1);
+            if (wasConnected)
+                pins.splice(i, 1);
+        }
+
+        // Go through pins which are connected to a missing node
+        for (let i = pins.length - 1; i >= 0; --i) {
+            let pin = pins[i];
+
+            if (connectedPins.indexOf(pin.pinProperty.id) >= 0)
+                continue;
+
+            if (pin.pinProperty.isLinked) {
+                let partialConnection = new NodePartialConnectionControl(pin);
+
+                this._controls.push(partialConnection);
             }
         }
     }
 
     calculateCentroid(): Vector2 {
         let centroid = new Vector2(0, 0);
+
+        if (this.nodes.length == 0)
+            return centroid;
 
         this.nodes.forEach(node => {
             centroid = new Vector2(
