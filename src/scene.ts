@@ -100,15 +100,15 @@ export class Scene {
             let wasConnected = false;
             for (let n = 0; n < pin.pinProperty.linkedTo.length; ++n) {
                 let link = pin.pinProperty.linkedTo[n];
-                let otherPin = pins.find(p => p.pinProperty.id === link.pinID);
+                let otherPin = pins.find(p => p.pinProperty.nodeName === link.nodeName && p.pinProperty.id === link.pinID);
 
                 if (!otherPin)
                     continue;
 
                 this._controls.push(new NodeConnectionControl(pin, otherPin));
 
-                connectedPins.push(pin.pinProperty.id);
-                connectedPins.push(otherPin.pinProperty.id);
+                connectedPins.push(pin.pinProperty.getUniqueName());
+                connectedPins.push(otherPin.pinProperty.getUniqueName());
 
                 wasConnected = true;
             }
@@ -121,7 +121,7 @@ export class Scene {
         for (let i = pins.length - 1; i >= 0; --i) {
             let pin = pins[i];
 
-            if (connectedPins.indexOf(pin.pinProperty.id) >= 0)
+            if (connectedPins.indexOf(pin.pinProperty.getUniqueName()) >= 0)
                 continue;
 
             if (pin.pinProperty.isLinked) {

@@ -1,3 +1,5 @@
+import { removeInsignificantTrailingZeros } from "../utils/text-utils";
+
 export class BlueprintParserUtils {
 
     static parseString(value: string): string {
@@ -23,5 +25,14 @@ export class BlueprintParserUtils {
         let colorString = "rgba(" + colorArray.join(',') + ")";
 
         return colorString;
+    }
+
+    static getClassFriendlyName(value: string): string {
+        const defaultObject = BlueprintParserUtils.parseString(value);
+        const matches = /(?<=\.)((?!_C$)\w)*/g.exec(defaultObject);
+        if(!matches[0]) { 
+            return value; 
+        }
+        return matches[0];
     }
 }

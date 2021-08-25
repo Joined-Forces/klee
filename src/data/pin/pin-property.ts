@@ -13,6 +13,8 @@ export class PinProperty extends CustomProperty {
     friendlyName: string;
     category: PinCategory;
 
+    nodeName: string;
+
     direction: PinDirection;
     toolTip: string;
 
@@ -44,6 +46,11 @@ export class PinProperty extends CustomProperty {
 
     hideName: boolean;
 
+    constructor(nodeName: string) {
+        super();
+        this.nodeName = nodeName;
+    }
+
     get isLinked(): boolean {
         return (this.linkedTo && this.linkedTo.length > 0);
     }
@@ -63,5 +70,9 @@ export class PinProperty extends CustomProperty {
         }
 
         return this.name;
+    }
+
+    public getUniqueName() {
+        return this.nodeName + " " + this.id;
     }
 }

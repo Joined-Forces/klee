@@ -109,12 +109,14 @@ export class GenericNodeParser extends NodeParser {
     private parseCustomProperties(data: ParsingNodeData): void {
         for (const line of data.unparsedLines) {
             if (line.startsWith('CustomProperties')) {
-                data.node.customProperties.push(this.parseCustomProperty(line));
+                let property = this.parseCustomProperty(line, data.node.name);
+                if (property)
+                    data.node.customProperties.push(property);
             }
         }
     }
 
-    private parseCustomProperty(propertyLine: string): CustomProperty {
+    private parseCustomProperty(propertyLine: string, nodeName: string): CustomProperty {
 
         // Removes "CustomProperties" from property line
         propertyLine = propertyLine.substr("CustomProperties".length).trim();
@@ -127,7 +129,7 @@ export class GenericNodeParser extends NodeParser {
         data = data.substr(1, data.length - 2);
 
         const propertyParser = this._customPropertyParsers[type]();
-        const customProperty = propertyParser.parse(data);
+        const customProperty = propertyParser.parse(data, nodeName);
 
         return customProperty;
     }
