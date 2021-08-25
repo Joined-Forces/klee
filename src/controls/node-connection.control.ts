@@ -38,18 +38,18 @@ export class NodeConnectionControl extends Control implements DrawableControl {
     draw(canvas: Canvas2D): void {
         canvas.lineWidth(this._lineWidth)
         .beginPath()
-        .moveTo(this._pinStartPosition.x - 6, this._pinStartPosition.y)
+        .moveTo(this._pinStartPosition.x, this._pinStartPosition.y)
         .strokeStyle(this._color)
-        .lineTo(this._pinStartPosition.x + 12, this._pinStartPosition.y)
+        .lineTo(this._pinStartPosition.x + 6, this._pinStartPosition.y)
         .bezierCurveTo(
             this._pinStartPosition.x + this._curveValue + 6,
             this._pinStartPosition.y,
             this._pinEndPosition.x - this._curveValue - 6,
             this._pinEndPosition.y,
-            this._pinEndPosition.x - 12,
+            this._pinEndPosition.x - 6,
             this._pinEndPosition.y
         )
-        .lineTo(this._pinEndPosition.x - 6, this._pinEndPosition.y)
+        .lineTo(this._pinEndPosition.x, this._pinEndPosition.y)
         .stroke();
     }
 }
