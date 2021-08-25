@@ -10,5 +10,6 @@ export enum UnrealNodeClass {
     INPUT_AXIS_EVENT = "/Script/BlueprintGraph.K2Node_InputAxisEvent",
     COMMENT = "/Script/UnrealEd.EdGraphNode_Comment",
     INPUT_KEY = "/Script/BlueprintGraph.K2Node_InputKey",
-    CommutativeAssociativeBinaryOperator = "/Script/BlueprintGraph.K2Node_CommutativeAssociativeBinaryOperator"
+    CommutativeAssociativeBinaryOperator = "/Script/BlueprintGraph.K2Node_CommutativeAssociativeBinaryOperator",
+    DYNAMIC_CAST = "/Script/BlueprintGraph.K2Node_DynamicCast",
 }

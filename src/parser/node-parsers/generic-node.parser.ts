@@ -17,6 +17,7 @@ import { KnotNodeParser } from "./knot-node.parser";
 import { CustomEventNodeParser } from "./custom-event-node.parser";
 import { EventNodeParser } from "./event-node.parser";
 import { InputKeyNodeParser } from "./inputkey-node.parser";
+import { DynamicCastNodeParser } from "./dynamic-cast-node.parser";
 
 
 export class GenericNodeParser extends NodeParser {
@@ -37,6 +38,7 @@ export class GenericNodeParser extends NodeParser {
         [UnrealNodeClass.IF_THEN_ELSE]: () => new IfThenElseNodeParser(),
         [UnrealNodeClass.KNOT]: () => new KnotNodeParser(),
         [UnrealNodeClass.INPUT_KEY]: () => new InputKeyNodeParser(),
+        [UnrealNodeClass.DYNAMIC_CAST]: () => new DynamicCastNodeParser(),
     }
 
     private readonly _customPropertyParsers: {

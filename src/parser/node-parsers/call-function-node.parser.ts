@@ -35,28 +35,13 @@ export class CallFunctionNodeParser extends NodeParser {
 
         this.parseProperties(data);
 
-        this.removeSelftargetingPins(node);
-
         node.backgroundColor = node.isPureFunc === true ? CallFunctionNodeParser._DEFAULT_PURE_FUNC_BACKGROUND_COLOR : CallFunctionNodeParser._DEFAULT_FUNC_BACKGROUND_COLOR;
 
-        if (node.functionReference.memberParent === CallFunctionNodeParser._KISMET_MATH_LIBRARY) {
+        if (node.functionReference.memberParent.class === CallFunctionNodeParser._KISMET_MATH_LIBRARY) {
             return new MathFunctionNodeParser().parse(data);
         }
 
         return new HeadedNodeControl(node, IconLibrary.FUNCTION);
     }
 
-    private removeSelftargetingPins(node: CallFunctionNode) {
-        for (let i = node.customProperties.length - 1; i >= 0; i--) {
-            if (node.customProperties[i] instanceof PinProperty === false) continue;
-
-            const pinProperty = node.customProperties[i] as PinProperty;
-            // if(pinProperty.name === "self" && !pinProperty.isLinked) {
-            //     node.customProperties.splice(i, 1);
-            // }
-            if(pinProperty.hidden) {
-                node.customProperties.splice(i, 1);
-            }
-        }
-    }
 }

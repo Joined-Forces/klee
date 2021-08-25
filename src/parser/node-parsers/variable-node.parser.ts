@@ -33,30 +33,20 @@ export class VariableNodeParser extends NodeParser {
         if(isSetter) {
             variableNode.variableType = VariableType.Setter;
             data.node.title = "SET";
-            this.removeSelftargetingPins(variableNode, true);
+            this.hideOutputPinNames(variableNode);
             return new SetterNodeControl(data.node);
-        } else {
-            this.removeSelftargetingPins(variableNode, false);
         }
         return new HeadlessNodeControl(data.node);
     }
 
-    private removeSelftargetingPins(node: VariableNode, hideOutputPinNames: boolean) {
+    private hideOutputPinNames(node: VariableNode) {
         for (let i = node.customProperties.length - 1; i >= 0; i--) {
             if (node.customProperties[i] instanceof PinProperty === false) continue;
 
             const pinProperty = node.customProperties[i] as PinProperty;
 
-            if(hideOutputPinNames && pinProperty.direction === PinDirection.EGPD_Output) {
+            if(pinProperty.direction === PinDirection.EGPD_Output) {
                 pinProperty.hideName = true;
-            }
-
-            // if(pinProperty.name === "self" && node.variableReference.selfContext) {
-            //     node.customProperties.splice(i, 1);
-            // }
-
-            if(pinProperty.hidden) {
-                node.customProperties.splice(i, 1);
             }
         }
     }

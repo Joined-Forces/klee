@@ -1,3 +1,5 @@
+import { DefaultValueBox } from "../controls/utils/default-value-box";
+import { NodeClassReference } from "../data/node-class-reference";
 import { NodeDataReference } from "../data/node-data-reference";
 import { BlueprintParserUtils } from "./blueprint-parser-utils";
 
@@ -26,13 +28,14 @@ export class NodeDataReferenceParser {
             switch(key) {
                 case "MemberName": dataRef.memberName = this.translateFunctionName(BlueprintParserUtils.parseString(value)); break;
                 case "MemberParent":
-                    if (value.startsWith('Class')) {
-                        value = value.replace('Class', '');
-                        value = value.replace(/'/g, '').replace(/"/g, '');
-                        dataRef.memberParent = value;
-                    } else {
-                        dataRef.memberParent = value;
-                    }
+                    dataRef.memberParent = NodeDataReferenceParser.parseClassReference(value);
+                    // if (value.startsWith('Class')) {
+                    //     value = value.replace('Class', '');
+                    //     value = value.replace(/'/g, '').replace(/"/g, '');
+                    //     dataRef.memberParent = value;
+                    // } else {
+                    //     dataRef.memberParent = value;
+                    // }
                     break;
                 case "MemberGuid": dataRef.memberGUID = value; break;
                 case "bSelfContext": dataRef.selfContext = value == "True"; break;
@@ -50,5 +53,14 @@ export class NodeDataReferenceParser {
         }
 
         return value;
+    }
+
+    static parseClassReference(referenceString: string): NodeClassReference {
+
+        let type = referenceString.substring(0, referenceString.indexOf("'"));
+        let className = referenceString.substring(referenceString.indexOf("'"));
+        className = className.replace(/'/g, '').replace(/"/g, '');
+
+        return { type: type, class: className };
     }
 }
