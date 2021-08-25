@@ -10,13 +10,15 @@ import { Application } from "../../application";
 export class HeadlessNodeControl extends NodeControl implements DrawableControl {
 
     private static readonly _NODE_BACKGROUND_COLOR = "rgba(15,15,15,0.6)";
-    private static readonly _NODE_PIN_ICONS_WIDTH = 110;
+    private static readonly _NODE_PIN_ICONS_WIDTH = 140;
 
     constructor(node: Node) {
         super(node);
 
         if(this.node.title) {
-            this.width = Application.canvas.getContext().measureText(this.node.title).width + HeadlessNodeControl._NODE_PIN_ICONS_WIDTH;
+            this.width = Application.canvas
+                .font(Constants.NODE_MATHFUNC_TITLE_FONT)
+                .getContext().measureText(this.node.title).width + HeadlessNodeControl._NODE_PIN_ICONS_WIDTH;
         }
 
         this.createPins(new Vector2(0, 0));

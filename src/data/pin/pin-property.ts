@@ -1,3 +1,5 @@
+import { Application } from "../../application";
+import { Constants } from "../../constants";
 import { insertSpacesBetweenCapitalizedWords } from "../../utils/text-utils";
 import { CustomProperty } from "../custom-property";
 import { PinCategory } from "./pin-category";
@@ -38,7 +40,7 @@ export class PinProperty extends CustomProperty {
     defaultValueIsIgnored: boolean;
 
     advancedView: boolean;
-    ophanedPin: boolean;
+    orphanedPin: boolean;
 
     hideName: boolean;
 
@@ -48,6 +50,10 @@ export class PinProperty extends CustomProperty {
 
     public get formattedName(): string {
         return insertSpacesBetweenCapitalizedWords(this.getFriendlyName());
+    }
+
+    public get shouldDrawDefaultValueBox(): boolean {
+        return (!this.isLinked && this.direction !== PinDirection.EGPD_Output && !!this.defaultValue);
     }
 
     private getFriendlyName(): string {

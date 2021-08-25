@@ -7,6 +7,7 @@ import { PinDirection } from "../../data/pin/pin-direction";
 import { PinProperty } from "../../data/pin/pin-property";
 import { Vector2 } from "../../math/vector2";
 import { PinControl } from "../pin.control";
+import { DefaultValueBox } from "./default-value-box";
 
 export class NodePinsCreator {
 
@@ -21,9 +22,9 @@ export class NodePinsCreator {
     }
 
 
-    private static readonly _PINS_PADDING_HORIZONTAL = 20;
+    private static readonly _PINS_PADDING_HORIZONTAL = 16;
     private static readonly _PINS_PADDING_TOP = 12;
-    private static readonly _SPACING_BETWEEN_INPUT_AND_OUTPUT_PINS = 40;
+    private static readonly _SPACING_BETWEEN_INPUT_AND_OUTPUT_PINS = 5;
     private static readonly _PIN_ICON_WIDTH = 25;
     private static readonly _PIN_LINE_HEIGHT = 13;
     private static readonly _PIN_MARGIN_BOTTOM = 12;
@@ -88,6 +89,7 @@ export class NodePinsCreator {
         for (const pinProperty of pins) {
             const pin = new PinControl(nodePosition, pinProperty);
             this.calculatePinPosition(pin, lastPinPosition);
+            pin.postInit();
 
             pinControls.push(pin);
             NodePinsCreator.pinsControls.push(pin);
@@ -129,7 +131,7 @@ export class NodePinsCreator {
         Application.canvas.getContext().font = Constants.NODE_FONT;
 
         for (let i = 0; i < pins.length; ++i) {
-            let textWidth = Application.canvas.getContext().measureText(pins[i].formattedName).width;
+            const textWidth = PinControl.calculateTotalPinWidth(pins[i]);
 
             if (textWidth > width) {
                 width = textWidth;
