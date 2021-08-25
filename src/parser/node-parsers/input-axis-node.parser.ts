@@ -1,5 +1,6 @@
 import { HeadedNodeControl } from "../../controls/nodes/headed-node-control";
 import { NodeControl } from "../../controls/nodes/node.control";
+import { IconLibrary } from "../../controls/utils/icon-library";
 import { InputAxisNode } from "../../data/nodes/input-axis.node";
 import { NodeParser } from "../node.parser";
 import { ParsingNodeData } from "../parsing-node-data";
@@ -21,6 +22,6 @@ export class InputAxisNodeParser extends NodeParser {
     public parse(data: ParsingNodeData): NodeControl {
         this.parseProperties(data);
         data.node.backgroundColor = InputAxisNodeParser._DEFAULT_BACKGROUND_COLOR;
-        return new HeadedNodeControl(data.node);
+        return new HeadedNodeControl(data.node, IconLibrary.EVENT);
     }
 }

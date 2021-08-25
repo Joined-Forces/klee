@@ -1,5 +1,6 @@
 import { HeadedNodeControl } from "../../controls/nodes/headed-node-control";
 import { NodeControl } from "../../controls/nodes/node.control";
+import { IconLibrary } from "../../controls/utils/icon-library";
 import { CustomEventNode } from "../../data/nodes/custom-event.node";
 import { ReplicationType } from "../../data/replication-type";
 import { NodeParser } from "../node.parser";
@@ -64,7 +65,7 @@ export class CustomEventNodeParser extends NodeParser {
     public parse(data: ParsingNodeData): NodeControl {
         this.parseProperties(data);
         data.node.backgroundColor = CustomEventNodeParser._DEFAULT_BACKGROUND_COLOR;
-        return new HeadedNodeControl(data.node);
+        return new HeadedNodeControl(data.node, IconLibrary.CUSTOM_EVENT);
     }
 
     private getReplicationType(functionFlags: number): ReplicationType {

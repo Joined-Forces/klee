@@ -7,6 +7,7 @@ import { NodeDataReferenceParser } from "../node-data-reference.parser";
 import { NodeParser } from "../node.parser";
 import { ParsingNodeData } from "../parsing-node-data";
 import { insertSpacesBetweenCapitalizedWords } from "../../utils/text-utils";
+import { IconLibrary } from "../../controls/utils/icon-library";
 
 
 export class CallFunctionNodeParser extends NodeParser {
@@ -42,7 +43,7 @@ export class CallFunctionNodeParser extends NodeParser {
             return new MathFunctionNodeParser().parse(data);
         }
 
-        return new HeadedNodeControl(node);
+        return new HeadedNodeControl(node, IconLibrary.FUNCTION);
     }
 
     private removeSelftargetingPins(node: CallFunctionNode) {

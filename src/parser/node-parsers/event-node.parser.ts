@@ -1,5 +1,6 @@
 import { HeadedNodeControl } from "../../controls/nodes/headed-node-control";
 import { NodeControl } from "../../controls/nodes/node.control";
+import { IconLibrary } from "../../controls/utils/icon-library";
 import { EventNode } from "../../data/nodes/event.node";
 import { NodeDataReferenceParser } from "../node-data-reference.parser";
 import { NodeParser } from "../node.parser";
@@ -24,6 +25,6 @@ export class EventNodeParser extends NodeParser {
     public parse(data: ParsingNodeData): NodeControl {
         this.parseProperties(data);
         data.node.backgroundColor = EventNodeParser._DEFAULT_BACKGROUND_COLOR;
-        return new HeadedNodeControl(data.node);
+        return new HeadedNodeControl(data.node, IconLibrary.EVENT);
     }
 }

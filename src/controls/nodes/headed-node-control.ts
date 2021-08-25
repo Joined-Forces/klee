@@ -22,7 +22,7 @@ export class HeadedNodeControl extends NodeControl implements DrawableControl {
     private _headerHeight = HeadedNodeControl._NODE_HEADER_TITLE_HEIGHT;
     private _icon: Path2D = undefined;
 
-    constructor(node: Node) {
+    constructor(node: Node, icon?: string) {
         super(node);
 
         let largestTitleWidth = Application.canvas.getContext().measureText(this.node.title).width;
@@ -39,7 +39,6 @@ export class HeadedNodeControl extends NodeControl implements DrawableControl {
 
         this._fillStyleHeader = this.getHeaderFillStyle();
 
-        let icon = IconLibrary.getIconForNode(node);
         if (icon) {
             this._icon = new Path2D(icon);
         }

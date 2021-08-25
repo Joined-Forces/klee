@@ -10,7 +10,7 @@ export class BlueprintParserUtils {
 
     static parseColor(value: string): string {
         value = value.replace(/[()]/g, '');
-        let colorData = value.split(',')
+        let colorData = value.split(',');
 
         let colorArray = [];
         for (let data of colorData) {

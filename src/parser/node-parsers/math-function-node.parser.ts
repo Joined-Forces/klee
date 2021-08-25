@@ -1,6 +1,7 @@
 import { HeadedNodeControl } from "../../controls/nodes/headed-node-control";
 import { HeadlessNodeControl } from "../../controls/nodes/headless-node-control";
 import { NodeControl } from "../../controls/nodes/node.control";
+import { IconLibrary } from "../../controls/utils/icon-library";
 import { MathFunctionNode } from "../../data/nodes/math-function.node";
 import { PinDirection } from "../../data/pin/pin-direction";
 import { PinProperty } from "../../data/pin/pin-property";
@@ -56,7 +57,18 @@ export class MathFunctionNodeParser extends NodeParser {
             })
             return new HeadlessNodeControl(node);
         }
-        return new HeadedNodeControl(node);
+        return new HeadedNodeControl(node, this.getIconForHeadedNode(node));
+    }
+
+    private getIconForHeadedNode(node: MathFunctionNode): string {
+        if (node.functionReference.memberName.startsWith("Make")) {
+            return IconLibrary.MAKE_STRUCT;
+        }
+        if (node.functionReference.memberName.startsWith("Break")) {
+            return IconLibrary.BREAK_STRUCT;
+        }
+
+        return IconLibrary.FUNCTION;
     }
 }
 
