@@ -45,6 +45,7 @@ export class CommentNodeControl extends NodeControl implements DrawableControl {
     }
 
     private applyCommentColor(nodeColor: string) {
+        console.log(nodeColor);
         if (nodeColor == undefined || nodeColor == '')
             nodeColor = CommentNodeControl._DEFAULT_COMMENT_COLOR;
 
@@ -69,8 +70,8 @@ export class CommentNodeControl extends NodeControl implements DrawableControl {
             .textAlign('left')
             .strokeStyle('#333')
             .lineWidth(1.5)
-            .strokeText((this.node as CommentNode).comment, textPosition.x + 1, textPosition.y + 1)
+            .strokeText(this.node.title, textPosition.x + 1, textPosition.y + 1)
             .fillStyle(CommentNodeControl._HEADER_TEXT_COLOR)
-            .fillText((this.node as CommentNode).comment, textPosition.x, textPosition.y)
+            .fillText(this.node.title, textPosition.x, textPosition.y)
     }
 }

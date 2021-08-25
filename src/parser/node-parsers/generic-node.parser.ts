@@ -69,7 +69,6 @@ export class GenericNodeParser extends NodeParser {
             pos: new Vector2(0, 0),
             sourceText: data.lines.join('\n'),
             customProperties: [],
-            backgroundColor: '78, 117, 142'
         }
 
 

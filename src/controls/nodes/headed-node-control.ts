@@ -17,6 +17,7 @@ export class HeadedNodeControl extends NodeControl implements DrawableControl {
     private static readonly _NODE_HEADER_SPACE_BETWEEN_TITLE_AND_SUBTITLE = 4;
     private static readonly _NODE_HEADER_PADDING_LEFT = 29;
     private static readonly _NODE_HEADER_ICONS_WIDTH = 92;
+    private static readonly _NODE_DEFAULT_BACKGROUND_COLOR = '78, 117, 142';
 
     private _fillStyleHeader: CanvasGradient;
     private _headerHeight = HeadedNodeControl._NODE_HEADER_TITLE_HEIGHT;
@@ -99,9 +100,10 @@ export class HeadedNodeControl extends NodeControl implements DrawableControl {
     }
 
     private getHeaderFillStyle(): CanvasGradient {
+        const backgroundColor = this.node.backgroundColor || HeadedNodeControl._NODE_DEFAULT_BACKGROUND_COLOR;
         const gradient = Application.canvas.getContext().createLinearGradient(0, 0, 150, 0);
-        gradient.addColorStop(0, `rgb(${this.node.backgroundColor})`);
-        gradient.addColorStop(1, `rgba(${this.node.backgroundColor},0.15)`);
+        gradient.addColorStop(0, `rgb(${backgroundColor})`);
+        gradient.addColorStop(1, `rgba(${backgroundColor},0.15)`);
         return gradient;
     }
 }
