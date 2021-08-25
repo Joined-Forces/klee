@@ -1,7 +1,8 @@
 
 export function insertSpacesBetweenCapitalizedWords(str: string) {
     str = str || '';
-    return str.replace(/([A-Z]+)/g, ' $1').trim();
+    return str.replace(/((?<=[a-z])[A-Z]+)/g, ' $1');
+}
 
 export function removePrefixB(str: string) {
     return str.replace(/^b(?=[A-Z])/g, '');
