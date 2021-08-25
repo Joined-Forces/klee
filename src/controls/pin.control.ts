@@ -159,7 +159,11 @@ export class PinControl extends Control implements DrawableControl {
     }
 
     public static calculateTotalPinWidth(pin: PinProperty): number {
-        return PinControl.formattedNameWidth(pin) + Constants.DEFAULT_VALUE_BOX_MARGIN_LEFT + DefaultValueBox.defaultValueWidth(pin);
+        let defaultValueBoxWidth = DefaultValueBox.defaultValueWidth(pin);
+        if(defaultValueBoxWidth > 0) {
+            defaultValueBoxWidth += Constants.DEFAULT_VALUE_BOX_MARGIN_LEFT;
+        }
+        return PinControl.formattedNameWidth(pin) + defaultValueBoxWidth;
     }
 
     getAbsolutPosition(): Vector2 {

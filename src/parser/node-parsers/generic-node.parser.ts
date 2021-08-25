@@ -12,7 +12,7 @@ import { CustomProperty } from "../../data/custom-property";
 import { NodeControl } from "../../controls/nodes/node.control";
 import { HeadedNodeControl } from "../../controls/nodes/headed-node-control";
 import { Vector2 } from "../../math/vector2";
-import { IfThenElseNodeParser } from "./if-then-else-node.parser";
+import { FlowControlNodeParser } from "./flow-control-node.parser";
 import { KnotNodeParser } from "./knot-node.parser";
 import { CustomEventNodeParser } from "./custom-event-node.parser";
 import { EventNodeParser } from "./event-node.parser";
@@ -35,10 +35,12 @@ export class GenericNodeParser extends NodeParser {
         [UnrealNodeClass.EVENT]: () => new EventNodeParser(),
         [UnrealNodeClass.CUSTOM_EVENT]: () => new CustomEventNodeParser(),
         [UnrealNodeClass.INPUT_AXIS_EVENT]: () => new InputAxisNodeParser(),
-        [UnrealNodeClass.IF_THEN_ELSE]: () => new IfThenElseNodeParser(),
         [UnrealNodeClass.KNOT]: () => new KnotNodeParser(),
         [UnrealNodeClass.INPUT_KEY]: () => new InputKeyNodeParser(),
         [UnrealNodeClass.DYNAMIC_CAST]: () => new DynamicCastNodeParser(),
+        [UnrealNodeClass.IF_THEN_ELSE]: () => new FlowControlNodeParser(),
+        [UnrealNodeClass.EXECUTION_SEQUENCE]: () => new FlowControlNodeParser(),
+        [UnrealNodeClass.MULTI_GATE]: () => new FlowControlNodeParser(),
     }
 
     private readonly _customPropertyParsers: {
@@ -69,7 +71,6 @@ export class GenericNodeParser extends NodeParser {
             pos: new Vector2(0, 0),
             sourceText: data.lines.join('\n'),
             customProperties: [],
-            backgroundColor: '78, 117, 142'
         }
 
 
