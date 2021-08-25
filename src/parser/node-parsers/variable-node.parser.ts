@@ -6,7 +6,7 @@ import { NodeParser } from "../node.parser";
 import { ParsingNodeData } from "../parsing-node-data";
 import { PinProperty } from "../../data/pin/pin-property";
 import { PinDirection } from "../../data/pin/pin-direction";
-import { NodeClass } from "../../data/node-class";
+import { UnrealNodeClass } from "../../data/classes/unreal-node-class";
 import { SetterNodeControl } from "../../controls/nodes/setter-node-control";
 
 
@@ -26,7 +26,7 @@ export class VariableNodeParser extends NodeParser {
         this.parseProperties(data);
 
         const variableNode = data.node as VariableNode;
-        const isSetter = data.node.class === NodeClass.VARIABLE_SET;
+        const isSetter = data.node.class === UnrealNodeClass.VARIABLE_SET;
 
         variableNode.variableType = VariableType.Getter;
 

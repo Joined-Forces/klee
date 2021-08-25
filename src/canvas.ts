@@ -39,6 +39,11 @@ export class Canvas2D {
         return this;
     }
 
+    drawImage(image: CanvasImageSource, x: number, y: number, width: number, height: number) {
+        this._context.drawImage(image, x, y, width, height)
+        return this;
+    }
+
     roundedRectangle(x: number, y: number, width: number, height: number, radius: number | RoundedCornerValues) {
         let radiusTopLeft: number;
         let radiusTopRight: number;
@@ -83,14 +88,25 @@ export class Canvas2D {
         return this;
     }
 
-
-    fill() {
-        this._context.fill();
+    fill(fillRule?: CanvasFillRule): Canvas2D;
+    fill(path: Path2D, fillRule?: CanvasFillRule): Canvas2D;
+    fill(value?: Path2D | CanvasFillRule, fillRule?: CanvasFillRule): Canvas2D {
+        if (value instanceof Path2D) {
+            this._context.fill(value, fillRule);
+        } else if (value !== undefined) {
+            this._context.fill(value);
+        } else {
+            this._context.fill();
+        }
         return this;
     }
 
-    stroke() {
-        this._context.stroke();
+    stroke(path?: Path2D): Canvas2D {
+        if (path != undefined) {
+            this._context.stroke(path);
+        } else {
+            this._context.stroke();
+        }
         return this;
     }
 

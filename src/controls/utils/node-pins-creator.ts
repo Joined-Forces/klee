@@ -1,6 +1,6 @@
 import { Application } from "../../application";
 import { Constants } from "../../constants";
-import { NodeClass } from "../../data/node-class";
+import { UnrealNodeClass } from "../../data/classes/unreal-node-class";
 import { Node } from "../../data/nodes/node";
 import { PinCategory } from "../../data/pin/pin-category";
 import { PinDirection } from "../../data/pin/pin-direction";
@@ -98,7 +98,7 @@ export class NodePinsCreator {
 
     private calculatePinPosition(pin: PinControl, lastPinPosition: Vector2) {
 
-        if (this._node.class === NodeClass.KNOT) {
+        if (this._node.class === UnrealNodeClass.KNOT) {
             pin.position.x = 0;
             pin.position.y = 0;
             return;

@@ -1,4 +1,4 @@
-import { NodeClass } from "../../data/node-class";
+import { UnrealNodeClass } from "../../data/classes/unreal-node-class";
 import { PinCategory } from "../../data/pin/pin-category";
 import { PinProperty } from "../../data/pin/pin-property";
 

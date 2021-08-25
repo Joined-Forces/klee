@@ -1,11 +1,11 @@
 import { Vector2 } from "../../math/vector2";
 import { CustomProperty } from "../custom-property";
-import { NodeClass } from "../node-class";
+import { UnrealNodeClass } from "../classes/unreal-node-class";
 
 
 
 export interface Node {
-    class: NodeClass;
+    class: UnrealNodeClass;
     name: string;
     title: string;
     subTitles?: Array<{

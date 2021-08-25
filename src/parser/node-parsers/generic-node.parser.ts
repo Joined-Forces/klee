@@ -1,4 +1,4 @@
-import { NodeClass } from "../../data/node-class";
+import { UnrealNodeClass } from "../../data/classes/unreal-node-class";
 import { CommentNodeParser } from "./comment-node.parser";
 import { CustomPropertyParser } from "../custom-property.parser";
 import { NodeParser } from "../node.parser";
@@ -24,19 +24,19 @@ export class GenericNodeParser extends NodeParser {
     private readonly _OBJECT_STARTING_TAG = "Begin Object";
 
     private _nodeParsers: {
-        [key in NodeClass]: () => NodeParser
+        [key in UnrealNodeClass]: () => NodeParser
     } = {
-        [NodeClass.COMMENT]: () => new CommentNodeParser(),
-        [NodeClass.CALL_FUNCTION]: () => new CallFunctionNodeParser(),
-        [NodeClass.CommutativeAssociativeBinaryOperator]: () => new CallFunctionNodeParser(),
-        [NodeClass.VARIABLE_GET]: () => new VariableNodeParser(),
-        [NodeClass.VARIABLE_SET]: () => new VariableNodeParser(),
-        [NodeClass.EVENT]: () => new EventNodeParser(),
-        [NodeClass.CUSTOM_EVENT]: () => new CustomEventNodeParser(),
-        [NodeClass.INPUT_AXIS_EVENT]: () => new InputAxisNodeParser(),
-        [NodeClass.IF_THEN_ELSE]: () => new IfThenElseNodeParser(),
-        [NodeClass.KNOT]: () => new KnotNodeParser(),
-        [NodeClass.INPUT_KEY]: () => new InputKeyNodeParser(),
+        [UnrealNodeClass.COMMENT]: () => new CommentNodeParser(),
+        [UnrealNodeClass.CALL_FUNCTION]: () => new CallFunctionNodeParser(),
+        [UnrealNodeClass.CommutativeAssociativeBinaryOperator]: () => new CallFunctionNodeParser(),
+        [UnrealNodeClass.VARIABLE_GET]: () => new VariableNodeParser(),
+        [UnrealNodeClass.VARIABLE_SET]: () => new VariableNodeParser(),
+        [UnrealNodeClass.EVENT]: () => new EventNodeParser(),
+        [UnrealNodeClass.CUSTOM_EVENT]: () => new CustomEventNodeParser(),
+        [UnrealNodeClass.INPUT_AXIS_EVENT]: () => new InputAxisNodeParser(),
+        [UnrealNodeClass.IF_THEN_ELSE]: () => new IfThenElseNodeParser(),
+        [UnrealNodeClass.KNOT]: () => new KnotNodeParser(),
+        [UnrealNodeClass.INPUT_KEY]: () => new InputKeyNodeParser(),
     }
 
     private readonly _customPropertyParsers: {

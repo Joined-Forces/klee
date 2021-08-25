@@ -1,5 +1,5 @@
 
-export enum NodeClass {
+export enum UnrealNodeClass {
     KNOT = "/Script/BlueprintGraph.K2Node_Knot",
     CALL_FUNCTION = "/Script/BlueprintGraph.K2Node_CallFunction",
     IF_THEN_ELSE = "/Script/BlueprintGraph.K2Node_IfThenElse",

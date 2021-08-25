@@ -6,6 +6,7 @@ import { ColorUtils } from "../utils/color-utils";
 import { Application } from "../../application";
 import { Vector2 } from "../../math/vector2";
 import { Constants } from "../../constants";
+import { IconLibrary } from "../utils/icon-library";
 
 
 export class HeadedNodeControl extends NodeControl implements DrawableControl {
@@ -19,6 +20,7 @@ export class HeadedNodeControl extends NodeControl implements DrawableControl {
 
     private _fillStyleHeader: CanvasGradient;
     private _headerHeight = HeadedNodeControl._NODE_HEADER_TITLE_HEIGHT;
+    private _icon: Path2D = undefined;
 
     constructor(node: Node) {
         super(node);
@@ -36,6 +38,11 @@ export class HeadedNodeControl extends NodeControl implements DrawableControl {
         this.createPins(new Vector2(0, this._headerHeight));
 
         this._fillStyleHeader = this.getHeaderFillStyle();
+
+        let icon = IconLibrary.getIconForNode(node);
+        if (icon) {
+            this._icon = new Path2D(icon);
+        }
     }
 
     public draw(canvas: Canvas2D) {
@@ -68,6 +75,18 @@ export class HeadedNodeControl extends NodeControl implements DrawableControl {
             .fillStyle(Constants.NODE_TEXT_COLOR)
             .fillText(this.node.title, HeadedNodeControl._NODE_HEADER_PADDING_LEFT, HeadedNodeControl._NODE_HEADER_PADDING_TOP);
 
+        if (this._icon) {
+            canvas.save();
+
+            canvas.fillStyle("#fff")
+            .strokeStyle("rgba(0,0,0,0.4)")
+            .lineWidth(1.5)
+            .translate(8, 4)
+            .stroke(this._icon)
+            .fill(this._icon);
+
+            canvas.restore();
+        }
 
         if (this.node.subTitles && this.node.subTitles.length > 0) {
             let y = HeadedNodeControl._NODE_HEADER_PADDING_TOP + HeadedNodeControl._NODE_HEADER_SPACE_BETWEEN_TITLE_AND_SUBTITLE;
