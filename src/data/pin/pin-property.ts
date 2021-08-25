@@ -49,6 +49,7 @@ export class PinProperty extends CustomProperty {
     constructor(nodeName: string) {
         super();
         this.nodeName = nodeName;
+        this.direction = PinDirection.EGPD_Input;
     }
 
     get isLinked(): boolean {
@@ -56,20 +57,16 @@ export class PinProperty extends CustomProperty {
     }
 
     public get formattedName(): string {
-        return insertSpacesBetweenCapitalizedWords(this.getFriendlyName());
-    }
-
-    public get shouldDrawDefaultValueBox(): boolean {
-        return (!this.isLinked && this.direction !== PinDirection.EGPD_Output && !!this.defaultValue);
-    }
-
-    private getFriendlyName(): string {
         if (this.hideName) { return ''; }
         if (this.friendlyName) {
             return this.friendlyName;
         }
 
         return this.name;
+    }
+
+    public get shouldDrawDefaultValueBox(): boolean {
+        return (!this.isLinked && this.direction !== PinDirection.EGPD_Output && !!this.defaultValue);
     }
 
     public getUniqueName() {
