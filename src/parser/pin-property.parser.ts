@@ -2,7 +2,7 @@ import { PinCategory } from "../data/pin/pin-category";
 import { PinDirection } from "../data/pin/pin-direction";
 import { PinLink } from "../data/pin/pin-link";
 import { PinProperty } from "../data/pin/pin-property";
-import { removeInsignificantTrailingZeros } from "../utils/text-utils";
+import { removeInsignificantTrailingZeros, removePrefixB } from "../utils/text-utils";
 import { BlueprintParserUtils } from "./blueprint-parser-utils";
 import { CustomPropertyParser } from "./custom-property.parser";
 
@@ -14,7 +14,7 @@ export class PinPropertyParser implements CustomPropertyParser {
         [key: string]: (p: PinProperty, value: string) => void
     } = {
         "PinId": (p: PinProperty, value: string) => { p.id = value; },
-        "PinName": (p: PinProperty, value: string) => { p.name = BlueprintParserUtils.parseString(value); },
+        "PinName": (p: PinProperty, value: string) => { p.name = removePrefixB(BlueprintParserUtils.parseString(value)); },
         "PinFriendlyName": (p: PinProperty, value: string) => { p.friendlyName = PinPropertyParser.parsePinFriendlyName(value); },
         "PinType.PinCategory": (p: PinProperty, value: string) => { p.category = PinPropertyParser.parsePinCategory(value); },
         "Direction": (p: PinProperty, value: string) => { p.direction = PinPropertyParser.parseDirection(value); },
