@@ -21,6 +21,7 @@ import { DynamicCastNodeParser } from "./dynamic-cast-node.parser";
 import { PinProperty } from "../../data/pin/pin-property";
 import { PinDirection } from "../../data/pin/pin-direction";
 import { PinCategory } from "../../data/pin/pin-category";
+import { MacroInstanceNodeParser } from "./macro-instance-node.parser";
 
 
 export class GenericNodeParser extends NodeParser {
@@ -44,6 +45,7 @@ export class GenericNodeParser extends NodeParser {
         [UnrealNodeClass.IF_THEN_ELSE]: () => new FlowControlNodeParser(),
         [UnrealNodeClass.EXECUTION_SEQUENCE]: () => new FlowControlNodeParser(),
         [UnrealNodeClass.MULTI_GATE]: () => new FlowControlNodeParser(),
+        [UnrealNodeClass.MACRO_INSTANCE]: () => new MacroInstanceNodeParser(),
     }
 
     private readonly _customPropertyParsers: {

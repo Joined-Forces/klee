@@ -14,4 +14,5 @@ export enum UnrealNodeClass {
     INPUT_KEY = "/Script/BlueprintGraph.K2Node_InputKey",
     CommutativeAssociativeBinaryOperator = "/Script/BlueprintGraph.K2Node_CommutativeAssociativeBinaryOperator",
     DYNAMIC_CAST = "/Script/BlueprintGraph.K2Node_DynamicCast",
+    MACRO_INSTANCE = "/Script/BlueprintGraph.K2Node_MacroInstance"
 }

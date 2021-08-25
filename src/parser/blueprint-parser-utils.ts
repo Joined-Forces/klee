@@ -30,7 +30,7 @@ export class BlueprintParserUtils {
     static getClassFriendlyName(value: string): string {
         const defaultObject = BlueprintParserUtils.parseString(value);
         const matches = /(?<=\.)((?!_C$)\w)*/g.exec(defaultObject);
-        if(!matches[0]) { 
+        if(!matches) {
             return value; 
         }
         return matches[0];
