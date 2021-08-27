@@ -30,6 +30,9 @@ export class ColorUtils {
                 return 'rgb(146, 1, 1)';
             case PinCategory.float:
                 return 'rgb(158, 250, 68)';
+            case PinCategory.int:
+            case PinCategory.int64:
+                return 'rgb(30, 226, 174)';
             case PinCategory.struct:
                 const map = {
                     [StructClass.VECTOR]: 'rgb(253, 200, 35)',

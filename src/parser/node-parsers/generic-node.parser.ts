@@ -19,6 +19,10 @@ import { EventNodeParser } from "./event-node.parser";
 import { InputKeyNodeParser } from "./inputkey-node.parser";
 import { DynamicCastNodeParser } from "./dynamic-cast-node.parser";
 import { SwitchEnumNodeParser } from "./switch-enum-node.parser";
+import { PinProperty } from "../../data/pin/pin-property";
+import { PinDirection } from "../../data/pin/pin-direction";
+import { PinCategory } from "../../data/pin/pin-category";
+import { MacroInstanceNodeParser } from "./macro-instance-node.parser";
 
 
 export class GenericNodeParser extends NodeParser {
@@ -43,6 +47,7 @@ export class GenericNodeParser extends NodeParser {
         [UnrealNodeClass.EXECUTION_SEQUENCE]: () => new FlowControlNodeParser(),
         [UnrealNodeClass.MULTI_GATE]: () => new FlowControlNodeParser(),
         [UnrealNodeClass.SWITCH_ENUM]: () => new SwitchEnumNodeParser(),
+        [UnrealNodeClass.MACRO_INSTANCE]: () => new MacroInstanceNodeParser(),
     }
 
     private readonly _customPropertyParsers: {
@@ -119,6 +124,8 @@ export class GenericNodeParser extends NodeParser {
                     data.node.customProperties.push(property);
             }
         }
+
+        this.hideExecPins(data.node);
     }
 
     private parseCustomProperty(propertyLine: string, nodeName: string): CustomProperty {
@@ -137,5 +144,32 @@ export class GenericNodeParser extends NodeParser {
         const customProperty = propertyParser.parse(data, nodeName);
 
         return customProperty;
+    }
+
+    private hideExecPins(node: Node): void {
+        let execPinsByDirection: {
+            [key in PinDirection]: Array<PinProperty>
+        } = {
+            [PinDirection.EGPD_Input]: new Array<PinProperty>(),
+            [PinDirection.EGPD_Output]: new Array<PinProperty>(),
+        }
+
+        // Groups exec pins according to their direction
+        for (const property of node.customProperties) {
+            if(!(property instanceof PinProperty)) { continue; }
+            if(property.direction == undefined || property.category !== PinCategory.exec) { continue; }
+            execPinsByDirection[property.direction].push(property);
+        }
+
+        // By default, the pin name is displayed...
+        // Hides name of the exec pin if it is the only one of its type (pin direction).
+        for (const pinDirection in execPinsByDirection) {
+            if (Object.prototype.hasOwnProperty.call(execPinsByDirection, pinDirection)) {
+                const counter = execPinsByDirection[pinDirection] as Array<PinProperty>;
+                if(counter.length == 1) {
+                    counter[0].hideName = true;
+                }
+            }
+        }
     }
 }

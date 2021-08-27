@@ -93,12 +93,12 @@ export class PinControl extends Control implements DrawableControl {
         canvas.restore();
     }
 
-    private drawExecutionPin(canvas: Canvas2D, drawText: boolean = false) {
+    private drawExecutionPin(canvas: Canvas2D) {
         canvas.save();
         canvas.translate(this.position.x, this.position.y - 7);
 
-        if (drawText) {
-            let textX = this.setupTextDrawing(canvas);
+        if (this._pinProperty.formattedName) {
+            const textX = this.setupTextDrawing(canvas);
             canvas.fillText(this._pinProperty.formattedName, textX, 10);
         }
 
