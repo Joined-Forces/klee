@@ -18,6 +18,7 @@ import { CustomEventNodeParser } from "./custom-event-node.parser";
 import { EventNodeParser } from "./event-node.parser";
 import { InputKeyNodeParser } from "./inputkey-node.parser";
 import { DynamicCastNodeParser } from "./dynamic-cast-node.parser";
+import { SwitchEnumNodeParser } from "./switch-enum-node.parser";
 
 
 export class GenericNodeParser extends NodeParser {
@@ -41,6 +42,7 @@ export class GenericNodeParser extends NodeParser {
         [UnrealNodeClass.IF_THEN_ELSE]: () => new FlowControlNodeParser(),
         [UnrealNodeClass.EXECUTION_SEQUENCE]: () => new FlowControlNodeParser(),
         [UnrealNodeClass.MULTI_GATE]: () => new FlowControlNodeParser(),
+        [UnrealNodeClass.SWITCH_ENUM]: () => new SwitchEnumNodeParser(),
     }
 
     private readonly _customPropertyParsers: {

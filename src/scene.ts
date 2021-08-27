@@ -39,6 +39,10 @@ export class Scene {
         return this._nodes || [];
     }
 
+    get controls() {
+        return this._controls || [];
+    }
+
     refresh() {
         this._canvas.clear();
 

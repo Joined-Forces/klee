@@ -12,16 +12,17 @@ export abstract class NodeControl extends Control {
     private static readonly _SELECTION_LINE_WIDTH = 2.5;
 
     private _node: Node;
-    private _pins: Array<PinControl>;
+    protected _pins: Array<PinControl>;
 
-    protected width: number;
-    protected height: number;
+
 
     private _selected: boolean;
     protected _stroke: {
         lineWidth: number,
         style: string
     }
+
+    private pinsCreator: NodePinsCreator;
 
     constructor(node: Node) {
         super(node.pos.x, node.pos.y);
@@ -36,9 +37,6 @@ export abstract class NodeControl extends Control {
         }
     }
 
-    public get size(): Vector2 {
-        return new Vector2(this.width, this.height);
-    }
 
     public set selected(isSelected: boolean) {
         this._selected = isSelected;
@@ -57,15 +55,24 @@ export abstract class NodeControl extends Control {
     }
 
     protected createPins(offset?: Vector2): void {
-        offset = offset || new Vector2(0, 0);
+        offset = offset?.copy() || new Vector2(0, 0);
 
-        const pinsCreator = new NodePinsCreator(this._node, this.width);
+        this.pinsCreator = new NodePinsCreator(this._node, this.width);
 
         // Makes sure the node box is big enough to fit all the pins
-        this.width = Math.max(this.width, pinsCreator.dimensions.width);
-        this.height = Math.max(this.height, pinsCreator.dimensions.height + offset.y);
+        this.width = Math.max(this.width, this.pinsCreator.dimensions.width);
+        this.height = Math.max(this.height, this.pinsCreator.dimensions.height + offset.y);
 
-        this._pins = pinsCreator.createPins(this.position, offset);
+        this._pins = this.pinsCreator.createPins(this.position, offset);
+    }
+
+    protected recalculateSize(offset?: Vector2, useAdvancedDisplay?: boolean) {
+        offset = offset?.copy() || new Vector2(0, 0);
+
+        this.pinsCreator.recalculatePinControlPositions(this._pins, offset, useAdvancedDisplay);
+
+        this.width = this.pinsCreator.dimensions.width;
+        this.height = this.pinsCreator.dimensions.height + offset.y;
     }
 
     protected drawPins(canvas: Canvas2D) {

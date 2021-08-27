@@ -1,6 +1,9 @@
 import { Application } from "./application";
+import { NodeControl } from "./controls/nodes/node.control";
 import { BoundingBox } from "./math/boundingbox";
 import { Vector2 } from "./math/vector2";
+import { InteractableControl, isInteractableControl } from "./controls/interfaces/interactable";
+import { Control } from "./controls/control";
 
 export interface KeyAction {
     keycode: string
@@ -24,6 +27,8 @@ export class Controller {
     }
     private _mousePositionOfPreviousMove: Vector2;
     private _element: HTMLCanvasElement;
+
+    private hoveredControls: Control[] = [];
 
     constructor(element: HTMLCanvasElement) {
 
@@ -68,18 +73,61 @@ export class Controller {
         }
         this._mousePositionOfPreviousMove = this._mouseDownData.position;
 
-        Application.scene.nodes.forEach(c => c.selected = false);
+        const mouseAbsolutePos = this.getAbsoluteMousePosition(ev);
+        let controls = this.getIntersectingControls(mouseAbsolutePos, new Vector2(0, 0));
+        controls = controls.sort((c1, c2) => { return c1.zIndex - c2.zIndex; })
+        for (let control of controls) {
+            if (isInteractableControl(control)) {
+                if (control.onMouseDown(ev))
+                    break;
+            }
+        }
 
-        Application.scene.refresh();
+        for (let control of this.hoveredControls) {
+            if (controls.indexOf(control) < 0) {
+                this.hoveredControls.splice(this.hoveredControls.indexOf(control), 1);
+                if (isInteractableControl(control)) {
+                    control.onMouseLeave(ev);
+                }
+            }
+        }
+        
+        //Application.scene.refresh();
     }
 
     onMouseUp(ev: MouseEvent) {
         const currentMousePosition = this.getMousePosition(ev);
-        const delta = currentMousePosition.subtract(this._mouseDownData.position);
-        if (delta.x == 0 && delta.y == 0) {
-            const cameraPos = Application.scene.camera.position;
-            const mouseAbsolutePos = new Vector2(this._mouseDownData.position.x - cameraPos.x, this._mouseDownData.position.y - cameraPos.y);
-            this.selectIntersectingControls(mouseAbsolutePos, new Vector2(0,0));
+        const mouseAbsolutePos = this.getAbsoluteMousePosition(ev);
+
+
+
+        let consumed = false;
+
+        let controls = this.getIntersectingControls(mouseAbsolutePos, new Vector2(0, 0));
+        controls = controls.sort((c1, c2) => { return c1.zIndex - c2.zIndex; })
+        for (let control of controls) {
+            if (isInteractableControl(control)) {
+                if (consumed = control.onMouseUp(ev))
+                    break;
+            }
+        }
+
+        for (let control of this.hoveredControls) {
+            if (controls.indexOf(control) < 0) {
+                this.hoveredControls.splice(this.hoveredControls.indexOf(control), 1);
+                if (isInteractableControl(control)) {
+                    control.onMouseLeave(ev);
+                }
+            }
+        }
+
+        if (this._mouseDownData && !consumed) {
+            const delta = currentMousePosition.subtract(this._mouseDownData.position);
+    
+            if (delta.x == 0 && delta.y == 0) {
+                Application.scene.nodes.forEach(c => c.selected = false);
+                this.selectIntersectingControls(mouseAbsolutePos, new Vector2(0,0));
+            }
         }
 
         this._mouseDownData = null;
@@ -87,28 +135,56 @@ export class Controller {
     }
 
     onMouseMove(ev: MouseEvent) {
-        if(!this._mouseDownData) { return; }
-
         const currentMousePosition = this.getMousePosition(ev);
+        const mouseAbsolutePos = this.getAbsoluteMousePosition(ev);
 
-        if (this._mouseDownData.buttonType === MouseButton.Right) {
-            const delta = currentMousePosition.subtract(this._mousePositionOfPreviousMove);
-            this._mousePositionOfPreviousMove = currentMousePosition;
+        if (this._mouseDownData) {
+            if (this._mouseDownData.buttonType === MouseButton.Right) {
+                const delta = currentMousePosition.subtract(this._mousePositionOfPreviousMove);
+                this._mousePositionOfPreviousMove = currentMousePosition;
 
-            Application.scene.camera.moveRelative(delta);
-            Application.scene.refresh();
+                Application.scene.camera.moveRelative(delta);
+                Application.scene.refresh();
+                return false;
+            }
+
+            if(this._mouseDownData.buttonType === MouseButton.Left) {
+                const delta = currentMousePosition.subtract(this._mouseDownData.position);
+                Application.scene.refresh();
+
+                const mouseDownAbsolutePos = this.getAbsoluteMouseDownPosition(ev);
+                this.drawMouseSelection(mouseDownAbsolutePos.x, mouseDownAbsolutePos.y, delta.x, delta.y);
+                this.selectIntersectingControls(mouseDownAbsolutePos, delta);
+                return false;
+            }
         }
 
-        if(this._mouseDownData.buttonType === MouseButton.Left) {
-            const delta = currentMousePosition.subtract(this._mouseDownData.position);
-            const cameraPos = Application.scene.camera.position;
+        let controls = this.getIntersectingControls(mouseAbsolutePos, new Vector2(0, 0));
+        
+        for (let control of controls) {
+            if (this.hoveredControls.indexOf(control) < 0) {
+                this.hoveredControls.push(control);
+                if (isInteractableControl(control)) {
+                    control.onMouseEnter(ev);
+                }
+            }
+        }
 
-            const mouseAbsolutePos = new Vector2(this._mouseDownData.position.x - cameraPos.x, this._mouseDownData.position.y - cameraPos.y);
+        controls = controls.sort((c1, c2) => { return c1.zIndex - c2.zIndex; })
+        for (let control of controls) {
+            if (isInteractableControl(control)) {
+                if (control.onMouseMove(ev))
+                    break;
+            }
+        }
 
-            Application.scene.refresh();
-
-            this.drawMouseSelection(mouseAbsolutePos.x, mouseAbsolutePos.y, delta.x, delta.y);
-            this.selectIntersectingControls(mouseAbsolutePos, delta);
+        for (let control of this.hoveredControls) {
+            if (controls.indexOf(control) < 0) {
+                this.hoveredControls.splice(this.hoveredControls.indexOf(control), 1);
+                if (isInteractableControl(control)) {
+                    control.onMouseLeave(ev);
+                }
+            }
         }
 
         return false;
@@ -120,7 +196,16 @@ export class Controller {
         }
     }
 
-    onMouseLeave(ev: MouseEvent) { }
+    onMouseLeave(ev: MouseEvent) {
+        if(this._mouseDownData) {
+            if(this._mouseDownData.buttonType === MouseButton.Left) {
+
+                Application.scene.nodes.forEach(c => c.selected = false);
+                Application.scene.refresh();
+                return false;
+            }
+        }
+     }
 
     onContextMenu(ev: MouseEvent) {
         ev.preventDefault();
@@ -142,8 +227,31 @@ export class Controller {
         // Unselect all
         Application.scene.nodes.forEach(c => c.selected = false);
 
-        const intersectingControls = Application.scene.nodes.filter(n => BoundingBox.checkIntersection(pos, size, n.position, n.size)) || [];
+        const intersectingControls = this.getIntersectingNodeControls(pos, size);
         intersectingControls.forEach(c => c.selected = true);
+    }
+
+    getIntersectingNodeControls(pos: Vector2, size: Vector2): NodeControl[] {
+        return Application.scene.nodes.filter(n => BoundingBox.checkIntersection(pos, size, n.position, n.size)) || [];
+    }
+
+    getIntersectingControls(pos: Vector2, size: Vector2): Control[] {
+        return Application.scene.controls.filter(n => BoundingBox.checkIntersection(pos, size, n.position, n.size)) || [];
+    }
+
+    getAbsoluteMousePosition(ev: MouseEvent) {
+        const cameraPos = Application.scene.camera.position;
+        const currentMousePosition = this.getMousePosition(ev);
+        const mouseAbsolutePos = new Vector2(currentMousePosition.x - cameraPos.x, currentMousePosition.y - cameraPos.y);
+
+        return mouseAbsolutePos;
+    }
+
+    getAbsoluteMouseDownPosition(ev: MouseEvent) {
+        const cameraPos = Application.scene.camera.position;
+        const mouseAbsolutePos = new Vector2(this._mouseDownData.position.x - cameraPos.x, this._mouseDownData.position.y - cameraPos.y);
+
+        return mouseAbsolutePos;
     }
 
     selectAllNodes() {
@@ -154,5 +262,9 @@ export class Controller {
     getMousePosition(ev): Vector2 {
         return new Vector2(ev.pageX - this._element.offsetLeft, ev.pageY - this._element.offsetTop);
     }
+}
+
+function InteractableControl() {
+    throw new Error("Function not implemented.");
 }
 

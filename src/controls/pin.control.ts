@@ -21,11 +21,13 @@ export class PinControl extends Control implements DrawableControl {
 
     private _isInput: boolean;
     private _color: string;
+    private hidden: boolean;
 
     constructor(parentPosition: Vector2, pin: PinProperty) {
         super(0, 0);
         this._parentPosition = parentPosition;
         this._pinProperty = pin;
+        this.hidden = false;
 
         this._isInput = this._pinProperty.direction !== PinDirection.EGPD_Output;
         this._color = ColorUtils.getPinColor(this._pinProperty);
@@ -41,7 +43,14 @@ export class PinControl extends Control implements DrawableControl {
         }
     }
 
+    public setHidden(hidden: boolean) {
+        this.hidden = hidden;
+    }
+
     public draw(canvas: Canvas2D): void {
+
+        if (this.hidden)
+            return;
 
         let pinCategory = this.pinProperty.category;
         canvas.fillStyle(this._color).strokeStyle(this._color);

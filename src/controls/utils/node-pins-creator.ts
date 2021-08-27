@@ -36,6 +36,8 @@ export class NodePinsCreator {
     private _outputPins: Array<PinProperty>;
     private _node: Node;
 
+    private requiredMinimumWidth: number;
+
     constructor(node: Node, requiredMinimumWidth: number) {
 
         this._width = 0;
@@ -54,19 +56,26 @@ export class NodePinsCreator {
         })
 
         this._node = node;
+        this.requiredMinimumWidth = requiredMinimumWidth;
 
-        const pinRows = Math.max(this.getPinRows(this._inputPins), this.getPinRows(this._outputPins));
+        this.recalculateDimensions();
+    }
+
+    private recalculateDimensions(useAdvancedDisplay?: boolean) {
+        this._height = 0;
+
+        const pinRows = Math.max(this.getPinRows(this._inputPins, useAdvancedDisplay), this.getPinRows(this._outputPins, useAdvancedDisplay));
         this._height = pinRows * (NodePinsCreator._PIN_LINE_HEIGHT + NodePinsCreator._PIN_MARGIN_BOTTOM) + NodePinsCreator._PINS_PADDING_TOP;
 
-        const inputWidth = this.getMaxPinTextWidth(this._inputPins) + NodePinsCreator._PIN_ICON_WIDTH;
-        const outputWidth = this.getMaxPinTextWidth(this._outputPins) + NodePinsCreator._PIN_ICON_WIDTH;
+        const inputWidth = this.getMaxPinTextWidth(this._inputPins, useAdvancedDisplay) + NodePinsCreator._PIN_ICON_WIDTH;
+        const outputWidth = this.getMaxPinTextWidth(this._outputPins, useAdvancedDisplay) + NodePinsCreator._PIN_ICON_WIDTH;
 
         this._width = inputWidth + outputWidth;
         if(this._inputPins.length > 0 && this._outputPins.length > 0) {
             this._width += NodePinsCreator._SPACING_BETWEEN_INPUT_AND_OUTPUT_PINS;
         }
 
-        this._width = Math.max(requiredMinimumWidth, this._width);
+        this._width = Math.max(this.requiredMinimumWidth, this._width);
     }
 
     public get dimensions(): { width: number, height: number } {
@@ -81,7 +90,7 @@ export class NodePinsCreator {
 
     private calculatePinPositions(pins: Array<PinProperty>, nodePosition: Vector2, offset?: Vector2): Array<PinControl> {
         let pinControls = [];
-        let lastPinPosition = new Vector2(offset.x, offset.y) || new Vector2(0, 0);
+        let lastPinPosition = offset?.copy() || new Vector2(0, 0);
 
         lastPinPosition.y += (NodePinsCreator._PIN_LINE_HEIGHT / 2)    // Moves the pin exactly below the top line of the node box
                           + NodePinsCreator._PINS_PADDING_TOP;         // Gives a space between pin and top line of the node box
@@ -98,12 +107,19 @@ export class NodePinsCreator {
         return pinControls;
     }
 
-    private calculatePinPosition(pin: PinControl, lastPinPosition: Vector2) {
+    private calculatePinPosition(pin: PinControl, lastPinPosition: Vector2, useAdvancedDisplay?: boolean) {
 
         if (this._node.class === UnrealNodeClass.KNOT) {
             pin.position.x = 0;
             pin.position.y = 0;
             return;
+        }
+
+        if (useAdvancedDisplay && pin.pinProperty.advancedView === true && !pin.pinProperty.isLinked) {
+            pin.setHidden(true);
+            return;
+        } else {
+            pin.setHidden(false);
         }
 
         if (pin.pinProperty.category === PinCategory.delegate) {
@@ -125,12 +141,44 @@ export class NodePinsCreator {
         }
     }
 
+    public recalculatePinControlPositions(pins: Array<PinControl>, offset?: Vector2, useAdvancedDisplay?: boolean) {
+        this.recalculateDimensions(useAdvancedDisplay);
 
-    private getMaxPinTextWidth(pins: Array<PinProperty>): number {
+        let lastPinPosition = offset?.copy() || new Vector2(0, 0);
+        lastPinPosition.y += (NodePinsCreator._PIN_LINE_HEIGHT / 2)    // Moves the pin exactly below the top line of the node box
+                          + NodePinsCreator._PINS_PADDING_TOP;         // Gives a space between pin and top line of the node box
+
+
+        let inputPins = [];
+        let outputPins = [];
+
+        for (const pin of pins) {
+            if (pin.pinProperty.direction === PinDirection.EGPD_Output)
+                outputPins.push(pin);
+
+            if (pin.pinProperty.direction === PinDirection.EGPD_Input)
+                inputPins.push(pin);
+        }
+        
+                          
+        for (const pin of inputPins) {
+            this.calculatePinPosition(pin, lastPinPosition, useAdvancedDisplay);
+        }
+
+        for (const pin of outputPins) {
+            this.calculatePinPosition(pin, lastPinPosition, useAdvancedDisplay);
+        }
+    }
+
+
+    private getMaxPinTextWidth(pins: Array<PinProperty>, useAdvancedDisplay?: boolean): number {
         let width = 0;
         Application.canvas.getContext().font = Constants.NODE_FONT;
 
         for (let i = 0; i < pins.length; ++i) {
+            if (useAdvancedDisplay && pins[i].advancedView === true)
+                continue;
+
             const textWidth = PinControl.calculateTotalPinWidth(pins[i]);
 
             if (textWidth > width) {
@@ -141,9 +189,12 @@ export class NodePinsCreator {
         return width;
     }
 
-    private getPinRows(pins: PinProperty[]): number {
+    private getPinRows(pins: PinProperty[], useAdvancedDisplay?: boolean): number {
         let count = 0;
         for (let i = 0; i < pins.length; ++i) {
+            if (useAdvancedDisplay && pins[i].advancedView === true && !pins[i].isLinked)
+                continue;
+
             if (pins[i].category !== PinCategory.delegate)
                 count++;
         }

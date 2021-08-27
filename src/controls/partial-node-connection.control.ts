@@ -28,7 +28,7 @@ export class NodePartialConnectionControl extends Control implements DrawableCon
 
     draw(canvas: Canvas2D): void {
         canvas.save();
-        canvas.translate(this.position.x, this.position.y);
+        canvas.translate(this._pin.getAbsolutPosition().x, this._pin.getAbsolutPosition().y);
 
         canvas.lineWidth(this._lineWidth)
         .beginPath()

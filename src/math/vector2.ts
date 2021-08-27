@@ -29,4 +29,8 @@ export class Vector2 {
     toString(): string {
         return `Vector2(x: ${this.x}, y: ${this.y})`;
     }
+
+    copy(): Vector2 {
+        return new Vector2(this.x, this.y);
+    }
 }

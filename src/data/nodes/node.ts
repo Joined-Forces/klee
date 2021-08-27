@@ -17,4 +17,5 @@ export interface Node {
     sourceText: string;
     customProperties: CustomProperty[];
     backgroundColor?: string;
+    advancedPinDisplay?: boolean;
 }

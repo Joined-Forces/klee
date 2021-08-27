@@ -3,6 +3,8 @@ import { Vector2 } from "../math/vector2";
 export abstract class Control {
 
     private _position: Vector2;
+    protected width: number;
+    protected height: number;
     private _zIndex: number;
 
     constructor(x: number, y: number, zIndex?: number) {
@@ -16,6 +18,10 @@ export abstract class Control {
 
     set position(value: Vector2) {
         this._position = value;
+    }
+
+    public get size(): Vector2 {
+        return new Vector2(this.width, this.height);
     }
 
     get zIndex() {

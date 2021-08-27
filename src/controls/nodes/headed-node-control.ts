@@ -20,7 +20,7 @@ export class HeadedNodeControl extends NodeControl implements DrawableControl {
     private static readonly _NODE_DEFAULT_BACKGROUND_COLOR = '78, 117, 142';
 
     private _fillStyleHeader: CanvasGradient;
-    private _headerHeight = HeadedNodeControl._NODE_HEADER_TITLE_HEIGHT;
+    protected _headerHeight = HeadedNodeControl._NODE_HEADER_TITLE_HEIGHT;
     private _icon: Path2D = undefined;
 
     constructor(node: Node, icon?: string) {
@@ -66,7 +66,7 @@ export class HeadedNodeControl extends NodeControl implements DrawableControl {
         canvas.restore();
     }
 
-    private drawTitle(canvas: Canvas2D) {
+    protected drawTitle(canvas: Canvas2D) {
         canvas.fillStyle(this._fillStyleHeader)
             .roundedRectangle(0, 0, this.width, this._headerHeight, { radiusTopLeft: 5, radiusTopRight: 5, radiusBottomLeft: 0, radiusBottomRight: 0 })
             .fill()

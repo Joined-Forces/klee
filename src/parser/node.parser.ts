@@ -27,8 +27,11 @@ export abstract class NodeParser {
 
     protected parseProperty(node: Node, line: string): boolean {
         const dataset = line.split('=');
-        const key = dataset.shift();
+        let key = dataset.shift();
         const value = dataset.join('=');
+
+        // Remove array index suffix of a property like the EnumEntries(0) in K2Node_SwitchEnum
+        key = key.replace(/\((.+)\)/g, "");
 
         const propertyParser = this._propertyParsers[key];
         if (!propertyParser) return false;
