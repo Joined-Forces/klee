@@ -14,7 +14,7 @@ export class FoldableHeadedNodeControl extends HeadedNodeControl implements Draw
 
     constructor(node: Node, icon?: string) {
         super(node, icon);
-        console.log(node.advancedPinDisplay);
+
         this.foldState = (node.advancedPinDisplay !== undefined) ? node.advancedPinDisplay : true;
 
         if (this.foldState == false) {

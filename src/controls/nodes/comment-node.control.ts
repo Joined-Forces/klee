@@ -45,7 +45,6 @@ export class CommentNodeControl extends NodeControl implements DrawableControl {
     }
 
     private applyCommentColor(nodeColor: string) {
-        console.log(nodeColor);
         if (nodeColor == undefined || nodeColor == '')
             nodeColor = CommentNodeControl._DEFAULT_COMMENT_COLOR;
 

@@ -44,8 +44,8 @@ export class NodePinsCreator {
         this._height = 0;
 
         this._properties = node.customProperties.filter(p => p instanceof PinProperty) as PinProperty[];
-        this._inputPins = [];
-        this._outputPins = [];
+        this._inputPins = new Array<PinProperty>();
+        this._outputPins = new Array<PinProperty>();
 
         this._properties.forEach(p => {
             if (p.direction == PinDirection.EGPD_Output) {
@@ -85,7 +85,7 @@ export class NodePinsCreator {
     public createPins(nodePosition: Vector2, offset?: Vector2): Array<PinControl> {
 
         const pinControls = this.calculatePinPositions(this._inputPins, nodePosition, offset);
-        return pinControls.concat(pinControls, this.calculatePinPositions(this._outputPins, nodePosition, offset));
+        return pinControls.concat(this.calculatePinPositions(this._outputPins, nodePosition, offset));
     }
 
     private calculatePinPositions(pins: Array<PinProperty>, nodePosition: Vector2, offset?: Vector2): Array<PinControl> {
@@ -144,8 +144,8 @@ export class NodePinsCreator {
     public recalculatePinControlPositions(pins: Array<PinControl>, offset?: Vector2, useAdvancedDisplay?: boolean) {
         this.recalculateDimensions(useAdvancedDisplay);
 
-        let lastPinPosition = offset?.copy() || new Vector2(0, 0);
-        lastPinPosition.y += (NodePinsCreator._PIN_LINE_HEIGHT / 2)    // Moves the pin exactly below the top line of the node box
+        let pinPosition = offset?.copy() || new Vector2(0, 0);
+        pinPosition.y += (NodePinsCreator._PIN_LINE_HEIGHT / 2)    // Moves the pin exactly below the top line of the node box
                           + NodePinsCreator._PINS_PADDING_TOP;         // Gives a space between pin and top line of the node box
 
 
@@ -160,11 +160,12 @@ export class NodePinsCreator {
                 inputPins.push(pin);
         }
         
-                          
+        let lastPinPosition = pinPosition.copy();
         for (const pin of inputPins) {
             this.calculatePinPosition(pin, lastPinPosition, useAdvancedDisplay);
         }
 
+        lastPinPosition = pinPosition.copy();
         for (const pin of outputPins) {
             this.calculatePinPosition(pin, lastPinPosition, useAdvancedDisplay);
         }
