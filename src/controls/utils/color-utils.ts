@@ -42,6 +42,8 @@ export class ColorUtils {
 
             case PinCategory.name:
                 return 'rgb(150, 97, 185)';
+            case PinCategory.string:
+                return 'rgb(254, 0, 212)';
             case PinCategory.object:
                 return 'rgb(0, 133, 191)';
             default: 

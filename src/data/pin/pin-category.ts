@@ -5,6 +5,7 @@ export enum PinCategory {
     object,
     int,
     int64,
+    string,
     float,
     struct,
     bool,
