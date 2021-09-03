@@ -23,6 +23,7 @@ import { PinProperty } from "../../data/pin/pin-property";
 import { PinDirection } from "../../data/pin/pin-direction";
 import { PinCategory } from "../../data/pin/pin-category";
 import { MacroInstanceNodeParser } from "./macro-instance-node.parser";
+import { FunctionEntryNodeParser } from "./function-entry-node.parser";
 
 
 export class GenericNodeParser extends NodeParser {
@@ -34,8 +35,11 @@ export class GenericNodeParser extends NodeParser {
     } = {
         [UnrealNodeClass.COMMENT]: () => new CommentNodeParser(),
         [UnrealNodeClass.CALL_FUNCTION]: () => new CallFunctionNodeParser(),
+        [UnrealNodeClass.FUNCTION_ENTRY]: () => new FunctionEntryNodeParser(),
+        [UnrealNodeClass.FUNCTION_RESULT]: () => new FunctionEntryNodeParser(),
         [UnrealNodeClass.CommutativeAssociativeBinaryOperator]: () => new CallFunctionNodeParser(),
         [UnrealNodeClass.VARIABLE_GET]: () => new VariableNodeParser(),
+        [UnrealNodeClass.SELF]: () => new VariableNodeParser(),
         [UnrealNodeClass.VARIABLE_SET]: () => new VariableNodeParser(),
         [UnrealNodeClass.EVENT]: () => new EventNodeParser(),
         [UnrealNodeClass.CUSTOM_EVENT]: () => new CustomEventNodeParser(),

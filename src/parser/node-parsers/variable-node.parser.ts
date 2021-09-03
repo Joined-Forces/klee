@@ -17,7 +17,6 @@ export class VariableNodeParser extends NodeParser {
             "VariableReference": (node: VariableNode, value: string) => {
                 const parser = new NodeDataReferenceParser();
                 node.variableReference = parser.parse(value);
-                node.title = undefined;
             },
         });
     }
@@ -35,6 +34,8 @@ export class VariableNodeParser extends NodeParser {
             data.node.title = "SET";
             this.hideOutputPinNames(variableNode);
             return new SetterNodeControl(data.node);
+        } else {
+            data.node.title = undefined;
         }
         return new HeadlessNodeControl(data.node);
     }
