@@ -27,16 +27,7 @@ export class NodeDataReferenceParser {
 
             switch(key) {
                 case "MemberName": dataRef.memberName = this.translateFunctionName(BlueprintParserUtils.parseString(value)); break;
-                case "MemberParent":
-                    dataRef.memberParent = NodeDataReferenceParser.parseClassReference(value);
-                    // if (value.startsWith('Class')) {
-                    //     value = value.replace('Class', '');
-                    //     value = value.replace(/'/g, '').replace(/"/g, '');
-                    //     dataRef.memberParent = value;
-                    // } else {
-                    //     dataRef.memberParent = value;
-                    // }
-                    break;
+                case "MemberParent": dataRef.memberParent = NodeDataReferenceParser.parseClassReference(value); break;
                 case "MemberGuid": dataRef.memberGUID = value; break;
                 case "bSelfContext": dataRef.selfContext = value == "True"; break;
             }
@@ -57,10 +48,10 @@ export class NodeDataReferenceParser {
 
     static parseClassReference(referenceString: string): NodeClassReference {
 
-        let type = referenceString.substring(0, referenceString.indexOf("'"));
-        let className = referenceString.substring(referenceString.indexOf("'"));
-        className = className.replace(/'/g, '').replace(/"/g, '');
+        const type = referenceString.substring(0, referenceString.indexOf("'"));
+        const classPath = referenceString.substring(referenceString.indexOf("'")).replace(/['"]/g, '');
+        const className = BlueprintParserUtils.getClassFriendlyName(classPath);
 
-        return { type: type, class: className };
+        return { type, classPath, className };
     }
 }

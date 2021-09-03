@@ -83,9 +83,6 @@ export class PinPropertyParser implements CustomPropertyParser {
             parse(this._property, value);
         }
 
-        if (this._property.hidden)
-            return undefined;
-
         return this._property;
     }
 

@@ -119,9 +119,10 @@ export class GenericNodeParser extends NodeParser {
     private parseCustomProperties(data: ParsingNodeData): void {
         for (const line of data.unparsedLines) {
             if (line.startsWith('CustomProperties')) {
-                let property = this.parseCustomProperty(line, data.node.name);
-                if (property)
-                    data.node.customProperties.push(property);
+                const property = this.parseCustomProperty(line, data.node.name);
+                if (!property) { continue; }
+
+                data.node.customProperties.push(property);
             }
         }
 
@@ -140,8 +141,13 @@ export class GenericNodeParser extends NodeParser {
         data = data.trim();
         data = data.substr(1, data.length - 2);
 
-        const propertyParser = this._customPropertyParsers[type]();
-        const customProperty = propertyParser.parse(data, nodeName);
+        const propertyParser = this._customPropertyParsers[type];
+        if(!propertyParser) {
+            console.info(`There is no implementation for custom property type '${type}'. Skip this property`);
+            return;
+        }
+
+        const customProperty = propertyParser().parse(data, nodeName);
 
         return customProperty;
     }

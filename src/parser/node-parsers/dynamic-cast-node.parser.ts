@@ -21,7 +21,7 @@ export class DynamicCastNodeParser extends NodeParser {
         this.parseProperties(data);
 
         let castNode = (data.node as DynamicCastNode);
-        castNode.title = "Cast to " + BlueprintParserUtils.getClassFriendlyName(castNode.targetType.class);
+        castNode.title = "Cast to " + castNode.targetType.className;
         castNode.backgroundColor = "32, 116, 120";
         
 

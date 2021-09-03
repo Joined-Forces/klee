@@ -6,7 +6,7 @@ import { MathFunctionNodeParser } from "./math-function-node.parser";
 import { NodeDataReferenceParser } from "../node-data-reference.parser";
 import { NodeParser } from "../node.parser";
 import { ParsingNodeData } from "../parsing-node-data";
-import { insertSpacesBetweenCapitalizedWords } from "../../utils/text-utils";
+import { insertSpacesBetweenCapitalizedWords, prettifyText } from "../../utils/text-utils";
 import { IconLibrary } from "../../controls/utils/icon-library";
 
 
@@ -25,6 +25,22 @@ export class CallFunctionNodeParser extends NodeParser {
                 const parser = new NodeDataReferenceParser();
                 node.functionReference = parser.parse(value);
                 node.title = insertSpacesBetweenCapitalizedWords(node.functionReference.memberName);
+
+                if(node.functionReference.selfContext === true) {
+                    node.subTitles.push({ text: `Target is self context`});
+                } else if(node.functionReference?.memberParent?.className) { // && node.functionReference?.memberParent?.type !== 'Class'
+
+                    // Get self pin
+                    const selfPin = node.customProperties.find(p => {
+                        return (<PinProperty>p)?.name?.toLowerCase() === 'self';
+                    }) as PinProperty;
+
+                    // Only show the target information if the self pin isn't hidden.
+                    if (!(selfPin && selfPin.hidden)) {
+                        const formattedClassName = prettifyText(node.functionReference?.memberParent?.className);
+                        node.subTitles.push({ text: `Target is ${formattedClassName}`});
+                    }
+                }
             },
         });
     }
@@ -37,7 +53,7 @@ export class CallFunctionNodeParser extends NodeParser {
 
         node.backgroundColor = node.isPureFunc === true ? CallFunctionNodeParser._DEFAULT_PURE_FUNC_BACKGROUND_COLOR : CallFunctionNodeParser._DEFAULT_FUNC_BACKGROUND_COLOR;
 
-        if (node.functionReference.memberParent.class === CallFunctionNodeParser._KISMET_MATH_LIBRARY) {
+        if (node.functionReference?.memberParent?.classPath === CallFunctionNodeParser._KISMET_MATH_LIBRARY) {
             return new MathFunctionNodeParser().parse(data);
         }
 

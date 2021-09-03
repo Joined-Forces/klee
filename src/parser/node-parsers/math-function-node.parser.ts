@@ -48,6 +48,7 @@ export class MathFunctionNodeParser extends NodeParser {
     public parse(data: ParsingNodeData): NodeControl {
         const node = data.node as MathFunctionNode;
         const mathFunc = this.MATH_FUNCTIONS.find(f => node.functionReference.memberName.startsWith(f.name));
+        node.subTitles = [];
         node.isPrimitiveNode = !!mathFunc;
         if(node.isPrimitiveNode) {
             node.title = mathFunc.displayName;
@@ -71,21 +72,3 @@ export class MathFunctionNodeParser extends NodeParser {
         return IconLibrary.FUNCTION;
     }
 }
-
-// if (this.node.isMathFunction) {
-//     let functionName = (this.node as CallFunctionNodeObject).functionReference.memberName;
-//     let operator = '';
-
-//     if (functionName.startsWith("Multiply"))
-//         operator = '×';
-//     if (functionName.startsWith("Divide"))
-//         operator = '÷';
-
-//         canvas.fillStyle(this.fillStyleText)
-//             .textAlign('center')
-//             .font('24px sans-serif')
-//             .fillText(operator, this.width * .5, this.height * .5 + 9);
-
-// } else {
-
-// }

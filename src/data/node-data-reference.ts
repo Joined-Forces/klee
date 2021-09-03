@@ -4,5 +4,5 @@ export interface NodeDataReference {
     memberName?: string;
     memberParent?: NodeClassReference;
     memberGUID?: string;
-    selfContext?: boolean;
+    selfContext?: boolean;  // e.g.: Used to call a custom event within the same graph
 }
