@@ -18,9 +18,6 @@ export class SwitchEnumNodeParser extends NodeParser {
                     node.enumEntries = [];
 
                 node.enumEntries.push(BlueprintParserUtils.parseString(value));
-            },
-            "AdvancedPinDisplay": (node: SwitchEnumNode, value: string) => {
-                node.advancedPinDisplay = value === "Shown" ? true : false;
             }
         });
     }

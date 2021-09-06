@@ -33,25 +33,26 @@ export class GenericNodeParser extends NodeParser {
     private _nodeParsers: {
         [key in UnrealNodeClass]: () => NodeParser
     } = {
-        [UnrealNodeClass.COMMENT]: () => new CommentNodeParser(),
+        [UnrealNodeClass.KNOT]: () => new KnotNodeParser(),
         [UnrealNodeClass.CALL_FUNCTION]: () => new CallFunctionNodeParser(),
-        [UnrealNodeClass.FUNCTION_ENTRY]: () => new FunctionEntryNodeParser(),
-        [UnrealNodeClass.FUNCTION_RESULT]: () => new FunctionEntryNodeParser(),
-        [UnrealNodeClass.CommutativeAssociativeBinaryOperator]: () => new CallFunctionNodeParser(),
+        [UnrealNodeClass.IF_THEN_ELSE]: () => new FlowControlNodeParser(),
+        [UnrealNodeClass.EXECUTION_SEQUENCE]: () => new FlowControlNodeParser(),
+        [UnrealNodeClass.MULTI_GATE]: () => new FlowControlNodeParser(),
         [UnrealNodeClass.VARIABLE_GET]: () => new VariableNodeParser(),
-        [UnrealNodeClass.SELF]: () => new VariableNodeParser(),
         [UnrealNodeClass.VARIABLE_SET]: () => new VariableNodeParser(),
         [UnrealNodeClass.EVENT]: () => new EventNodeParser(),
         [UnrealNodeClass.CUSTOM_EVENT]: () => new CustomEventNodeParser(),
         [UnrealNodeClass.INPUT_AXIS_EVENT]: () => new InputAxisNodeParser(),
-        [UnrealNodeClass.KNOT]: () => new KnotNodeParser(),
+        [UnrealNodeClass.COMMENT]: () => new CommentNodeParser(),
         [UnrealNodeClass.INPUT_KEY]: () => new InputKeyNodeParser(),
+        [UnrealNodeClass.CommutativeAssociativeBinaryOperator]: () => new CallFunctionNodeParser(),
         [UnrealNodeClass.DYNAMIC_CAST]: () => new DynamicCastNodeParser(),
-        [UnrealNodeClass.IF_THEN_ELSE]: () => new FlowControlNodeParser(),
-        [UnrealNodeClass.EXECUTION_SEQUENCE]: () => new FlowControlNodeParser(),
-        [UnrealNodeClass.MULTI_GATE]: () => new FlowControlNodeParser(),
         [UnrealNodeClass.SWITCH_ENUM]: () => new SwitchEnumNodeParser(),
         [UnrealNodeClass.MACRO_INSTANCE]: () => new MacroInstanceNodeParser(),
+        [UnrealNodeClass.FUNCTION_ENTRY]: () => new FunctionEntryNodeParser(),
+        [UnrealNodeClass.FUNCTION_RESULT]: () => new FunctionEntryNodeParser(),
+        [UnrealNodeClass.CALL_ARRAY_FUNCTION]: () => undefined,
+        [UnrealNodeClass.SELF]: () => new VariableNodeParser(),
     }
 
     private readonly _customPropertyParsers: {
@@ -64,7 +65,10 @@ export class GenericNodeParser extends NodeParser {
         super({
             "NodeGuid": (node: Node, v: string) => { node.guid = v; },
             "NodePosX": (node: Node, v: string) => { node.pos.x = Number.parseInt(v); },
-            "NodePosY": (node: Node, v: string) => { node.pos.y = Number.parseInt(v); }
+            "NodePosY": (node: Node, v: string) => { node.pos.y = Number.parseInt(v); },
+            "AdvancedPinDisplay": (node: Node, v: string) => {
+                node.advancedPinDisplay = v === "Shown" ? true : false;
+            }
         });
     }
 

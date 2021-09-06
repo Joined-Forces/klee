@@ -44,7 +44,6 @@ export class Application {
 
         window.addEventListener('resize', this.refresh.bind(this), false);
 
-        Application._scene.collectInteractables();        
         this.refresh();
     }
 
@@ -62,9 +61,10 @@ export class Application {
         this._element.style.outline = 'none';
     }
 
-    private refresh() {
+    public refresh() {
         this._element.width = this._element.offsetWidth;
         this._element.height = this._element.offsetHeight;
+        Application._scene.collectInteractables();
         Application._scene.updateLayout();
         Application._scene.refresh();
     }
@@ -90,8 +90,10 @@ export class Application {
         Application._scene.unload();
         const nodes = this._parser.parseBlueprint(text);
         Application._scene.load(nodes);
+        Application._scene.refresh();
 
         this.recenterCamera();
+        
     }
 
     recenterCamera() {

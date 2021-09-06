@@ -37,6 +37,12 @@ export class FoldableHeadedNodeControl extends HeadedNodeControl implements Draw
             }
         }
 
+        this.nodeButton.refreshLayout();
         this.refreshLayout();
+
+        for (let pin of this.pins) { 
+            pin.refreshLayout();
+        }
+
     }
 }

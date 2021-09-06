@@ -9,6 +9,7 @@ import { ParsingNodeData } from "../parsing-node-data";
 import { insertSpacesBetweenCapitalizedWords, prettifyText } from "../../utils/text-utils";
 import { IconLibrary } from "../../controls/utils/icon-library";
 import { UnrealNodeClass } from "../../data/classes/unreal-node-class";
+import { FoldableHeadedNodeControl } from "../../controls/nodes/foldable-headed-node.control";
 
 
 export class CallFunctionNodeParser extends NodeParser {
@@ -66,7 +67,11 @@ export class CallFunctionNodeParser extends NodeParser {
             return new MathFunctionNodeParser().parse(data);
         }
 
-        return new HeadedNodeControl(node, icon);
+        if (node.advancedPinDisplay !== undefined) {
+            return new FoldableHeadedNodeControl(node, icon);
+        } else {
+            return new HeadedNodeControl(node, icon);
+        }
     }
 
     private handleFunctionNode(node: CallFunctionNode) {
