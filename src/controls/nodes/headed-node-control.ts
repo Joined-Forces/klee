@@ -2,26 +2,27 @@ import { Canvas2D } from "../../canvas";
 import { Node } from "../../data/nodes/node";
 import { DrawableControl } from "../interfaces/drawable";
 import { NodeControl } from "./node.control";
-import { ColorUtils } from "../utils/color-utils";
 import { Application } from "../../application";
 import { Vector2 } from "../../math/vector2";
 import { Constants } from "../../constants";
-import { IconLibrary } from "../utils/icon-library";
+import { Header } from "../header";
+import { HorizontalPanel } from "../horizontal-panel";
+import { VerticalPanel } from "../vertical-panel";
+import { PinProperty } from "../../data/pin/pin-property";
+import { PinControl } from "../pin.control";
+import { PinDirection } from "../../data/pin/pin-direction";
+import { PinCategory } from "../../data/pin/pin-category";
 
 
 export class HeadedNodeControl extends NodeControl implements DrawableControl {
 
-    private static readonly _NODE_HEADER_PADDING_TOP = 15;
-    private static readonly _NODE_HEADER_TITLE_HEIGHT = 23;
-    private static readonly _NODE_HEADER_SUBTITLE_HEIGHT = 14;
-    private static readonly _NODE_HEADER_SPACE_BETWEEN_TITLE_AND_SUBTITLE = 4;
-    private static readonly _NODE_HEADER_PADDING_LEFT = 29;
-    private static readonly _NODE_HEADER_ICONS_WIDTH = 92;
-    private static readonly _NODE_DEFAULT_BACKGROUND_COLOR = '78, 117, 142';
+    private static readonly NODE_HEADER_TITLE_HEIGHT = 23;
+    private static readonly NODE_HEADER_SUBTITLE_HEIGHT = 14;
+    private static readonly NODE_HEADER_SPACE_BETWEEN_TITLE_AND_SUBTITLE = 4;
+    private static readonly NODE_HEADER_ICONS_WIDTH = 50;
 
-    private _fillStyleHeader: CanvasGradient;
-    protected _headerHeight = HeadedNodeControl._NODE_HEADER_TITLE_HEIGHT;
-    private _icon: Path2D = undefined;
+    protected headerHeight = HeadedNodeControl.NODE_HEADER_TITLE_HEIGHT;
+    private header: Header;
 
     constructor(node: Node, icon?: string) {
         super(node);
@@ -31,79 +32,48 @@ export class HeadedNodeControl extends NodeControl implements DrawableControl {
             for (const subTitle of this.node.subTitles) {
                 largestTitleWidth = Math.max(largestTitleWidth, Application.canvas.getContext().measureText(subTitle.text).width);
             }
-            this._headerHeight += (HeadedNodeControl._NODE_HEADER_SPACE_BETWEEN_TITLE_AND_SUBTITLE - 2) + (HeadedNodeControl._NODE_HEADER_SUBTITLE_HEIGHT * node.subTitles.length);
+            this.headerHeight += (HeadedNodeControl.NODE_HEADER_SPACE_BETWEEN_TITLE_AND_SUBTITLE - 2) + (HeadedNodeControl.NODE_HEADER_SUBTITLE_HEIGHT * node.subTitles.length);
         }
 
-        this.width = largestTitleWidth + HeadedNodeControl._NODE_HEADER_ICONS_WIDTH;
+        this.minHeight = HeadedNodeControl.NODE_HEADER_TITLE_HEIGHT;
+        this.minWidth = largestTitleWidth + HeadedNodeControl.NODE_HEADER_ICONS_WIDTH;
 
-        this.createPins(new Vector2(0, this._headerHeight));
 
-        this._fillStyleHeader = this.getHeaderFillStyle();
 
-        if (icon) {
-            this._icon = new Path2D(icon);
+        this.header = new Header(node, icon);
+        this.header.fillParentHorizontal = true;
+
+        this.createPins(new Vector2(0, this.headerHeight));
+        this.mainPanel.insert(this.header, 0);
+    }
+
+    protected createPin(property: PinProperty) {
+        let pinControl = new PinControl(this.position, property);
+        this.pins.push(pinControl);
+
+        if (property.category === PinCategory.delegate) {
+            this.header.add(pinControl);
+            return;
+        }
+
+        if (property.direction == PinDirection.EGPD_Output) {
+            this.outputPinPanel.add(pinControl);
+        } else {
+            this.inputPinPanel.add(pinControl);
         }
     }
 
-    public draw(canvas: Canvas2D) {
-
-        canvas.save();
-
-        canvas.translate(this.position.x, this.position.y);
+    protected onDraw(canvas: Canvas2D) {
+        super.onDraw(canvas);
 
         canvas.fillStyle(Constants.NODE_BACKGROUND_COLOR)
             .font(Constants.NODE_FONT)
-            .roundedRectangle(0, 0, this.width, this.height, 5)
+            .roundedRectangle(0, 0, this.size.x, this.size.y, 5)
             .fill()
 
-        this.drawTitle(canvas);
-
-        canvas.roundedRectangle(0, 0, this.width, this.height, 5);
-
+        canvas.roundedRectangle(0, 0, this.size.x, this.size.y, 5);
         this.drawStroke(canvas);
-        this.drawPins(canvas);
-
-        canvas.restore();
     }
 
-    protected drawTitle(canvas: Canvas2D) {
-        canvas.fillStyle(this._fillStyleHeader)
-            .roundedRectangle(0, 0, this.width, this._headerHeight, { radiusTopLeft: 5, radiusTopRight: 5, radiusBottomLeft: 0, radiusBottomRight: 0 })
-            .fill()
-            .font(Constants.NODE_HEADER_FONT)
-            .textAlign('left')
-            .fillStyle(Constants.NODE_TEXT_COLOR)
-            .fillText(this.node.title, HeadedNodeControl._NODE_HEADER_PADDING_LEFT, HeadedNodeControl._NODE_HEADER_PADDING_TOP);
 
-        if (this._icon) {
-            canvas.save();
-
-            canvas.fillStyle("#fff")
-            .strokeStyle("rgba(0,0,0,0.4)")
-            .lineWidth(1.5)
-            .translate(8, 4)
-            .stroke(this._icon)
-            .fill(this._icon);
-
-            canvas.restore();
-        }
-
-        if (this.node.subTitles && this.node.subTitles.length > 0) {
-            let y = HeadedNodeControl._NODE_HEADER_PADDING_TOP + HeadedNodeControl._NODE_HEADER_SPACE_BETWEEN_TITLE_AND_SUBTITLE;
-            for (const subTitle of this.node.subTitles.sort((a, b) => (b.orderIndex || 0) - (a.orderIndex || 0))) {
-                y += HeadedNodeControl._NODE_HEADER_SUBTITLE_HEIGHT;
-                canvas.font(Constants.NODE_FONT)
-                    .fillStyle("rgb(165,135,100)")
-                    .fillText(subTitle.text, HeadedNodeControl._NODE_HEADER_PADDING_LEFT, y);
-            }
-        }
-    }
-
-    private getHeaderFillStyle(): CanvasGradient {
-        const backgroundColor = this.node.backgroundColor || HeadedNodeControl._NODE_DEFAULT_BACKGROUND_COLOR;
-        const gradient = Application.canvas.getContext().createLinearGradient(0, 0, 150, 0);
-        gradient.addColorStop(0, `rgb(${backgroundColor})`);
-        gradient.addColorStop(1, `rgba(${backgroundColor},0.15)`);
-        return gradient;
-    }
 }

@@ -2,6 +2,9 @@ import { Canvas2D } from "../../canvas";
 import { DrawableControl } from "../interfaces/drawable";
 import { NodeControl } from "./node.control";
 import { Node } from "../../data/nodes/node";
+import { PinProperty } from "../../data/pin/pin-property";
+import { PinControl } from "../pin.control";
+import { PinDirection } from "../../data/pin/pin-direction";
 
 
 export class RerouteNodeControl extends NodeControl implements DrawableControl {
@@ -12,14 +15,26 @@ export class RerouteNodeControl extends NodeControl implements DrawableControl {
         this.height = 12;
 
         this._stroke.lineWidth = 0.5;
+        this.drawChildren = false;
 
         this.createPins();
     }
 
-    draw(canvas: Canvas2D) {
+
+    protected override onPinCreated(pin: PinControl) {
+        pin.ignoreLayout = true;
+        this.outputPinPanel.add(pin);
+        pin.position.y = -14;
+
+        if (pin.pinProperty.direction === PinDirection.EGPD_Input) {
+            pin.position.x = 50;
+        }
+    }
+
+    onDraw(canvas: Canvas2D) {
         canvas.fillStyle(`rgb(${this.node.backgroundColor})`)
-            .fillCircle(this.position.x + 6, this.position.y, 2.3)
-            .fillCircle(this.position.x, this.position.y, 6)
+            .fillCircle(6, 0, 2.3)
+            .fillCircle(0, 0, 6)
 
         this.drawStroke(canvas);
     }

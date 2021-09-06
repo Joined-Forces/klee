@@ -4,52 +4,59 @@ import { Vector2 } from "../math/vector2";
 import { Control } from "./control";
 import { DrawableControl } from "./interfaces/drawable";
 import { PinControl } from "./pin.control";
+import { UserControl } from "./user-control";
 import { ColorUtils } from "./utils/color-utils";
 
-export class NodeConnectionControl extends Control implements DrawableControl {
+export class NodeConnectionControl extends UserControl {
 
-    private _pinStart: PinControl;
-    private _pinEnd: PinControl;
+    private pinStart: PinControl;
+    private pinEnd: PinControl;
 
-    private _pinStartPosition: Vector2;
-    private _pinEndPosition: Vector2;
+    private pinStartPosition: Vector2;
+    private pinEndPosition: Vector2;
 
-    private _curveValue: number;
-    private _color: string;
-    private _lineWidth: number;
+    private curveValue: number;
+    private color: string;
+    private lineWidth: number;
 
     constructor(pinStart: PinControl, pinEnd: PinControl) {
-        super(pinStart.position.x, pinStart.position.y, -1);
+        super(0, 0, -1);
 
-        this._pinStart = pinStart;
-        this._pinEnd = pinEnd;
+        this.pinStart = pinStart;
+        this.pinEnd = pinEnd;
 
-        this._pinStartPosition = this._pinStart.getAbsolutPosition();
-        this._pinEndPosition = this._pinEnd.getAbsolutPosition();
-        let difference = this._pinEndPosition.subtract(this._pinStartPosition);
+        this.pinStartPosition = this.pinStart.getPinAbsolutePosition();
+        this.pinEndPosition = this.pinEnd.getPinAbsolutePosition();
+        let difference = this.pinEndPosition.subtract(this.pinStartPosition);
 
         let distance = Math.sqrt((difference.x * difference.x) + (difference.y * difference.y)) - 12;
-        this._curveValue = distance * 0.4;
-        this._color = ColorUtils.getPinColor(this._pinStart.pinProperty);
+        this.curveValue = distance * 0.4;
+        this.color = ColorUtils.getPinColor(this.pinStart.pinProperty);
 
-        this._lineWidth = (this._pinStart.pinProperty.category === PinCategory.exec) ? 2.5 : 1.5;
+        this.lineWidth = (this.pinStart.pinProperty.category === PinCategory.exec) ? 2.5 : 1.5;
     }
 
-    draw(canvas: Canvas2D): void {
-        canvas.lineWidth(this._lineWidth)
+    onDraw(canvas: Canvas2D): void {
+        this.pinStartPosition = this.pinStart.getPinAbsolutePosition();
+        this.pinEndPosition = this.pinEnd.getPinAbsolutePosition();
+        let difference = this.pinEndPosition.subtract(this.pinStartPosition);
+        let distance = Math.sqrt((difference.x * difference.x) + (difference.y * difference.y)) - 12;
+        this.curveValue = distance * 0.4;
+
+        canvas.lineWidth(this.lineWidth)
         .beginPath()
-        .moveTo(this._pinStartPosition.x, this._pinStartPosition.y)
-        .strokeStyle(this._color)
-        .lineTo(this._pinStartPosition.x + 6, this._pinStartPosition.y)
+        .moveTo(this.pinStartPosition.x, this.pinStartPosition.y)
+        .strokeStyle(this.color)
+        .lineTo(this.pinStartPosition.x + 6, this.pinStartPosition.y)
         .bezierCurveTo(
-            this._pinStartPosition.x + this._curveValue + 6,
-            this._pinStartPosition.y,
-            this._pinEndPosition.x - this._curveValue - 6,
-            this._pinEndPosition.y,
-            this._pinEndPosition.x - 6,
-            this._pinEndPosition.y
+            this.pinStartPosition.x + this.curveValue + 6,
+            this.pinStartPosition.y,
+            this.pinEndPosition.x - this.curveValue - 6,
+            this.pinEndPosition.y,
+            this.pinEndPosition.x - 6,
+            this.pinEndPosition.y
         )
-        .lineTo(this._pinEndPosition.x, this._pinEndPosition.y)
+        .lineTo(this.pinEndPosition.x, this.pinEndPosition.y)
         .stroke();
     }
 }

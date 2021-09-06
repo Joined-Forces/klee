@@ -24,11 +24,7 @@ export class CommentNodeControl extends NodeControl implements DrawableControl {
         this.applyCommentColor(node.backgroundColor);
     }
 
-    public draw(canvas: Canvas2D) {
-
-        canvas.save();
-
-        canvas.translate(this.position.x, this.position.y);
+    public onDraw(canvas: Canvas2D) {
 
         canvas.fillStyle(this.bodyBackgroundColor)
             .font(Constants.NODE_FONT)
@@ -40,8 +36,6 @@ export class CommentNodeControl extends NodeControl implements DrawableControl {
         canvas.roundedRectangle(0, 0, this.width, this.height, 5);
 
         this.drawStroke(canvas);
-
-        canvas.restore();
     }
 
     private applyCommentColor(nodeColor: string) {

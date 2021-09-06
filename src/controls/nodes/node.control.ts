@@ -4,16 +4,28 @@ import { Control } from "../control";
 import { Node } from "../../data/nodes/node";
 import { NodePinsCreator } from "../utils/node-pins-creator";
 import { PinControl } from "../pin.control";
+import { UserControl } from "../user-control";
+import { HorizontalAlignment, VerticalPanel } from "../vertical-panel";
+import { HorizontalPanel } from "../horizontal-panel";
+import { PinProperty } from "../../data/pin/pin-property";
+import { PinDirection } from "../../data/pin/pin-direction";
+import { Application } from "../../application";
+import { Container } from "../container";
 
 
-export abstract class NodeControl extends Control {
+export abstract class NodeControl extends Container {
 
     private static readonly _SELECTION_COLOR = 'rgb(231,158,0)';
     private static readonly _SELECTION_LINE_WIDTH = 2.5;
 
     private _node: Node;
-    protected _pins: Array<PinControl>;
+    protected pins: Array<PinControl> = [];
 
+    protected mainPanel: VerticalPanel;
+    protected inputPinPanel: VerticalPanel;
+    protected outputPinPanel: VerticalPanel;
+
+    public showAdvanced: boolean;
 
 
     private _selected: boolean;
@@ -21,8 +33,6 @@ export abstract class NodeControl extends Control {
         lineWidth: number,
         style: string
     }
-
-    private pinsCreator: NodePinsCreator;
 
     constructor(node: Node) {
         super(node.pos.x, node.pos.y);
@@ -35,6 +45,24 @@ export abstract class NodeControl extends Control {
             lineWidth: 1,
             style: 'rgb(0,0,0)'
         }
+
+        this.showAdvanced = node.advancedPinDisplay;
+
+        this.mainPanel = new VerticalPanel();
+        let pinPanel = new HorizontalPanel();
+        this.inputPinPanel = new VerticalPanel();
+        this.outputPinPanel = new VerticalPanel();
+        this.outputPinPanel.childAlignment = HorizontalAlignment.RIGHT;
+        this.outputPinPanel.fillParentHorizontal = true;
+
+        pinPanel.add(this.inputPinPanel);
+        pinPanel.add(this.outputPinPanel);
+        pinPanel.fillParentHorizontal = true;
+        
+        this.mainPanel.add(pinPanel);
+        this.mainPanel.fillParentHorizontal = true;
+
+        this.add(this.mainPanel);
     }
 
 
@@ -55,28 +83,32 @@ export abstract class NodeControl extends Control {
     }
 
     protected createPins(offset?: Vector2): void {
-        offset = offset?.copy() || new Vector2(0, 0);
-
-        this.pinsCreator = new NodePinsCreator(this._node, this.width);
-
-        // Makes sure the node box is big enough to fit all the pins
-        this.width = Math.max(this.width, this.pinsCreator.dimensions.width);
-        this.height = Math.max(this.height, this.pinsCreator.dimensions.height + offset.y);
-
-        this._pins = this.pinsCreator.createPins(this.position, offset);
+        for (let property of this.node.customProperties) {
+            if (property instanceof PinProperty) {
+                this.createPin(property);
+            }
+        }
     }
 
-    protected recalculateSize(offset?: Vector2, useAdvancedDisplay?: boolean) {
-        offset = offset?.copy() || new Vector2(0, 0);
-
-        this.pinsCreator.recalculatePinControlPositions(this._pins, offset, useAdvancedDisplay);
-
-        this.width = this.pinsCreator.dimensions.width;
-        this.height = this.pinsCreator.dimensions.height + offset.y;
+    protected createPin(property: PinProperty) {
+        let pinControl = new PinControl(this.position, property);
+        this.pins.push(pinControl);
+        this.onPinCreated(pinControl);
     }
 
-    protected drawPins(canvas: Canvas2D) {
-        this._pins.forEach(p => p.draw(canvas));
+    protected onPinCreated(pin: PinControl) {
+        if (pin.pinProperty.direction == PinDirection.EGPD_Output) {
+            this.outputPinPanel.add(pin);
+        } else {
+            this.inputPinPanel.add(pin);
+        }
+    }
+
+    protected onDraw(canvas: Canvas2D) {
+/// #if DEBUG_UI
+        canvas.strokeStyle("#e00");
+        canvas.strokeRect(0, 0, this.size.x, this.size.y);
+/// #endif
     }
 
     protected drawStroke(canvas: Canvas2D) {

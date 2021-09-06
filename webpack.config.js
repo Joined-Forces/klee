@@ -1,5 +1,9 @@
 const path = require('path');
 
+const ifdefOptions = {
+    DEBUG_UI: false
+}
+
 module.exports = {
     mode: 'development',
     entry: './src/main.ts',
@@ -8,7 +12,10 @@ module.exports = {
         rules: [
             {
                 test: /\.tsx?$/,
-                use: 'ts-loader',
+                use: [
+                    { loader: 'ts-loader' }, 
+                    { loader: 'ifdef-loader', options: ifdefOptions }, 
+                ],
                 exclude: /node_modules/,
             },
         ],
@@ -19,5 +26,5 @@ module.exports = {
     output: {
         filename: 'ue-blueprint.js',
         path: path.resolve(__dirname, 'dist'),
-    },
+    }
 };

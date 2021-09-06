@@ -7,39 +7,81 @@ import { PinProperty } from "../data/pin/pin-property";
 import { Vector2 } from "../math/vector2";
 import { Control } from "./control";
 import { DrawableControl } from "./interfaces/drawable";
+import { NodeConnectionControl } from "./node-connection.control";
+import { NodeControl } from "./nodes/node.control";
+import { UserControl } from "./user-control";
 import { ColorUtils } from "./utils/color-utils";
 import { DefaultValueBox } from "./utils/default-value-box";
+import { NodePinsCreator } from "./utils/node-pins-creator";
 
 
-export class PinControl extends Control implements DrawableControl {
+export class PinControl extends UserControl {
 
-    private static readonly _PIN_NAME_PADDING_LEFT = 12;
+    private static readonly PIN_NAME_PADDING_LEFT = 12;
+    private static readonly PINS_PADDING_HORIZONTAL = 16;
 
-    private _parentPosition: Vector2;
     private _pinProperty: PinProperty;
-    private _defaultValueBox: DefaultValueBox;
+    private defaultValueBox: DefaultValueBox;
+
+    private category: PinCategory;
 
     private _isInput: boolean;
     private _color: string;
     private hidden: boolean;
 
+    private connections: Array<NodeConnectionControl> = [];
+
     constructor(parentPosition: Vector2, pin: PinProperty) {
         super(0, 0);
-        this._parentPosition = parentPosition;
         this._pinProperty = pin;
         this.hidden = false;
 
         this._isInput = this._pinProperty.direction !== PinDirection.EGPD_Output;
         this._color = ColorUtils.getPinColor(this._pinProperty);
+
+        if (!pin.hidden && !pin.hideName) {
+            this.width = PinControl.formattedNameWidth(this.pinProperty) + (PinControl.PINS_PADDING_HORIZONTAL * 2);
+        } else if (!pin.hidden) {
+            this.width = (PinControl.PINS_PADDING_HORIZONTAL * 2);
+        }
+        this.height = 28;
+        this.padding = { top: 0, right: 0, bottom: 0, left: 0 };
+        this.visible = !pin.hidden;
+        this.category = pin.category;
+
+
+        if (this.category == PinCategory.delegate) {
+            this.width = (PinControl.PINS_PADDING_HORIZONTAL * 2);
+            this.height = 24;
+        }
+
+        NodePinsCreator.pinsControls.push(this);
+        this.postInit();
     }
 
     get pinProperty(): PinProperty {
         return this._pinProperty;
     }
 
+    override set parent(value: UserControl) {
+        this.controlParent = value;
+
+        let nodeControl = this.findParent(NodeControl) as NodeControl;
+        if (nodeControl) {
+            if (this.pinProperty.advancedView == true && !nodeControl.showAdvanced && !this.pinProperty.isLinked) {
+                this.visible = false;
+            }
+        }
+    }
+
+    public addConnection(connection: NodeConnectionControl) {
+        this.connections.push(connection);
+    }
+
     public postInit(): void {
         if (this.pinProperty.shouldDrawDefaultValueBox) {
-            this._defaultValueBox = new DefaultValueBox(this._pinProperty, PinControl.formattedNameWidth(this._pinProperty), 0);
+            this.defaultValueBox = new DefaultValueBox(this._pinProperty, PinControl.formattedNameWidth(this._pinProperty) + PinControl.PINS_PADDING_HORIZONTAL, 0);
+            this.width += this.defaultValueBox.getWidth();
         }
     }
 
@@ -47,13 +89,30 @@ export class PinControl extends Control implements DrawableControl {
         this.hidden = hidden;
     }
 
-    public draw(canvas: Canvas2D): void {
+    public override refreshLayout() {
+        super.refreshLayout();
+
+        for (let connection of this.connections) {
+            
+        }
+    }
+
+    public onDraw(canvas: Canvas2D): void {
 
         if (this.hidden)
             return;
 
+/// #if DEBUG_UI
+        canvas.strokeStyle("#e0e");
+        canvas.strokeRect(0, 0, this.size.x, this.size.y);
+/// #endif
+
+        canvas.save();
         let pinCategory = this.pinProperty.category;
         canvas.fillStyle(this._color).strokeStyle(this._color);
+
+        let paddingX = (this.pinProperty.direction === PinDirection.EGPD_Output) ? -this.padding.right : this.padding.left;
+        canvas.translate(paddingX, this.height * 0.5);
 
         switch (pinCategory) {
             case PinCategory.exec:
@@ -65,42 +124,42 @@ export class PinControl extends Control implements DrawableControl {
             default:
                 this.drawPin(canvas);
         }
+
+        canvas.restore();
     }
 
     private drawPin(canvas: Canvas2D) {
-        canvas.save();
-        canvas.translate(this.position.x, this.position.y);
         let textX = this.setupTextDrawing(canvas);
+        const pinX = this.getPinX();
 
         canvas.fillText(this._pinProperty.formattedName, textX, 4)
         .fillStyle(this._color)
-        .fillCircle(6, 0, 2.3);
+        .fillCircle(pinX + 6, 0, 2.3);
 
         if (this._pinProperty.isLinked) {
-            canvas.fillCircle(0, 0, 6)
+            canvas.fillCircle(pinX, 0, 6)
         } else {
             canvas.strokeStyle(this._color)
             .lineWidth(2)
-            .strokeCircle(0, 0, 4.8)
+            .strokeCircle(pinX, 0, 4.8)
 
             this.drawDefaultValueBox(canvas);
         }
 
         canvas.strokeStyle("#000")
         .lineWidth(.5)
-        .strokeCircle(0, 0, 6);
-
-        canvas.restore();
+        .strokeCircle(pinX, 0, 6);
     }
 
     private drawExecutionPin(canvas: Canvas2D) {
         canvas.save();
-        canvas.translate(this.position.x, this.position.y - 7);
-
+        
         if (this._pinProperty.formattedName) {
             const textX = this.setupTextDrawing(canvas);
-            canvas.fillText(this._pinProperty.formattedName, textX, 10);
+            canvas.fillText(this._pinProperty.formattedName, textX, 4);
         }
+
+        canvas.translate(this.getPinX(), -7);
 
         canvas.strokeStyle('#fff')
         .fillStyle('#fff')
@@ -127,7 +186,7 @@ export class PinControl extends Control implements DrawableControl {
 
     private drawDelegatePin(canvas: Canvas2D) {
         canvas.save()
-        .translate(this.position.x - 5, this.position.y - 5);
+        .translate(this.getPinX() - 3,  -5);
 
         canvas.strokeStyle("#FF3838")
         .lineWidth(2)
@@ -142,17 +201,24 @@ export class PinControl extends Control implements DrawableControl {
     }
 
     private drawDefaultValueBox(canvas: Canvas2D) {
-        if(this._defaultValueBox) {
-            this._defaultValueBox.draw(canvas);
+        if(this.defaultValueBox) {
+            this.defaultValueBox.draw(canvas);
         }
     }
 
+    private getPinX() : number {
+        if (!this._isInput) {
+            return this.size.x - PinControl.PINS_PADDING_HORIZONTAL;
+        }
+        return PinControl.PINS_PADDING_HORIZONTAL;
+    }
+
     private setupTextDrawing(canvas: Canvas2D) : number {
-        let textX = -PinControl._PIN_NAME_PADDING_LEFT;
+        let textX = this.size.x - (PinControl.PIN_NAME_PADDING_LEFT + PinControl.PINS_PADDING_HORIZONTAL);
 
         if (this._isInput) {
             canvas.textAlign("left")
-            textX = PinControl._PIN_NAME_PADDING_LEFT;
+            textX = PinControl.PIN_NAME_PADDING_LEFT + PinControl.PINS_PADDING_HORIZONTAL;
         }
         else
             canvas.textAlign("right")
@@ -164,7 +230,7 @@ export class PinControl extends Control implements DrawableControl {
     }
 
     public static formattedNameWidth(pin: PinProperty): number {
-        return Application.canvas.getContext().measureText(pin.formattedName).width + PinControl._PIN_NAME_PADDING_LEFT;
+        return Application.canvas.font(Constants.NODE_FONT).getContext().measureText(pin.formattedName).width + PinControl.PIN_NAME_PADDING_LEFT;
     }
 
     public static calculateTotalPinWidth(pin: PinProperty): number {
@@ -175,10 +241,16 @@ export class PinControl extends Control implements DrawableControl {
         return PinControl.formattedNameWidth(pin) + defaultValueBoxWidth;
     }
 
-    getAbsolutPosition(): Vector2 {
-        return new Vector2(
-            this._parentPosition.x + this.position.x,
-            this._parentPosition.y + this.position.y
-        );
+    public getPinAbsolutePosition(): Vector2 {
+        let position = this.getAbsolutPosition();
+        position.y += this.height * 0.5;
+
+        if (this.pinProperty.direction === PinDirection.EGPD_Output) {
+            position.x += (this.width || this.size.x) - PinControl.PINS_PADDING_HORIZONTAL;
+        } else {
+            position.x += PinControl.PINS_PADDING_HORIZONTAL;
+        }
+
+        return position;
     }
 }

@@ -4,6 +4,8 @@ import { BoundingBox } from "./math/boundingbox";
 import { Vector2 } from "./math/vector2";
 import { InteractableControl, isInteractableControl } from "./controls/interfaces/interactable";
 import { Control } from "./controls/control";
+import { UserControl } from "./controls/user-control";
+import { InteractableUserControl } from "./controls/interactable-user-control";
 
 export interface KeyAction {
     keycode: string
@@ -28,7 +30,7 @@ export class Controller {
     private _mousePositionOfPreviousMove: Vector2;
     private _element: HTMLCanvasElement;
 
-    private hoveredControls: Control[] = [];
+    private hoveredControls: InteractableUserControl[] = [];
 
     constructor(element: HTMLCanvasElement) {
 
@@ -75,12 +77,10 @@ export class Controller {
 
         const mouseAbsolutePos = this.getAbsoluteMousePosition(ev);
         let controls = this.getIntersectingControls(mouseAbsolutePos, new Vector2(0, 0));
-        controls = controls.sort((c1, c2) => { return c1.zIndex - c2.zIndex; })
+        controls = controls.sort((c1, c2) => { return c1.ZIndex - c2.ZIndex; })
         for (let control of controls) {
-            if (isInteractableControl(control)) {
-                if (control.onMouseDown(ev))
-                    break;
-            }
+            if (control.onMouseDown(ev))
+                break;
         }
 
         for (let control of this.hoveredControls) {
@@ -104,7 +104,7 @@ export class Controller {
         let consumed = false;
 
         let controls = this.getIntersectingControls(mouseAbsolutePos, new Vector2(0, 0));
-        controls = controls.sort((c1, c2) => { return c1.zIndex - c2.zIndex; })
+        controls = controls.sort((c1, c2) => { return c1.ZIndex - c2.ZIndex; })
         for (let control of controls) {
             if (isInteractableControl(control)) {
                 if (consumed = control.onMouseUp(ev))
@@ -170,7 +170,7 @@ export class Controller {
             }
         }
 
-        controls = controls.sort((c1, c2) => { return c1.zIndex - c2.zIndex; })
+        controls = controls.sort((c1, c2) => { return c1.ZIndex - c2.ZIndex; })
         for (let control of controls) {
             if (isInteractableControl(control)) {
                 if (control.onMouseMove(ev))
@@ -235,8 +235,8 @@ export class Controller {
         return Application.scene.nodes.filter(n => BoundingBox.checkIntersection(pos, size, n.position, n.size)) || [];
     }
 
-    getIntersectingControls(pos: Vector2, size: Vector2): Control[] {
-        return Application.scene.controls.filter(n => BoundingBox.checkIntersection(pos, size, n.position, n.size)) || [];
+    getIntersectingControls(pos: Vector2, size: Vector2): InteractableUserControl[] {
+        return Application.scene.interactables.filter(n => BoundingBox.checkIntersection(pos, size, n.getAbsolutPosition(), n.size)) || [];
     }
 
     getAbsoluteMousePosition(ev: MouseEvent) {

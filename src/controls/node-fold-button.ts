@@ -1,19 +1,22 @@
 import { Application } from "../application";
 import { Canvas2D } from "../canvas";
 import { Control } from "./control";
+import { InteractableUserControl } from "./interactable-user-control";
 import { DrawableControl } from "./interfaces/drawable";
 import { InteractableControl } from "./interfaces/interactable";
 import { FoldableHeadedNodeControl } from "./nodes/foldable-headed-node.control";
 import { NodeControl } from "./nodes/node.control";
+import { UserControl } from "./user-control";
 
-export class NodeFoldButton extends Control implements DrawableControl, InteractableControl {
+export class NodeFoldButton extends InteractableUserControl implements InteractableControl {
 
     private static readonly BUTTON_HEIGHT = 20;
     private static readonly BUTTON_MARGIN = 3;
 
     private foldout: boolean = false;
-    private parentControl: NodeControl;
     private hovered: boolean = false;
+
+    public onClick: (foldOut: boolean) => void;
 
     get foldoutState() { return this.foldout; }
     set foldoutState(value: boolean) { 
@@ -21,19 +24,17 @@ export class NodeFoldButton extends Control implements DrawableControl, Interact
         Application.scene.refresh();
     }
 
-    constructor(parentControl: NodeControl) {
-        super(
-            parentControl.position.x,
-            parentControl.position.y + parentControl.size.y - NodeFoldButton.BUTTON_HEIGHT - NodeFoldButton.BUTTON_MARGIN
-        );
-
-        this.parentControl = parentControl;
+    constructor(foldOut: boolean) {
+        super();
 
         this.height = NodeFoldButton.BUTTON_HEIGHT;
-        this.width = parentControl.size.x - (NodeFoldButton.BUTTON_MARGIN * 2);
+        this.fillParentHorizontal = true;
+        this.padding = { top: 0, right: 0, bottom: 3, left: 0 };
+        this.foldout = foldOut;
 
         this.zIndex = 1;
     }
+
 
     onMouseEnter(ev: MouseEvent): boolean {
         this.hovered = true;
@@ -46,36 +47,29 @@ export class NodeFoldButton extends Control implements DrawableControl, Interact
         return true;
     }
 
-    updatePosition(): void {
-        this.position.y = this.parentControl.position.y + this.parentControl.size.y - NodeFoldButton.BUTTON_HEIGHT - NodeFoldButton.BUTTON_MARGIN;
-    }
-
-    onMouseMove(ev: MouseEvent): boolean {
-        return false;
-    }
     onMouseDown(ev: MouseEvent): boolean {
         return true;
     }
+
     onMouseUp(ev: MouseEvent): boolean {
-        if (this.parentControl instanceof FoldableHeadedNodeControl === true) {
-            (this.parentControl as FoldableHeadedNodeControl).toggleFold();
-            this.foldoutState = !this.foldoutState;
-        }
+        this.foldoutState = !this.foldoutState;
+
+        if (this.onClick)
+            this.onClick(this.foldoutState)
+        
         return true;
     }
 
-    draw(canvas: Canvas2D): void {
-        canvas.save();
-
-        canvas.translate(this.position.x, this.position.y);
-
+    onDraw(canvas: Canvas2D): void {
+/// #if DEBUG_UI
+        canvas.strokeStyle("#e80");
+        canvas.strokeRect(0, 0, this.size.x, this.size.y);
+/// #endif
         if (this.hovered) {
             canvas.fillStyle("rgba(255,255,255,0.1)")
-            .fillRect(NodeFoldButton.BUTTON_MARGIN, 0, this.size.x, this.size.y);
+            .fillRect(0, 0, this.size.x, this.size.y);
         }
         this.drawChevron(canvas);
-
-        canvas.restore();
     }
 
     drawChevron(canvas: Canvas2D) {

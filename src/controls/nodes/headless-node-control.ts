@@ -7,7 +7,7 @@ import { Constants } from "../../constants";
 import { Application } from "../../application";
 
 
-export class HeadlessNodeControl extends NodeControl implements DrawableControl {
+export class HeadlessNodeControl extends NodeControl {
 
     private static readonly _NODE_BACKGROUND_COLOR = "rgba(15,15,15,0.6)";
     private static readonly _NODE_PIN_ICONS_WIDTH = 140;
@@ -16,27 +16,24 @@ export class HeadlessNodeControl extends NodeControl implements DrawableControl 
         super(node);
 
         if(this.node.title) {
-            this.width = Application.canvas
+            this.minWidth = Application.canvas
                 .font(Constants.NODE_MATHFUNC_TITLE_FONT)
                 .getContext().measureText(this.node.title).width + HeadlessNodeControl._NODE_PIN_ICONS_WIDTH;
         }
 
+        this.minHeight = 35;
+        this.padding = { top: 4, right: 0, bottom: 0, left: 0 };
+
         this.createPins(new Vector2(0, 0));
     }
 
-    public draw(canvas: Canvas2D) {
-        canvas.save();
-        canvas.translate(this.position.x, this.position.y);
-
+    public onDraw(canvas: Canvas2D) {
         canvas.fillStyle(HeadlessNodeControl._NODE_BACKGROUND_COLOR)
-            .roundedRectangle(0, 0, this.width, this.height, 16) // -(this.height * .3)
+            .roundedRectangle(0, 0, this.size.x, this.size.y, 16) // -(this.height * .3)
             .fill()
 
         this.drawTitle(canvas);
         this.drawStroke(canvas);
-        this.drawPins(canvas);
-
-        canvas.restore();
     }
 
     protected drawTitle(canvas: Canvas2D) {
@@ -46,6 +43,6 @@ export class HeadlessNodeControl extends NodeControl implements DrawableControl 
             .font(Constants.NODE_MATHFUNC_TITLE_FONT)
             .textAlign('center')
             .fillStyle(Constants.NODE_MATHFUNC_TITLE_COLOR)
-            .fillText(this.node.title, this.width/2, this.height/2 + 8);
+            .fillText(this.node.title, this.size.x * 0.5, this.size.y * 0.5 + 8);
     }
 }

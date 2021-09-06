@@ -43,6 +43,9 @@ export class Application {
         })
 
         window.addEventListener('resize', this.refresh.bind(this), false);
+
+        Application._scene.collectInteractables();        
+        this.refresh();
     }
 
     static get scene() {
@@ -62,6 +65,7 @@ export class Application {
     private refresh() {
         this._element.width = this._element.offsetWidth;
         this._element.height = this._element.offsetHeight;
+        Application._scene.updateLayout();
         Application._scene.refresh();
     }
 

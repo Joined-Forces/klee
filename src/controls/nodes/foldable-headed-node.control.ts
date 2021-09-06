@@ -17,23 +17,26 @@ export class FoldableHeadedNodeControl extends HeadedNodeControl implements Draw
 
         this.foldState = (node.advancedPinDisplay !== undefined) ? node.advancedPinDisplay : true;
 
-        if (this.foldState == false) {
-            this.recalculateSize(new Vector2(0, this._headerHeight), !this.foldState);
-        }
+        this.nodeButton = new NodeFoldButton(this.foldState);
+        this.mainPanel.add(this.nodeButton);
 
-        this.height = this.height + 20;
-
-        this.nodeButton = new NodeFoldButton(this);
-        Application.scene.controls.push(this.nodeButton);
+        this.nodeButton.onClick = (foldOut) => this.toggleFold(foldOut);
     }
 
-    public toggleFold() {
-        this.foldState = !this.foldState;
-        this.recalculateSize(new Vector2(0, this._headerHeight), !this.foldState);
-        this.height = this.height + 20;
-
-        this.nodeButton.updatePosition();
+    public toggleFold(foldOut: boolean) {
+        this.foldState = foldOut;
+        this.applyAdvancedView(this.foldState);
 
         Application.scene.refresh();
+    }
+
+    private applyAdvancedView(advancedView: boolean) {
+        for (let pin of this.pins) {
+            if (pin.pinProperty.advancedView === true && !pin.pinProperty.isLinked) {
+                pin.visible = advancedView;
+            }
+        }
+
+        this.refreshLayout();
     }
 }

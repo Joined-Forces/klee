@@ -3,13 +3,20 @@ import { Vector2 } from "../math/vector2";
 export abstract class Control {
 
     private _position: Vector2;
-    protected width: number;
-    protected height: number;
-    private _zIndex: number;
+    public width?: number;
+    public height?: number;
+    protected minWidth?: number;
+    protected minHeight?: number;
+    public desiredWidth: number;
+    public desiredHeight: number;
+    protected zIndex: number;
 
-    constructor(x: number, y: number, zIndex?: number) {
-        this.position = new Vector2(x, y);
-        this._zIndex = zIndex || 0;
+    public fillParentHorizontal: boolean;
+    public fillParentVertical: boolean;
+
+    constructor(x?: number, y?: number, zIndex?: number) {
+        this.position = new Vector2((x || 0), (y || 0));
+        this.zIndex = zIndex || 0;
     }
 
     get position() {
@@ -24,11 +31,11 @@ export abstract class Control {
         return new Vector2(this.width, this.height);
     }
 
-    get zIndex() {
-        return this._zIndex;
+    get ZIndex(): number {
+        return this.zIndex;
     }
 
-    set zIndex(value: number) {
-        this._zIndex = value;
+    set ZIndex(value: number) {
+        this.zIndex = value;
     }
 }

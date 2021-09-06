@@ -16,6 +16,6 @@ export class SetterNodeControl extends HeadlessNodeControl implements DrawableCo
             .font(Constants.NODE_HEADER_FONT)
             .textAlign('center')
             .fillStyle(Constants.NODE_TEXT_COLOR)
-            .fillText(this.node.title, this.width/2, 16);
+            .fillText(this.node.title, this.size.x / 2, 16);
     }
 }
