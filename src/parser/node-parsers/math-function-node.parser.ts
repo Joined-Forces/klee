@@ -16,7 +16,7 @@ export interface MathFunction {
 
 export class MathFunctionNodeParser extends NodeParser {
 
-    private readonly MATH_FUNCTIONS: Array<MathFunction> = [
+    private static readonly MATH_FUNCTIONS: Array<MathFunction> = [
         { name: 'Multiply', displayName: '×', },
         { name: 'Divide', displayName: '÷', },
         { name: 'Add', displayName: '-', },
@@ -47,7 +47,7 @@ export class MathFunctionNodeParser extends NodeParser {
 
     public parse(data: ParsingNodeData): NodeControl {
         const node = data.node as MathFunctionNode;
-        const mathFunc = this.MATH_FUNCTIONS.find(f => node.functionReference.memberName.startsWith(f.name));
+        const mathFunc = MathFunctionNodeParser.MATH_FUNCTIONS.find(f => node.functionReference.memberName.startsWith(f.name));
         node.subTitles = [];
         node.isPrimitiveNode = !!mathFunc;
         if(node.isPrimitiveNode) {

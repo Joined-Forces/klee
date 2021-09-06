@@ -143,6 +143,7 @@ export class PinPropertyParser implements CustomPropertyParser {
             case "exec": return PinCategory.exec;
             case "object": return PinCategory.object;
             case "int": return PinCategory.int;
+            case "string": return PinCategory.string;
             case "float": return PinCategory.float;
             case "struct": return PinCategory.struct;
             case "bool": return PinCategory.bool;

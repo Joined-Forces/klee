@@ -10,14 +10,21 @@ import { insertSpacesBetweenCapitalizedWords, prettifyText } from "../../utils/t
 import { IconLibrary } from "../../controls/utils/icon-library";
 import { UnrealNodeClass } from "../../data/classes/unreal-node-class";
 import { FoldableHeadedNodeControl } from "../../controls/nodes/foldable-headed-node.control";
+import { StringFunctionNodeParser } from "./string-function-node.parser";
 
 
 export class CallFunctionNodeParser extends NodeParser {
 
-    private static readonly _KISMET_MATH_LIBRARY = "/Script/Engine.KismetMathLibrary";
+    //private static readonly _KISMET_MATH_LIBRARY = "/Script/Engine.KismetMathLibrary";
+    //private static readonly _KISMET_STRING_LIBRARY = "/Script/Engine.KismetStringLibrary";
     private static readonly _DEFAULT_FUNC_BACKGROUND_COLOR = '78, 117, 142';
     private static readonly _DEFAULT_PURE_FUNC_BACKGROUND_COLOR = '95, 160, 90';
     private static readonly _DEFAULT_FUNC_ENTRY_BACKGROUND_COLOR = '109, 19, 132';
+
+    private static readonly _FUNCTION_MAP = {
+        "/Script/Engine.KismetMathLibrary": (d) => new MathFunctionNodeParser().parse(d),
+        "/Script/Engine.KismetStringLibrary": (d) => new StringFunctionNodeParser().parse(d)
+    }
 
 
     constructor() {
@@ -63,9 +70,8 @@ export class CallFunctionNodeParser extends NodeParser {
             icon = this.handleFunctionNode(node);
         }
 
-        if (node.functionReference?.memberParent?.classPath === CallFunctionNodeParser._KISMET_MATH_LIBRARY) {
-            return new MathFunctionNodeParser().parse(data);
-        }
+        const parser = CallFunctionNodeParser._FUNCTION_MAP[node.functionReference?.memberParent?.classPath];
+        if (parser) return parser(data);
 
         if (node.advancedPinDisplay !== undefined) {
             return new FoldableHeadedNodeControl(node, icon);
