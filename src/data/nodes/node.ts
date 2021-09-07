@@ -18,4 +18,5 @@ export interface Node {
     customProperties: CustomProperty[];
     backgroundColor?: string;
     advancedPinDisplay?: boolean;
+    enabledState?: string;
 }

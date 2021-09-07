@@ -56,11 +56,14 @@ export abstract class UserControl extends Control implements DrawableControl {
         
         let size = new Vector2(0, 0);
 
-        size.x += this.padding.left + this.padding.right + (this.width || 0);
-        size.y += this.padding.top + this.padding.bottom + (this.height || 0);
+        size.x += (this.width || 0);
+        size.y += (this.height || 0);
 
         size.x = Math.max(size.x, (this.minWidth || 0));
         size.y = Math.max(size.y, (this.minHeight || 0));
+
+        size.x += this.padding.left + this.padding.right;
+        size.y += this.padding.top + this.padding.bottom;
 
         return size;
     }

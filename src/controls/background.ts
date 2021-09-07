@@ -21,7 +21,7 @@ export class Background extends Control implements DrawableControl {
         this.ready = false;
 
         this.image = new Image();
-        this.image.addEventListener('load', (ev) => this.onLoaded(ev));
+        this.image.onload = (ev) => this.onLoaded(ev);
         this.image.src = this.imageURL;
     }
 

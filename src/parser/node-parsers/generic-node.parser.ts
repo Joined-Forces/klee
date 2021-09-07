@@ -68,7 +68,8 @@ export class GenericNodeParser extends NodeParser {
             "NodePosY": (node: Node, v: string) => { node.pos.y = Number.parseInt(v); },
             "AdvancedPinDisplay": (node: Node, v: string) => {
                 node.advancedPinDisplay = v === "Shown" ? true : false;
-            }
+            },
+            "EnabledState": (node: Node, v: string) => { node.enabledState = v; }
         });
     }
 
