@@ -10,7 +10,7 @@ import { InteractableUserControl } from "./controls/interactable-user-control";
 export interface KeyAction {
     keycode: string
     ctrl: boolean;
-    callback: () => void
+    callback: (ev: KeyboardEvent) => boolean
 }
 
 enum MouseButton {
@@ -35,6 +35,11 @@ export class Controller {
     constructor(element: HTMLCanvasElement) {
 
         this._element = element;
+        if (Application.isFirefox) {
+            this._element.setAttribute("contenteditable", ""); // allow pasting to the canvas
+            this._element.style.cursor = "default";
+            this._element.style.color = "transparent"; // Hide caret
+        }
 
         // A tabindex higher than -1 is needed so that html element reseaves focus events
         // which is required that the key events get fired.
@@ -52,7 +57,7 @@ export class Controller {
             ctrl: true,
             keycode: 'KeyA',
             callback: this.selectAllNodes.bind(this),
-        })
+        });
     }
 
     registerAction(action: KeyAction) {
@@ -63,8 +68,9 @@ export class Controller {
         for (const action of this._actions.filter(a => a.keycode === ev.code)) {
             if(action.ctrl !== ev.ctrlKey) continue;
 
-            action.callback();
-            ev.preventDefault();
+            if (action.callback(ev)) {
+                ev.preventDefault();
+            }
         }
     }
 
@@ -257,6 +263,7 @@ export class Controller {
     selectAllNodes() {
         Application.scene.nodes.forEach(c => c.selected = true);
         Application.scene.refresh();
+        return true;
     }
 
     getMousePosition(ev): Vector2 {

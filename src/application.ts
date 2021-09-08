@@ -12,9 +12,15 @@ export class Application {
     private _parser: BlueprintParser;
     private _element: HTMLCanvasElement;
 
+    private static firefox: boolean;
+
     constructor(element: HTMLCanvasElement) {
 
         this._element = element;
+
+        if (navigator.userAgent.indexOf("Firefox") > 0) {
+            Application.firefox = true;
+        }
 
         Application._canvas = new Canvas2D(element);
         Application._scene = new Scene(Application._canvas);
@@ -42,6 +48,8 @@ export class Application {
             callback: this.recenterCamera.bind(this),
         })
 
+        this._element.onpaste = (ev) => this.onPaste(ev);
+
         window.addEventListener('resize', this.refresh.bind(this), false);
 
         this.refresh();
@@ -53,6 +61,10 @@ export class Application {
 
     static get canvas() {
         return this._canvas;
+    }
+
+    static get isFirefox() {
+        return this.firefox;
     }
 
     private initializeHtmlAttributes() {
@@ -75,15 +87,29 @@ export class Application {
         let textLines = [];
         Application._scene.nodes.filter(n => n.selected).forEach(n => textLines = [].concat(textLines, n.sourceText));
         navigator.clipboard.writeText(textLines.join('\n'));
+
+        return true;
     }
 
-    private pasteClipboardContentToCanvas() {
+    private pasteClipboardContentToCanvas(ev) {
+        if (Application.isFirefox) {
+            return false;
+        }
+
         console.log("Paste from clipboard");
 
         navigator.clipboard.readText().then((text) => {
             if(!text) return;
             this.loadBlueprintIntoScene(text);
         });
+
+        return true;
+    }
+
+    private onPaste(ev) {
+        console.log("Paste from clipboard");
+        let text = ev.clipboardData.getData("text/plain");
+        this.loadBlueprintIntoScene(text);
     }
 
     private loadBlueprintIntoScene(text) {
@@ -100,5 +126,6 @@ export class Application {
         // Move camera to the center of all nodes
         Application._scene.camera.centreAbsolutePosition(Application._scene.calculateCentroid());
         this.refresh();
+        return true;
     }
 }
