@@ -1,4 +1,5 @@
 import { Canvas2D } from "../canvas";
+import { Constants } from "../constants";
 import { UserControl } from "./user-control";
 
 export class Icon extends UserControl {
@@ -19,11 +20,11 @@ export class Icon extends UserControl {
         canvas.strokeStyle("#00e");
         canvas.strokeRect(0, 0, this.size.x + this.padding.left + this.padding.right, this.size.y + this.padding.top + this.padding.bottom);
 /// #endif
-        canvas.fillStyle("#fff")
-            .strokeStyle("rgba(0,0,0,0.4)")
-            .lineWidth(1)
+        canvas.fillStyle(Constants.NODE_TEXT_COLOR)
+            //.strokeStyle("rgba(0,0,0,0.4)")
+            //.lineWidth(1)
             .translate(this.padding.left, this.padding.top)
-            .stroke(this.icon)
+            //.stroke(this.icon)
             .fill(this.icon, 'evenodd');
     }
 

@@ -18,7 +18,7 @@ export class CallFunctionNodeParser extends NodeParser {
     //private static readonly _KISMET_MATH_LIBRARY = "/Script/Engine.KismetMathLibrary";
     //private static readonly _KISMET_STRING_LIBRARY = "/Script/Engine.KismetStringLibrary";
     private static readonly _DEFAULT_FUNC_BACKGROUND_COLOR = '78, 117, 142';
-    private static readonly _DEFAULT_PURE_FUNC_BACKGROUND_COLOR = '95, 160, 90';
+    private static readonly _DEFAULT_PURE_FUNC_BACKGROUND_COLOR = '92, 154, 87';
     private static readonly _DEFAULT_FUNC_ENTRY_BACKGROUND_COLOR = '109, 19, 132';
 
     private static readonly _FUNCTION_MAP = {
