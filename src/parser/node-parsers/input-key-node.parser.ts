@@ -2,6 +2,7 @@ import { HeadedNodeControl } from "../../controls/nodes/headed-node-control";
 import { NodeControl } from "../../controls/nodes/node.control";
 import { IconLibrary } from "../../controls/utils/icon-library";
 import { InputKeyNode } from "../../data/nodes/input-key.node";
+import { prettifyText } from "../../utils/text-utils";
 import { NodeParser } from "../node.parser";
 import { ParsingNodeData } from "../parsing-node-data";
 
@@ -42,9 +43,15 @@ export class InputKeyNodeParser extends NodeParser {
             title = modifiers.join('+') + " ";
         }
 
-        title += inputKeyNode.inputKey;
+        title += prettifyText(inputKeyNode.inputKey);
+        title = title.replace("Magic Leap", "ML");
+        
+        let icon = IconLibrary.INPUT_KEY;
+        if (inputKeyNode.inputKey.startsWith("Gamepad_") || inputKeyNode.inputKey.startsWith("MagicLeap_")) {
+            icon = IconLibrary.INPUT_GAMEPAD;
+        }
 
         data.node.title = title;
-        return new HeadedNodeControl(data.node, IconLibrary.INPUT_KEY);
+        return new HeadedNodeControl(data.node, icon);
     }
 }

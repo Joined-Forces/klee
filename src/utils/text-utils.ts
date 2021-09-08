@@ -22,7 +22,7 @@ export function findFriendlyName(str: string) {
 export function prettifyText(str: string) {
     return capitalizeTerm(
         insertSpacesBetweenCapitalizedWords(
-            removePrefixB(str).replace('_', ' ')
+            removePrefixB(str).replace(/[_]/g, ' ')
         )
     );
 }
