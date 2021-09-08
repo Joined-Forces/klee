@@ -17,8 +17,8 @@ export class MathFunctionNodeParser extends NodeParser {
     private static readonly MATH_FUNCTIONS: Array<MathFunction> = [
         { name: 'Multiply', displayName: '×', },
         { name: 'Divide', displayName: '÷', },
-        { name: 'Add', displayName: '-', },
-        { name: 'Subtract', displayName: '+', },
+        { name: 'Add', displayName: '+', },
+        { name: 'Subtract', displayName: '-', },
         { name: 'Percent', displayName: '%', },
         { name: 'FMax', displayName: 'MAX', },
         { name: 'Max', displayName: 'MAX', },
