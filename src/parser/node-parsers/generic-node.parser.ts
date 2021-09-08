@@ -16,7 +16,7 @@ import { FlowControlNodeParser } from "./flow-control-node.parser";
 import { KnotNodeParser } from "./knot-node.parser";
 import { CustomEventNodeParser } from "./custom-event-node.parser";
 import { EventNodeParser } from "./event-node.parser";
-import { InputKeyNodeParser } from "./inputkey-node.parser";
+import { InputKeyNodeParser } from "./input-key-node.parser";
 import { DynamicCastNodeParser } from "./dynamic-cast-node.parser";
 import { SwitchEnumNodeParser } from "./switch-enum-node.parser";
 import { PinProperty } from "../../data/pin/pin-property";
