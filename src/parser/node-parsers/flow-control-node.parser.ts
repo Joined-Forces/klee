@@ -16,8 +16,8 @@ export class FlowControlNodeParser extends NodeParser {
         }
     } = {
         [UnrealNodeClass.IF_THEN_ELSE]: { title: "Branch", icon: IconLibrary.BRANCH },
-        [UnrealNodeClass.EXECUTION_SEQUENCE]: { title: "Sequence" },
-        [UnrealNodeClass.MULTI_GATE]: { title: "Multi Gate" },
+        [UnrealNodeClass.EXECUTION_SEQUENCE]: { title: "Sequence", icon: IconLibrary.SEQUENCE },
+        [UnrealNodeClass.MULTI_GATE]: { title: "Multi Gate", icon: IconLibrary.SEQUENCE },
     }
 
     public parse(data: ParsingNodeData): NodeControl {

@@ -1,6 +1,7 @@
 import { FoldableHeadedNodeControl } from "../../controls/nodes/foldable-headed-node.control";
 import { HeadedNodeControl } from "../../controls/nodes/headed-node-control";
 import { NodeControl } from "../../controls/nodes/node.control";
+import { IconLibrary } from "../../controls/utils/icon-library";
 import { DynamicCastNode } from "../../data/nodes/dynamic-cast.node";
 import { SwitchEnumNode } from "../../data/nodes/switch-enum.node";
 import { BlueprintParserUtils } from "../blueprint-parser-utils";
@@ -29,6 +30,6 @@ export class SwitchEnumNodeParser extends NodeParser {
         switchNode.title = "Switch on " + BlueprintParserUtils.getClassFriendlyName(switchNode.enum);
         switchNode.backgroundColor = "162, 161, 35";
         
-        return new FoldableHeadedNodeControl(data.node);
+        return new FoldableHeadedNodeControl(data.node, IconLibrary.SWITCH);
     }
 }

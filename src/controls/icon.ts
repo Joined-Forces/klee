@@ -21,10 +21,10 @@ export class Icon extends UserControl {
 /// #endif
         canvas.fillStyle("#fff")
             .strokeStyle("rgba(0,0,0,0.4)")
-            .lineWidth(1.5)
+            .lineWidth(1)
             .translate(this.padding.left, this.padding.top)
             .stroke(this.icon)
-            .fill(this.icon);
+            .fill(this.icon, 'evenodd');
     }
 
 }

@@ -7,6 +7,7 @@ import { NodeParser } from "../node.parser";
 import { ParsingNodeData } from "../parsing-node-data";
 import { Node } from "../../data/nodes/node";
 import { insertSpacesBetweenCapitalizedWords } from "../../utils/text-utils";
+import { MacroInstanceNode } from "../../data/nodes/macro-instance.node";
 
 export class MacroInstanceNodeParser extends NodeParser {
 
@@ -14,9 +15,10 @@ export class MacroInstanceNodeParser extends NodeParser {
 
     constructor() {
         super({
-            "MacroGraphReference": (node: Node, value: string) => {
+            "MacroGraphReference": (node: MacroInstanceNode, value: string) => {
                 const parser = new MacroGraphReferenceParser();
-                node.title = insertSpacesBetweenCapitalizedWords(parser.parse(value).macroFuncName);
+                node.macroGraphReference = parser.parse(value);
+                node.title = insertSpacesBetweenCapitalizedWords(node.macroGraphReference.macroFuncName);
             },
         });
     }
@@ -24,7 +26,23 @@ export class MacroInstanceNodeParser extends NodeParser {
     public parse(data: ParsingNodeData): NodeControl {
         this.parseProperties(data);
 
+        const macroNode = data.node as MacroInstanceNode;
+
+        const icon = MacroInstanceNodeParser.getIconForMacro(macroNode.macroGraphReference.macroFuncName);
         data.node.backgroundColor = MacroInstanceNodeParser._DEFAULT_BACKGROUND_COLOR;
-        return new HeadedNodeControl(data.node);
+        return new HeadedNodeControl(data.node, icon);
+    }
+
+    private static getIconForMacro(macroFuncName: string): string {
+        switch (macroFuncName) {
+            case 'ForLoop': return IconLibrary.LOOP;
+            case 'ForLoopWithBreak': return IconLibrary.LOOP;
+            case 'WhileLoop': return IconLibrary.LOOP;
+            case 'Gate': return IconLibrary.GATE;
+            case 'FlipFlop': return IconLibrary.FLIPFLOP;
+            case 'Do': return IconLibrary.DO_N;
+            case 'DoOnce': return IconLibrary.DO_ONCE;
+            default: return undefined;
+        }
     }
 }

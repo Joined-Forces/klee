@@ -1,5 +1,6 @@
 import { HeadedNodeControl } from "../../controls/nodes/headed-node-control";
 import { NodeControl } from "../../controls/nodes/node.control";
+import { IconLibrary } from "../../controls/utils/icon-library";
 import { DynamicCastNode } from "../../data/nodes/dynamic-cast.node";
 import { BlueprintParserUtils } from "../blueprint-parser-utils";
 import { NodeDataReferenceParser } from "../node-data-reference.parser";
@@ -25,6 +26,6 @@ export class DynamicCastNodeParser extends NodeParser {
         castNode.backgroundColor = "32, 116, 120";
         
 
-        return new HeadedNodeControl(data.node);
+        return new HeadedNodeControl(data.node, IconLibrary.CAST);
     }
 }
