@@ -19,4 +19,6 @@ export interface Node {
     backgroundColor?: string;
     advancedPinDisplay?: boolean;
     enabledState?: string;
+    errorType?: number;
+    errorMsg?: string;
 }

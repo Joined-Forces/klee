@@ -11,6 +11,7 @@ import { PinProperty } from "../../data/pin/pin-property";
 import { PinDirection } from "../../data/pin/pin-direction";
 import { Application } from "../../application";
 import { Container } from "../container";
+import { ErrorBar } from "../error-bar";
 
 
 export abstract class NodeControl extends Container {
@@ -62,7 +63,20 @@ export abstract class NodeControl extends Container {
         this.mainPanel.add(pinPanel);
         this.mainPanel.fillParentHorizontal = true;
 
+        this.initErrorBar();
+
         this.add(this.mainPanel);
+    }
+
+    private initErrorBar() {
+        if (this.node.errorType !== undefined) {
+            switch (this.node.errorType) {
+                case 1: 
+                    let errorBar = new ErrorBar("ERROR!", this.node.errorMsg);
+                    this.mainPanel.add(errorBar);
+                    break;
+            }
+        }
     }
 
 

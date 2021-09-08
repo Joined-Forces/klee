@@ -73,7 +73,9 @@ export class GenericNodeParser extends NodeParser {
             "AdvancedPinDisplay": (node: Node, v: string) => {
                 node.advancedPinDisplay = v === "Shown" ? true : false;
             },
-            "EnabledState": (node: Node, v: string) => { node.enabledState = v; }
+            "EnabledState": (node: Node, v: string) => { node.enabledState = v; },
+            "ErrorType": (node: Node, v: string) => { node.errorType = Number.parseInt(v); },
+            "ErrorMsg": (node: Node, v: string) => { node.errorMsg = v.replace(/["]/g, '').replace(/\\\'/g, '\''); }
         });
     }
 
