@@ -22,6 +22,11 @@ export class Label extends UserControl {
         let textMetrics = this.measureText();
         this.minWidth = textMetrics.width;
         this.minHeight = textMetrics.fontBoundingBoxAscent + textMetrics.fontBoundingBoxDescent;
+        if (isNaN(this.minHeight)) {
+            textMetrics = this.measureText("|_");
+            this.minHeight = textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent + 5;
+            console.log(this.minHeight);
+        }
         this.baseLine = Math.floor(this.minHeight / 3);
 
         this.padding = { top: 0, right: 0, bottom: 0, left: 0 }
