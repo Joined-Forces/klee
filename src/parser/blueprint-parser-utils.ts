@@ -1,3 +1,5 @@
+import { CustomProperty } from "../data/custom-property";
+import { PinProperty } from "../data/pin/pin-property";
 import { removeInsignificantTrailingZeros } from "../utils/text-utils";
 
 export class BlueprintParserUtils {
@@ -34,5 +36,12 @@ export class BlueprintParserUtils {
             return value; 
         }
         return matches[0];
+    }
+
+    static hidePinNames(customProperties: CustomProperty[]) {
+        customProperties.forEach(p => {
+            if (p instanceof PinProperty === false) { return false; }
+            (p as PinProperty).hideName = true;
+        })
     }
 }

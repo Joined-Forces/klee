@@ -24,6 +24,7 @@ import { PinDirection } from "../../data/pin/pin-direction";
 import { PinCategory } from "../../data/pin/pin-category";
 import { MacroInstanceNodeParser } from "./macro-instance-node.parser";
 import { FunctionEntryNodeParser } from "./function-entry-node.parser";
+import { GetArrayItemNodeParser } from "./get-array-item-node.parser";
 
 
 export class GenericNodeParser extends NodeParser {
@@ -53,6 +54,7 @@ export class GenericNodeParser extends NodeParser {
         [UnrealNodeClass.FUNCTION_RESULT]: () => new FunctionEntryNodeParser(),
         [UnrealNodeClass.CALL_ARRAY_FUNCTION]: () => undefined,
         [UnrealNodeClass.SELF]: () => new VariableNodeParser(),
+        [UnrealNodeClass.GET_ARRAY_ITEM]: () => new GetArrayItemNodeParser(),
     }
 
     private readonly _customPropertyParsers: {
