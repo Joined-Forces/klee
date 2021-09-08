@@ -20,13 +20,13 @@ export abstract class Container extends UserControl {
         }
 
         canvas.save();
-        canvas.translate(this.position.x, this.position.y);
+        canvas.translate(Math.round(this.position.x), Math.round(this.position.y));
 
         this.onDraw(canvas);
 
         if (this.drawChildren) {
             canvas.save();
-            canvas.translate(this.padding.left, this.padding.top);
+            canvas.translate(Math.round(this.padding.left), Math.round(this.padding.top));
             for (let child of this.children) {
                 child.draw(canvas);
             }

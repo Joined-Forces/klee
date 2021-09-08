@@ -1,4 +1,5 @@
 import { PinCategory } from "../data/pin/pin-category";
+import { PinContainerType } from "../data/pin/pin-container-type";
 import { PinDirection } from "../data/pin/pin-direction";
 import { PinLink } from "../data/pin/pin-link";
 import { PinProperty } from "../data/pin/pin-property";
@@ -42,14 +43,12 @@ export class PinPropertyParser implements CustomPropertyParser {
         "bOrphanedPin": (p: PinProperty, value: string) => { p.orphanedPin = (value === "True"); },
         "bNotConnectable": (p: PinProperty, value: string) => { p.notConnectable = (value === "True"); },
         "PersistentGuid": (p: PinProperty, value: string) => { p.persistentGUID = BlueprintParserUtils.parseString(value); },
-        "PinType.ContainerType": (p: PinProperty, value: string) => {
-            if(value && value != 'None') {
-                console.log(`Found interesting attribute 'PinType.ContainerType' for which a value other than 'None' was set. PinType.ContainerType='${value}' [pin-name: ${p.name}]`);
-            }
-        },
+        "PinType.ContainerType": (p: PinProperty, value: string) => { p.containerType = value as PinContainerType; },
         "PinType.PinValueType": (p: PinProperty, value: string) => {
-            if(value && value != '()') {
-                console.log(`Found interesting attribute 'PinType.PinValueType' for which a value other than '()' was set. PinType.PinValueType='${value}' [pin-name: ${p.name}]`);
+            value = value.replace(/[\(\)]/g, '');
+            value = value.split('=')[1];
+            if (value !== undefined) {
+                p.valueType = value.replace(/"/g, '');
             }
         },
         "PinType.PinSubCategoryMemberReference": (p: PinProperty, value: string) => {
@@ -139,20 +138,8 @@ export class PinPropertyParser implements CustomPropertyParser {
 
     private static parsePinCategory(value: string): PinCategory {
         value = BlueprintParserUtils.parseString(value);
-        switch (value) {
-            case "exec": return PinCategory.exec;
-            case "object": return PinCategory.object;
-            case "int": return PinCategory.int;
-            case "string": return PinCategory.string;
-            case "float": return PinCategory.float;
-            case "struct": return PinCategory.struct;
-            case "class": return PinCategory.class;
-            case "bool": return PinCategory.bool;
-            case "delegate": return PinCategory.delegate;
-            case "name": return PinCategory.name;
-            case "wildcard": return PinCategory.wildcard;
-            case "byte": return PinCategory.byte;
-        }
+        return value as PinCategory;
+
     }
 
     private static parseDirection(value: string): PinDirection {

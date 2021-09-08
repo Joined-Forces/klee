@@ -35,7 +35,7 @@ export abstract class UserControl extends Control implements DrawableControl {
         }
 
         canvas.save();
-        canvas.translate(this.position.x, this.position.y);
+        canvas.translate(Math.round(this.position.x), Math.round(this.position.y));
 
         this.onDraw(canvas);
         canvas.restore();

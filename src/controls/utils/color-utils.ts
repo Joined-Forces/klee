@@ -25,20 +25,27 @@ export class ColorUtils {
     // }
 
     public static getPinColor(pin: PinProperty): string {
-        switch (pin.category) {
+        return this.getPinColorByCategory(pin.category, pin.subCategoryObject);
+    }
+
+    public static getPinColorByCategory(category: PinCategory, subCategoryObject?: string): string {
+        switch (category) {
             case PinCategory.bool:
                 return 'rgb(146, 1, 1)';
             case PinCategory.float:
                 return 'rgb(158, 250, 68)';
             case PinCategory.int:
-            case PinCategory.int64:
                 return 'rgb(30, 226, 174)';
+            case PinCategory.int64:
+                return 'rgb(171, 226, 174)';
+            case PinCategory.byte:
+                return 'rgb(0, 101, 92)';
             case PinCategory.struct:
                 const map = {
                     [StructClass.VECTOR]: 'rgb(253, 200, 35)',
                     [StructClass.ROTATOR]: 'rgb(159, 178, 253)'
                 }
-                return map[pin.subCategoryObject] || 'rgb(0, 88, 200)';
+                return map[subCategoryObject] || 'rgb(0, 88, 200)';
 
             case PinCategory.name:
                 return 'rgb(150, 97, 185)';

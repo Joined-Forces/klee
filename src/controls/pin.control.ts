@@ -2,6 +2,7 @@ import { Application } from "../application";
 import { Canvas2D } from "../canvas";
 import { Constants } from "../constants";
 import { PinCategory } from "../data/pin/pin-category";
+import { PinContainerType } from "../data/pin/pin-container-type";
 import { PinDirection } from "../data/pin/pin-direction";
 import { PinProperty } from "../data/pin/pin-property";
 import { Vector2 } from "../math/vector2";
@@ -12,6 +13,7 @@ import { NodeControl } from "./nodes/node.control";
 import { UserControl } from "./user-control";
 import { ColorUtils } from "./utils/color-utils";
 import { DefaultValueBox } from "./utils/default-value-box";
+import { IconLibrary } from "./utils/icon-library";
 import { NodePinsCreator } from "./utils/node-pins-creator";
 
 
@@ -27,7 +29,11 @@ export class PinControl extends UserControl {
 
     private _isInput: boolean;
     private _color: string;
+    private _secondaryColor: string;
     private hidden: boolean;
+
+    private icon?: Path2D;
+    private secondaryIcon?: Path2D;
 
     private connections: Array<NodeConnectionControl> = [];
 
@@ -38,6 +44,8 @@ export class PinControl extends UserControl {
 
         this._isInput = this._pinProperty.direction !== PinDirection.EGPD_Output;
         this._color = ColorUtils.getPinColor(this._pinProperty);
+        if (this._pinProperty.valueType)
+            this._secondaryColor = ColorUtils.getPinColorByCategory(this._pinProperty.valueType as PinCategory);
 
         if (!pin.hidden && !pin.hideName) {
             this.width = PinControl.formattedNameWidth(this.pinProperty) + (PinControl.PINS_PADDING_HORIZONTAL * 2);
@@ -55,8 +63,33 @@ export class PinControl extends UserControl {
             this.height = 24;
         }
 
+        this.initPinIcons();
         NodePinsCreator.pinsControls.push(this);
+        
         this.postInit();
+    }
+
+    private initPinIcons() {
+        switch (this._pinProperty.containerType) {
+            case PinContainerType.Array:
+                this.icon = (this._pinProperty.isLinked) ? new Path2D(IconLibrary.PIN_ARRAY_CONNECTED) : new Path2D(IconLibrary.PIN_ARRAY_DISCONNECTED);
+                break;
+            case PinContainerType.Set:
+                this.icon = new Path2D(IconLibrary.PIN_SET);
+                break;
+            case PinContainerType.Map:
+                this.icon = new Path2D(IconLibrary.PIN_MAP_KEY);
+                this.secondaryIcon = new Path2D(IconLibrary.PIN_MAP_VALUE);
+                break;
+            case PinContainerType.None:
+            default:
+                this.icon = undefined;
+                break;
+        }
+
+        if (this._pinProperty.isReference) {
+            this.icon = new Path2D(IconLibrary.PIN_REFERENCE);
+        }
     }
 
     get pinProperty(): PinProperty {
@@ -91,10 +124,6 @@ export class PinControl extends UserControl {
 
     public override refreshLayout() {
         super.refreshLayout();
-
-        for (let connection of this.connections) {
-            
-        }
     }
 
     public onDraw(canvas: Canvas2D): void {
@@ -112,7 +141,7 @@ export class PinControl extends UserControl {
         canvas.fillStyle(this._color).strokeStyle(this._color);
 
         let paddingX = (this.pinProperty.direction === PinDirection.EGPD_Output) ? -this.padding.right : this.padding.left;
-        canvas.translate(paddingX, this.height * 0.5);
+        canvas.translate(paddingX, Math.floor(this.height * 0.5));
 
         switch (pinCategory) {
             case PinCategory.exec:
@@ -128,27 +157,47 @@ export class PinControl extends UserControl {
         canvas.restore();
     }
 
+    drawPinIcon(canvas: Canvas2D, icon: Path2D) {
+        const pinX = Math.floor(this.getPinX());
+
+        canvas.fillStyle(this._color)
+        .translate(pinX - 7.5, -7.5)
+        .fill(this.icon, 'evenodd');
+
+        if (this.secondaryIcon !== undefined) {
+            canvas.fillStyle(this._secondaryColor)
+            .fill(this.secondaryIcon, 'evenodd');
+        }
+    }
+
     private drawPin(canvas: Canvas2D) {
         let textX = this.setupTextDrawing(canvas);
         const pinX = this.getPinX();
 
-        canvas.fillText(this._pinProperty.formattedName, textX, 4)
-        .fillStyle(this._color)
-        .fillCircle(pinX + 6, 0, 2.3);
+        canvas.fillText(this._pinProperty.formattedName, textX, 4);
+        
 
-        if (this._pinProperty.isLinked) {
-            canvas.fillCircle(pinX, 0, 6)
+        if (this.icon === undefined) {
+            canvas.fillStyle(this._color)
+            .fillCircle(pinX + 6, 0, 2.3);
+
+            if (this._pinProperty.isLinked) {
+                canvas.fillCircle(pinX, 0, 6)
+            } else {
+                canvas.strokeStyle(this._color)
+                .lineWidth(2)
+                .strokeCircle(pinX, 0, 4.8)
+
+                this.drawDefaultValueBox(canvas);
+            }
+
+            canvas.strokeStyle("#000")
+            .lineWidth(.5)
+            .strokeCircle(pinX, 0, 6);
         } else {
-            canvas.strokeStyle(this._color)
-            .lineWidth(2)
-            .strokeCircle(pinX, 0, 4.8)
-
-            this.drawDefaultValueBox(canvas);
+            if (this.icon)
+                this.drawPinIcon(canvas, this.icon)            
         }
-
-        canvas.strokeStyle("#000")
-        .lineWidth(.5)
-        .strokeCircle(pinX, 0, 6);
     }
 
     private drawExecutionPin(canvas: Canvas2D) {
