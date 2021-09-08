@@ -87,7 +87,10 @@ export class PinControl extends UserControl {
         }
 
         if (this._pinProperty.isReference) {
-            this.icon = new Path2D(IconLibrary.PIN_REFERENCE);
+            if (this._pinProperty.isLinked)
+                this.icon = new Path2D(IconLibrary.PIN_REFERENCE_CONNECTED);
+            else
+                this.icon = new Path2D(IconLibrary.PIN_REFERENCE_DISCONNECTED);
         }
     }
 
