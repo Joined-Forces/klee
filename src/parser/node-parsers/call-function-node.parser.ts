@@ -12,20 +12,16 @@ import { UnrealNodeClass } from "../../data/classes/unreal-node-class";
 import { FoldableHeadedNodeControl } from "../../controls/nodes/foldable-headed-node.control";
 import { StringFunctionNodeParser } from "./string-function-node.parser";
 import { ArrayFunctionNodeParser } from "./array-function-node.parser";
+import { Constants } from "../../constants";
 
 
 export class CallFunctionNodeParser extends NodeParser {
-
-    private static readonly _DEFAULT_FUNC_BACKGROUND_COLOR = '78, 117, 142';
-    private static readonly _DEFAULT_PURE_FUNC_BACKGROUND_COLOR = '92, 154, 87';
-    private static readonly _DEFAULT_FUNC_ENTRY_BACKGROUND_COLOR = '109, 19, 132';
 
     private static readonly _FUNCTION_MAP = {
         "/Script/Engine.KismetMathLibrary": (d) => new MathFunctionNodeParser().parse(d),
         "/Script/Engine.KismetStringLibrary": (d) => new StringFunctionNodeParser().parse(d),
         "/Script/Engine.KismetArrayLibrary": (d) => new ArrayFunctionNodeParser().parse(d),
     }
-
 
     constructor() {
         super({
@@ -62,7 +58,7 @@ export class CallFunctionNodeParser extends NodeParser {
 
         this.parseProperties(data);
 
-        node.backgroundColor = node.isPureFunc === true ? CallFunctionNodeParser._DEFAULT_PURE_FUNC_BACKGROUND_COLOR : CallFunctionNodeParser._DEFAULT_FUNC_BACKGROUND_COLOR;
+        node.backgroundColor = node.isPureFunc === true ? Constants.DEFAULT_FUNC_PURE_BACKGROUND_COLOR : Constants.DEFAULT_FUNC_BACKGROUND_COLOR;
         let icon = IconLibrary.FUNCTION;
 
         // Special case for construction node
@@ -81,7 +77,7 @@ export class CallFunctionNodeParser extends NodeParser {
     }
 
     private handleFunctionNode(node: CallFunctionNode) {
-        node.backgroundColor = CallFunctionNodeParser._DEFAULT_FUNC_ENTRY_BACKGROUND_COLOR;
+        node.backgroundColor = Constants.DEFAULT_FUNC_ENTRY_BACKGROUND_COLOR;
         node.title = insertSpacesBetweenCapitalizedWords(
             node.functionReference.memberName.replace('UserConstructionScript', 'ConstructionScript'));
         return IconLibrary.BREAK_STRUCT;

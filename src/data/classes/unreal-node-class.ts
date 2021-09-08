@@ -21,4 +21,5 @@ export enum UnrealNodeClass {
     CALL_ARRAY_FUNCTION = "/Script/BlueprintGraph.K2Node_CallArrayFunction",
     SELF = "/Script/BlueprintGraph.K2Node_Self",
     GET_ARRAY_ITEM = "/Script/BlueprintGraph.K2Node_GetArrayItem",
+    MAKE_ARRAY = "/Script/BlueprintGraph.K2Node_MakeArray",
 }

@@ -12,4 +12,8 @@ export class Constants {
 
     public static readonly DEFAULT_VALUE_BOX_TEXT_PADDING = 4;
     public static readonly DEFAULT_VALUE_BOX_MARGIN_LEFT = 8;
+
+    public static readonly DEFAULT_FUNC_BACKGROUND_COLOR = '78, 117, 142';
+    public static readonly DEFAULT_FUNC_PURE_BACKGROUND_COLOR = '92, 154, 87';
+    public static readonly DEFAULT_FUNC_ENTRY_BACKGROUND_COLOR = '109, 19, 132';
 }
