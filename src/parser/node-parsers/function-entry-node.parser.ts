@@ -6,7 +6,7 @@ import { MathFunctionNodeParser } from "./math-function-node.parser";
 import { NodeDataReferenceParser } from "../node-data-reference.parser";
 import { NodeParser } from "../node.parser";
 import { ParsingNodeData } from "../parsing-node-data";
-import { insertSpacesBetweenCapitalizedWords, prettifyText } from "../../utils/text-utils";
+import { insertSpacesBetweenCapitalizedWords, findFriendlyName } from "../../utils/text-utils";
 import { IconLibrary } from "../../controls/utils/icon-library";
 import { UnrealNodeClass } from "../../data/classes/unreal-node-class";
 
@@ -26,7 +26,7 @@ export class FunctionEntryNodeParser extends NodeParser {
                 if(node.class === UnrealNodeClass.FUNCTION_RESULT) {
                     node.title = 'Return Node';
                 } else {
-                    node.title = insertSpacesBetweenCapitalizedWords(node.functionReference.memberName);
+                    node.title = insertSpacesBetweenCapitalizedWords(findFriendlyName(node.functionReference.memberName));
                 }
             },
         });

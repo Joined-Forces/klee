@@ -53,13 +53,12 @@ export class PinControl extends UserControl {
             this.width = (PinControl.PINS_PADDING_HORIZONTAL * 2);
         }
         this.height = 28;
-        this.padding = { top: 0, right: 0, bottom: 0, left: 0 };
         this.visible = !pin.hidden;
         this.category = pin.category;
 
 
-        if (this.category == PinCategory.delegate) {
-            this.width = (PinControl.PINS_PADDING_HORIZONTAL * 2);
+        if (this.category == PinCategory.delegate && this.pinProperty.direction === PinDirection.EGPD_Output) {
+            this.width = (PinControl.PINS_PADDING_HORIZONTAL * 2) - 8;
             this.height = 24;
         }
 
@@ -133,7 +132,7 @@ export class PinControl extends UserControl {
 
 /// #if DEBUG_UI
         canvas.strokeStyle("#e0e");
-        canvas.strokeRect(0, 0, this.size.x, this.size.y);
+        canvas.strokeRect(0, 0, this.size.x + this.padding.left + this.padding.right, this.size.y + this.padding.top + this.padding.bottom);
 /// #endif
 
         canvas.save();
@@ -202,6 +201,9 @@ export class PinControl extends UserControl {
 
     private drawExecutionPin(canvas: Canvas2D) {
         canvas.save();
+
+        let textX = this.setupTextDrawing(canvas);
+        canvas.fillText(this._pinProperty.formattedName, textX, 4);
         
         if (this._pinProperty.formattedName) {
             const textX = this.setupTextDrawing(canvas);
@@ -234,17 +236,31 @@ export class PinControl extends UserControl {
     }
 
     private drawDelegatePin(canvas: Canvas2D) {
-        canvas.save()
-        .translate(this.getPinX() - 3,  -5);
+        let xPos = 2;
 
-        canvas.strokeStyle("#FF3838")
+        if (this._pinProperty.direction === PinDirection.EGPD_Input) {
+            let textX = this.setupTextDrawing(canvas);
+            canvas.fillText(this._pinProperty.formattedName, textX, 4);
+            xPos = -6;
+        }
+
+        canvas.save()
+        .translate(this.getPinX(),  -5)
+        .fillStyle(this._color).strokeStyle(this._color);
+
+        canvas.strokeStyle(this._color)
         .lineWidth(2)
-        .roundedRectangle(0, 0, 10, 10, 3);
+        
+        
 
         if (this.pinProperty.isLinked)
-            canvas.fill();
+            canvas.roundedRectangle(xPos, 0, 11, 11, 3)
+            .fill();
         else
-            canvas.stroke();
+            canvas
+            .lineWidth(2)
+            .roundedRectangle(xPos, 0, 10, 10, 3)
+            .stroke();
 
         canvas.restore();
     }
@@ -296,6 +312,8 @@ export class PinControl extends UserControl {
 
         if (this.pinProperty.direction === PinDirection.EGPD_Output) {
             position.x += (this.width || this.size.x) - PinControl.PINS_PADDING_HORIZONTAL;
+            if (this.pinProperty.category === PinCategory.delegate)
+                position.x += 8;
         } else {
             position.x += PinControl.PINS_PADDING_HORIZONTAL;
         }

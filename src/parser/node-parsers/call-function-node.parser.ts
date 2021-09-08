@@ -6,7 +6,7 @@ import { MathFunctionNodeParser } from "./math-function-node.parser";
 import { NodeDataReferenceParser } from "../node-data-reference.parser";
 import { NodeParser } from "../node.parser";
 import { ParsingNodeData } from "../parsing-node-data";
-import { insertSpacesBetweenCapitalizedWords, prettifyText } from "../../utils/text-utils";
+import { insertSpacesBetweenCapitalizedWords, prettifyText, findFriendlyName } from "../../utils/text-utils";
 import { IconLibrary } from "../../controls/utils/icon-library";
 import { UnrealNodeClass } from "../../data/classes/unreal-node-class";
 import { FoldableHeadedNodeControl } from "../../controls/nodes/foldable-headed-node.control";
@@ -31,7 +31,7 @@ export class CallFunctionNodeParser extends NodeParser {
                 const parser = new NodeDataReferenceParser();
                 node.functionReference = parser.parse(value);
 
-                node.title = insertSpacesBetweenCapitalizedWords(node.functionReference.memberName);
+                node.title = insertSpacesBetweenCapitalizedWords(findFriendlyName(node.functionReference.memberName));
 
                 if(node.functionReference.selfContext === true) {
                     node.subTitles.push({ text: `Target is self context`});

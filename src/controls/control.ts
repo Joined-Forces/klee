@@ -5,8 +5,8 @@ export abstract class Control {
     private _position: Vector2;
     public width?: number;
     public height?: number;
-    protected minWidth?: number;
-    protected minHeight?: number;
+    public minWidth?: number;
+    public minHeight?: number;
     public desiredWidth: number;
     public desiredHeight: number;
     protected zIndex: number;

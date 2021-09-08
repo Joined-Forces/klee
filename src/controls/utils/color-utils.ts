@@ -30,6 +30,8 @@ export class ColorUtils {
 
     public static getPinColorByCategory(category: PinCategory, subCategoryObject?: string): string {
         switch (category) {
+            case PinCategory.delegate:
+                return 'rgb(255, 56, 56)';
             case PinCategory.bool:
                 return 'rgb(146, 1, 1)';
             case PinCategory.float:

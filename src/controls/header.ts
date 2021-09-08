@@ -8,6 +8,7 @@ import { HorizontalAlignment, VerticalPanel } from "./vertical-panel";
 import { HorizontalPanel } from "./horizontal-panel";
 import { Icon } from "./icon";
 import { Label } from "./label";
+import { PinControl } from "./pin.control";
 
 
 export class Header extends HorizontalPanel {
@@ -21,6 +22,7 @@ export class Header extends HorizontalPanel {
     private node: Node;
 
     private titlePanel: VerticalPanel;
+    private delegatePanel: VerticalPanel;
 
     constructor(node: Node, icon?: string) {
         super();
@@ -49,6 +51,10 @@ export class Header extends HorizontalPanel {
         }
 
         this.add(this.titlePanel);
+
+        this.delegatePanel = new VerticalPanel();
+        this.delegatePanel.minWidth = 28;
+        this.add(this.delegatePanel);
     }
 
     protected onDraw(canvas: Canvas2D) {
@@ -63,5 +69,9 @@ export class Header extends HorizontalPanel {
         gradient.addColorStop(0, `rgb(${backgroundColor})`);
         gradient.addColorStop(1, `rgba(${backgroundColor},0.15)`);
         return gradient;
+    }
+
+    public addDelegate(pinControl: PinControl) {
+        this.delegatePanel.add(pinControl);
     }
 }

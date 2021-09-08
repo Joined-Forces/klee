@@ -1,3 +1,4 @@
+import { NodeFriendlyNames } from "../parser/node-friendly-names";
 
 export function insertSpacesBetweenCapitalizedWords(str: string) {
     str = str || '';
@@ -11,6 +12,11 @@ export function removePrefixB(str: string) {
 export function capitalizeTerm(str: string) {
     str = str.trim();
     return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+export function findFriendlyName(str: string) {
+    let firendlyName = NodeFriendlyNames[str];
+    return firendlyName || str;
 }
 
 export function prettifyText(str: string) {

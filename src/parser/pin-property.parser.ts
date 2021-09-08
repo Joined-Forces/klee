@@ -138,8 +138,7 @@ export class PinPropertyParser implements CustomPropertyParser {
 
     private static parsePinCategory(value: string): PinCategory {
         value = BlueprintParserUtils.parseString(value);
-        return value as PinCategory;
-
+        return value.toLowerCase() as PinCategory;
     }
 
     private static parseDirection(value: string): PinDirection {
