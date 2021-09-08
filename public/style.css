@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: rgb(20, 100, 219);
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    font-family: 'Roboto', sans-serif;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+}
+
+.header .navbar {
+    /* background-color: #0e2344; */
+    height: 80px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    color: #fff;
+    width: 1200px;
+    padding: 20px;
+}
+
+.header .logo {
+    background-image: url('img/logo.svg');
+    background-size: 80px 80px;
+    width: 80px;
+    height: 80px;
+}
+
+.header .title h1 {
+    font-weight: normal;
+    margin: 0 1em;
+}
+
+.header .jumbotron {
+    max-width: 100vw;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+.header .copy-paste-here {
+    position: absolute;
+    background-image: url('img/copy-paste-here.svg');
+    width: 400px;
+    height: 100px;
+    transform: translateX(-70%);
+}
+
+.header .bg-rect {
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+    background-color: rgba(0,0,0,0.1);
+    background: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.2));
+    min-height: 600px;
+    width: 150%;
+    transform: rotate(-10deg) translate(0%, -50%);
+}
+
+.hello-world {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    width: 900px;
+}
+
+.hello-world canvas {
+    display: flex;
+    width: 900px;
+    height: 500px;
+    border-radius: 6px;
+    box-shadow: 0 0 5px 3px rgba(3, 26, 61, 0.5);
+}
