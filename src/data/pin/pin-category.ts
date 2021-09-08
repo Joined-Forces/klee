@@ -12,4 +12,5 @@ export enum PinCategory {
     bool,
     name,
     wildcard,
+    byte,
 }

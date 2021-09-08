@@ -151,6 +151,7 @@ export class PinPropertyParser implements CustomPropertyParser {
             case "delegate": return PinCategory.delegate;
             case "name": return PinCategory.name;
             case "wildcard": return PinCategory.wildcard;
+            case "byte": return PinCategory.byte;
         }
     }
 

@@ -50,6 +50,8 @@ export class ColorUtils {
                 return 'rgb(88, 0, 187)';
             case PinCategory.wildcard:
                 return 'rgb(128, 121, 121)';
+            case PinCategory.byte:
+                return 'rgb(0, 110, 100)';
             default: 
                 return 'rgb(230, 230, 230)';
         }
