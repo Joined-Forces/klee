@@ -52,7 +52,7 @@ export class GenericNodeParser extends NodeParser {
         [UnrealNodeClass.MACRO_INSTANCE]: () => new MacroInstanceNodeParser(),
         [UnrealNodeClass.FUNCTION_ENTRY]: () => new FunctionEntryNodeParser(),
         [UnrealNodeClass.FUNCTION_RESULT]: () => new FunctionEntryNodeParser(),
-        [UnrealNodeClass.CALL_ARRAY_FUNCTION]: () => undefined,
+        [UnrealNodeClass.CALL_ARRAY_FUNCTION]: () => new CallFunctionNodeParser(),
         [UnrealNodeClass.SELF]: () => new VariableNodeParser(),
         [UnrealNodeClass.GET_ARRAY_ITEM]: () => new GetArrayItemNodeParser(),
     }

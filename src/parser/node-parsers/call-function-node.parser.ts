@@ -11,19 +11,19 @@ import { IconLibrary } from "../../controls/utils/icon-library";
 import { UnrealNodeClass } from "../../data/classes/unreal-node-class";
 import { FoldableHeadedNodeControl } from "../../controls/nodes/foldable-headed-node.control";
 import { StringFunctionNodeParser } from "./string-function-node.parser";
+import { ArrayFunctionNodeParser } from "./array-function-node.parser";
 
 
 export class CallFunctionNodeParser extends NodeParser {
 
-    //private static readonly _KISMET_MATH_LIBRARY = "/Script/Engine.KismetMathLibrary";
-    //private static readonly _KISMET_STRING_LIBRARY = "/Script/Engine.KismetStringLibrary";
     private static readonly _DEFAULT_FUNC_BACKGROUND_COLOR = '78, 117, 142';
     private static readonly _DEFAULT_PURE_FUNC_BACKGROUND_COLOR = '92, 154, 87';
     private static readonly _DEFAULT_FUNC_ENTRY_BACKGROUND_COLOR = '109, 19, 132';
 
     private static readonly _FUNCTION_MAP = {
         "/Script/Engine.KismetMathLibrary": (d) => new MathFunctionNodeParser().parse(d),
-        "/Script/Engine.KismetStringLibrary": (d) => new StringFunctionNodeParser().parse(d)
+        "/Script/Engine.KismetStringLibrary": (d) => new StringFunctionNodeParser().parse(d),
+        "/Script/Engine.KismetArrayLibrary": (d) => new ArrayFunctionNodeParser().parse(d),
     }
 
 
