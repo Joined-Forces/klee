@@ -3,15 +3,13 @@ import { HeadlessNodeControl } from "../../controls/nodes/headless-node-control"
 import { NodeControl } from "../../controls/nodes/node.control";
 import { IconLibrary } from "../../controls/utils/icon-library";
 import { MathFunctionNode } from "../../data/nodes/math-function.node";
-import { PinDirection } from "../../data/pin/pin-direction";
-import { PinProperty } from "../../data/pin/pin-property";
+import { BlueprintParserUtils } from "../blueprint-parser-utils";
 import { NodeParser } from "../node.parser";
 import { ParsingNodeData } from "../parsing-node-data";
 
 export interface MathFunction {
     name: string;
     displayName: string;
-    //description: string;
 }
 
 export class MathFunctionNodeParser extends NodeParser {
@@ -52,10 +50,7 @@ export class MathFunctionNodeParser extends NodeParser {
         node.isPrimitiveNode = !!mathFunc;
         if(node.isPrimitiveNode) {
             node.title = mathFunc.displayName;
-            node.customProperties.forEach(p => {
-                if (p instanceof PinProperty === false) { return false; }
-                (p as PinProperty).hideName = true;
-            })
+            BlueprintParserUtils.hidePinNames(node.customProperties);
             return new HeadlessNodeControl(node);
         }
         return new HeadedNodeControl(node, this.getIconForHeadedNode(node));

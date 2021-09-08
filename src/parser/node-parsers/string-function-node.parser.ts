@@ -3,21 +3,19 @@ import { HeadlessNodeControl } from "../../controls/nodes/headless-node-control"
 import { NodeControl } from "../../controls/nodes/node.control";
 import { IconLibrary } from "../../controls/utils/icon-library";
 import { MathFunctionNode } from "../../data/nodes/math-function.node";
-import { PinDirection } from "../../data/pin/pin-direction";
-import { PinProperty } from "../../data/pin/pin-property";
+import { BlueprintParserUtils } from "../blueprint-parser-utils";
 import { NodeParser } from "../node.parser";
 import { ParsingNodeData } from "../parsing-node-data";
 
-export interface MathFunction {
+export interface StringFunction {
     name: string;
     displayName: string;
     isPrimitive?: boolean;
-    //description: string;
 }
 
 export class StringFunctionNodeParser extends NodeParser {
 
-    private static readonly STR_FUNCTIONS: Array<MathFunction> = [
+    private static readonly STR_FUNCTIONS: Array<StringFunction> = [
         { name: 'Concat_StrStr', displayName: 'Append', },
         { name: 'Conv_', displayName: '·', isPrimitive: true },
     ];
@@ -30,10 +28,7 @@ export class StringFunctionNodeParser extends NodeParser {
         }
         node.subTitles = [];
         if(func?.isPrimitive === true) {
-            node.customProperties.forEach(p => {
-                if (p instanceof PinProperty === false) { return false; }
-                (p as PinProperty).hideName = true;
-            })
+            BlueprintParserUtils.hidePinNames(node.customProperties);
             return new HeadlessNodeControl(node);
         }
         return new HeadedNodeControl(node, IconLibrary.FUNCTION);
