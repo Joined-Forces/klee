@@ -10,5 +10,6 @@ export enum PinCategory {
     struct,
     class,
     bool,
-    name
+    name,
+    wildcard,
 }

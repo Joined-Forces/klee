@@ -150,6 +150,7 @@ export class PinPropertyParser implements CustomPropertyParser {
             case "bool": return PinCategory.bool;
             case "delegate": return PinCategory.delegate;
             case "name": return PinCategory.name;
+            case "wildcard": return PinCategory.wildcard;
         }
     }
 
