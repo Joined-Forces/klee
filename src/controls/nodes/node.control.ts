@@ -73,7 +73,7 @@ export abstract class NodeControl extends Container {
     }
 
     private initErrorBar() {
-        if (this.node.errorType !== undefined) {
+        if (this.node.errorType !== undefined && this.node.errorMsg !== undefined) {
             switch (this.node.errorType) {
                 case 1: 
                     let errorBar = new ErrorBar("ERROR!", this.node.errorMsg);
