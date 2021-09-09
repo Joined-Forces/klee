@@ -5,9 +5,12 @@ import { Node } from "../../data/nodes/node";
 import { PinProperty } from "../../data/pin/pin-property";
 import { PinControl } from "../pin.control";
 import { PinDirection } from "../../data/pin/pin-direction";
+import { ColorUtils } from "../utils/color-utils";
 
 
 export class RerouteNodeControl extends NodeControl implements DrawableControl {
+
+    private color: string;
 
     constructor(node: Node) {
         super(node);
@@ -16,6 +19,7 @@ export class RerouteNodeControl extends NodeControl implements DrawableControl {
 
         this._stroke.lineWidth = 0.5;
         this.drawChildren = false;
+        this.color = ColorUtils.getPinColor(node.customProperties[0] as PinProperty)
 
         this.createPins();
     }
@@ -24,15 +28,12 @@ export class RerouteNodeControl extends NodeControl implements DrawableControl {
     protected override onPinCreated(pin: PinControl) {
         pin.ignoreLayout = true;
         this.outputPinPanel.add(pin);
-        pin.position.y = -14;
-
-        if (pin.pinProperty.direction === PinDirection.EGPD_Input) {
-            pin.position.x = 50;
-        }
+        pin.width = 28;
+        pin.height = 0;
     }
 
     onDraw(canvas: Canvas2D) {
-        canvas.fillStyle(`rgb(${this.node.backgroundColor})`)
+        canvas.fillStyle(this.color)
             .fillCircle(6, 0, 2.3)
             .fillCircle(0, 0, 6)
 
