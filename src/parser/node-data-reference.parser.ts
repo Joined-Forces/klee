@@ -1,4 +1,3 @@
-import { DefaultValueBox } from "../controls/utils/default-value-box";
 import { NodeClassReference } from "../data/node-class-reference";
 import { NodeDataReference } from "../data/node-data-reference";
 import { BlueprintParserUtils } from "./blueprint-parser-utils";

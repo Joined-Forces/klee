@@ -7,7 +7,6 @@ import { PinDirection } from "../../data/pin/pin-direction";
 import { PinProperty } from "../../data/pin/pin-property";
 import { Vector2 } from "../../math/vector2";
 import { PinControl } from "../pin.control";
-import { DefaultValueBox } from "./default-value-box";
 
 export class NodePinsCreator {
 
