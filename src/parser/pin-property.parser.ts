@@ -1,3 +1,4 @@
+import { StructClass } from "../controls/utils/color-utils";
 import { PinCategory } from "../data/pin/pin-category";
 import { PinContainerType } from "../data/pin/pin-container-type";
 import { PinDirection } from "../data/pin/pin-direction";

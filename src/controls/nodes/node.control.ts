@@ -12,6 +12,8 @@ import { PinDirection } from "../../data/pin/pin-direction";
 import { Application } from "../../application";
 import { Container } from "../container";
 import { ErrorBar } from "../error-bar";
+import { NodeInfoIcon } from "../node-info-icon";
+import { IconLibrary } from "../utils/icon-library";
 
 
 export abstract class NodeControl extends Container {
@@ -64,6 +66,7 @@ export abstract class NodeControl extends Container {
         this.mainPanel.fillParentHorizontal = true;
 
         this.initErrorBar();
+        this.addInfoIcons();
 
         this.add(this.mainPanel);
     }
@@ -79,6 +82,11 @@ export abstract class NodeControl extends Container {
         }
     }
 
+    private addInfoIcons() {
+        if (this.node.latent) {
+            this.mainPanel.add(new NodeInfoIcon(IconLibrary.LATENT));
+        }
+    }
 
     public set selected(isSelected: boolean) {
         this._selected = isSelected;

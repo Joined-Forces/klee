@@ -29,6 +29,7 @@ import { MakeArrayNodeParser } from "./make-array-node.parser";
 import { InputTouchNodeParser } from "./input-touch-node.parser";
 import { GetInputAxisKeyValueNodeParser } from "./get-input-axis-key-value-node.parser";
 import { SetFieldsInStructNodeParser } from "./set-fields-in-struct-node.parser";
+import { StructClass } from "../../controls/utils/color-utils";
 
 
 export class GenericNodeParser extends NodeParser {
@@ -99,6 +100,7 @@ export class GenericNodeParser extends NodeParser {
             pos: new Vector2(0, 0),
             sourceText: data.lines.join('\n'),
             customProperties: [],
+            latent: false,
         }
 
 
@@ -144,6 +146,12 @@ export class GenericNodeParser extends NodeParser {
                 if (!property) { continue; }
 
                 data.node.customProperties.push(property);
+
+                if (property instanceof PinProperty) {
+                    if ((property as PinProperty).subCategoryObject === StructClass.LatentActionInfo) {
+                        data.node.latent = true;
+                    }
+                }
             }
         }
 

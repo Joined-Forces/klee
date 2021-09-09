@@ -4,7 +4,7 @@ import { UserControl } from "./user-control";
 
 export class Icon extends UserControl {
 
-    private icon: Path2D;
+    protected icon: Path2D;
 
     constructor(icon: string) {
         super();

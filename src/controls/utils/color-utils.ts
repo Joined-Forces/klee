@@ -5,6 +5,7 @@ import { PinProperty } from "../../data/pin/pin-property";
 export enum StructClass {
     VECTOR = "/Script/CoreUObject.Vector",
     ROTATOR = "/Script/CoreUObject.Rotator",
+    LatentActionInfo = "/Script/Engine.LatentActionInfo",
 }
 
 export class ColorUtils {

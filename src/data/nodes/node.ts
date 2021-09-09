@@ -21,4 +21,5 @@ export interface Node {
     enabledState?: string;
     errorType?: number;
     errorMsg?: string;
+    latent: boolean;
 }
