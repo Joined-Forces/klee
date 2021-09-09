@@ -26,6 +26,8 @@ import { MacroInstanceNodeParser } from "./macro-instance-node.parser";
 import { FunctionEntryNodeParser } from "./function-entry-node.parser";
 import { GetArrayItemNodeParser } from "./get-array-item-node.parser";
 import { MakeArrayNodeParser } from "./make-array-node.parser";
+import { InputTouchNodeParser } from "./input-touch-node.parser";
+import { GetInputAxisKeyValueNodeParser } from "./get-input-axis-key-value-node.parser";
 
 
 export class GenericNodeParser extends NodeParser {
@@ -56,7 +58,9 @@ export class GenericNodeParser extends NodeParser {
         [UnrealNodeClass.CALL_ARRAY_FUNCTION]: () => new CallFunctionNodeParser(),
         [UnrealNodeClass.SELF]: () => new VariableNodeParser(),
         [UnrealNodeClass.GET_ARRAY_ITEM]: () => new GetArrayItemNodeParser(),
-        [UnrealNodeClass.MAKE_ARRAY]: () => new MakeArrayNodeParser()
+        [UnrealNodeClass.MAKE_ARRAY]: () => new MakeArrayNodeParser(),
+        [UnrealNodeClass.INPUT_TOUCH]: () => new InputTouchNodeParser(),
+        [UnrealNodeClass.GET_INPUT_AXIS_KEY_VALUE]: () => new GetInputAxisKeyValueNodeParser(),
     }
 
     private readonly _customPropertyParsers: {
