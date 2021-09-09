@@ -28,6 +28,7 @@ import { GetArrayItemNodeParser } from "./get-array-item-node.parser";
 import { MakeArrayNodeParser } from "./make-array-node.parser";
 import { InputTouchNodeParser } from "./input-touch-node.parser";
 import { GetInputAxisKeyValueNodeParser } from "./get-input-axis-key-value-node.parser";
+import { SetFieldsInStructNodeParser } from "./set-fields-in-struct-node.parser";
 
 
 export class GenericNodeParser extends NodeParser {
@@ -61,6 +62,7 @@ export class GenericNodeParser extends NodeParser {
         [UnrealNodeClass.MAKE_ARRAY]: () => new MakeArrayNodeParser(),
         [UnrealNodeClass.INPUT_TOUCH]: () => new InputTouchNodeParser(),
         [UnrealNodeClass.GET_INPUT_AXIS_KEY_VALUE]: () => new GetInputAxisKeyValueNodeParser(),
+        [UnrealNodeClass.SET_FIELDS_IN_STRUCT]: () => new SetFieldsInStructNodeParser(),
     }
 
     private readonly _customPropertyParsers: {

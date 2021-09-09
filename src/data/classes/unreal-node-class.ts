@@ -24,4 +24,5 @@ export enum UnrealNodeClass {
     MAKE_ARRAY = "/Script/BlueprintGraph.K2Node_MakeArray",
     INPUT_TOUCH = "/Script/BlueprintGraph.K2Node_InputTouch",
     GET_INPUT_AXIS_KEY_VALUE = "/Script/BlueprintGraph.K2Node_GetInputAxisKeyValue",
+    SET_FIELDS_IN_STRUCT = "/Script/BlueprintGraph.K2Node_SetFieldsInStruct",
 }
