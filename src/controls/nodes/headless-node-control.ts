@@ -21,8 +21,8 @@ export class HeadlessNodeControl extends NodeControl {
                 .getContext().measureText(this.node.title).width + HeadlessNodeControl._NODE_PIN_ICONS_WIDTH;
         }
 
-        this.minHeight = 35;
-        this.padding = { top: 4, right: 0, bottom: 0, left: 0 };
+        this.minHeight = 32;
+        this.padding = { top: 2, right: 0, bottom: 0, left: 0 };
 
         this.createPins(new Vector2(0, 0));
     }
