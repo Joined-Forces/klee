@@ -52,23 +52,24 @@ export abstract class NodeControl extends Container {
         this.showAdvanced = node.advancedPinDisplay;
 
         this.mainPanel = new VerticalPanel();
+        this.mainPanel.fillParentHorizontal = true;
+        this.add(this.mainPanel);
+        
         let pinPanel = new HorizontalPanel();
+        pinPanel.fillParentHorizontal = true;
+        this.mainPanel.add(pinPanel);
+
         this.inputPinPanel = new VerticalPanel();
         this.outputPinPanel = new VerticalPanel();
         this.outputPinPanel.childAlignment = HorizontalAlignment.RIGHT;
         this.outputPinPanel.fillParentHorizontal = true;
-
+        
         pinPanel.add(this.inputPinPanel);
         pinPanel.add(this.outputPinPanel);
-        pinPanel.fillParentHorizontal = true;
         
-        this.mainPanel.add(pinPanel);
-        this.mainPanel.fillParentHorizontal = true;
-
         this.initErrorBar();
         this.addInfoIcons();
 
-        this.add(this.mainPanel);
     }
 
     private initErrorBar() {
@@ -119,7 +120,7 @@ export abstract class NodeControl extends Container {
     }
 
     protected onPinCreated(pin: PinControl) {
-        if (pin.pinProperty.direction == PinDirection.EGPD_Output) {
+        if (pin.pinProperty.direction === PinDirection.EGPD_Output) {
             this.outputPinPanel.add(pin);
         } else {
             this.inputPinPanel.add(pin);

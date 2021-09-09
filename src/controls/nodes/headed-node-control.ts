@@ -39,6 +39,7 @@ export class HeadedNodeControl extends NodeControl implements DrawableControl {
 
         this.minHeight = HeadedNodeControl.NODE_HEADER_TITLE_HEIGHT;
         this.minWidth = largestTitleWidth + HeadedNodeControl.NODE_HEADER_ICONS_WIDTH;
+        this.minWidth = Math.max(150, this.minWidth);
 
 
 

@@ -124,10 +124,6 @@ export class PinControl extends UserControl {
         this.hidden = hidden;
     }
 
-    public override refreshLayout() {
-        super.refreshLayout();
-    }
-
     public onDraw(canvas: Canvas2D): void {
 
         if (this.hidden)

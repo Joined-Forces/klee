@@ -16,32 +16,29 @@ export class HorizontalPanel extends Container {
 /// #endif
     }
 
-    override getSize(): Vector2 {
+    override getCalculatedSize(): Vector2 {
         let size = new Vector2(0, 0);
-        let autoChildrenSize = new Vector2(0, 0);
-        let fillCount = 0;
+        let childWidth = 0;
+        this.horizontalFillCount = 0;
 
         for (let child of this.children) {
             if (child.ignoreLayout || !child.visible)
                 continue;
 
-            let childSize = child.getSize();
+            let childSize = child.getCalculatedSize();
             child.position.x = size.x;
 
             size.x += childSize.x;
             size.y = Math.max(size.y, childSize.y)
 
             if (child.fillParentHorizontal) {
-                fillCount++;
+                this.horizontalFillCount++;
             } else {
-                autoChildrenSize.x += childSize.x;
-                autoChildrenSize.y = Math.max(autoChildrenSize.y, childSize.y)
+                childWidth += childSize.x;
             }
         }
 
-        for (let child of this.children) {
-            child.desiredHeight = size.y;
-        }
+        
 
         size.x += this.padding.left + this.padding.right;
         size.y += this.padding.top + this.padding.bottom;
@@ -53,18 +50,36 @@ export class HorizontalPanel extends Container {
         size.y = (this.height || size.y);
 
         this.controlSize = size.copy();
-        this.calculateFills(autoChildrenSize, fillCount);
-
+        this.childrenWidth = childWidth;
+        
         return size;
     }
 
-    private calculateFills(autoChildrenSize: Vector2, numberOfChildren: number) {
+    override applyFills(remainingSize?: Vector2): void {
+        let remainingWidth = (remainingSize?.x || this.size.x) - this.childrenWidth - (this.padding.left + this.padding.right);
+        let width = remainingWidth / this.horizontalFillCount;
+        let height = this.size.y;
 
-        let width = (this.size.x - autoChildrenSize.x) / numberOfChildren;
+        let position = new Vector2(0, 0);
 
         for (let child of this.children) {
+            if (child.ignoreLayout || !child.visible)
+                continue;
+
+            child.position.x = position.x;
+            child.position.y = position.y;
+
             if (child.fillParentHorizontal) {
                 child.desiredWidth = width;
+            }
+            if (child.fillParentVertical) {
+                child.desiredHeight = height;
+            }
+
+            position.x += child.size.x + child.padding.left + child.padding.right;
+
+            if (child instanceof Container) {
+                (child as Container).applyFills(new Vector2(width, height));
             }
         }
     }

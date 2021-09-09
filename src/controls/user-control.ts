@@ -12,8 +12,8 @@ export abstract class UserControl extends Control implements DrawableControl {
     public padding: Thickness = { top: 0, right: 0, bottom: 0, left: 0};
     public ignoreLayout: boolean;
 
-    private dirty: boolean;
-    protected controlSize: Vector2 = new Vector2(0, 0);
+    protected dirty: boolean;
+    public controlSize: Vector2 = new Vector2(0, 0);
 
     public visible: boolean = true;
 
@@ -44,7 +44,7 @@ export abstract class UserControl extends Control implements DrawableControl {
     protected abstract onDraw(canvas: Canvas2D);
 
     public refreshLayout() {
-        this.controlSize = this.getSize();
+        this.controlSize = this.getCalculatedSize();
         this.setDirty(true);
 
         if (this.controlParent) {
@@ -52,16 +52,9 @@ export abstract class UserControl extends Control implements DrawableControl {
         }
     }
 
-    public getSize(): Vector2 {
+    public getCalculatedSize(): Vector2 {
         
-        let size = new Vector2(0, 0);
-
-        size.x += (this.width || 0);
-        size.y += (this.height || 0);
-
-        size.x = Math.max(size.x, (this.minWidth || 0));
-        size.y = Math.max(size.y, (this.minHeight || 0));
-
+        let size = this.size;
         size.x += this.padding.left + this.padding.right;
         size.y += this.padding.top + this.padding.bottom;
 

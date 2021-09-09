@@ -53,6 +53,7 @@ export class Header extends HorizontalPanel {
         this.add(this.titlePanel);
 
         this.delegatePanel = new VerticalPanel();
+        this.delegatePanel.fillParentHorizontal = true;
         this.delegatePanel.minWidth = 28;
         this.add(this.delegatePanel);
     }

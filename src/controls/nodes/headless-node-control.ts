@@ -22,6 +22,7 @@ export class HeadlessNodeControl extends NodeControl {
         }
 
         this.minHeight = 32;
+        this.minWidth = Math.max(130, (!isNaN(this.minWidth)) ? this.minWidth : 0);
         this.padding = { top: 2, right: 0, bottom: 0, left: 0 };
 
         this.createPins(new Vector2(0, 0));

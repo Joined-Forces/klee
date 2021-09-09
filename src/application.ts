@@ -26,7 +26,7 @@ export class Application {
         Application._scene = new Scene(Application._canvas);
 
         this.initializeHtmlAttributes();
-        this.refresh();
+        //this.refresh();
 
         this._parser = new BlueprintParser();
         this.loadBlueprintIntoScene(element.innerHTML);
@@ -52,7 +52,7 @@ export class Application {
 
         window.addEventListener('resize', this.refresh.bind(this), false);
 
-        this.refresh();
+        //this.refresh();
     }
 
     static get scene() {
@@ -116,7 +116,7 @@ export class Application {
         Application._scene.unload();
         const nodes = this._parser.parseBlueprint(text);
         Application._scene.load(nodes);
-        Application._scene.refresh();
+        //Application._scene.refresh();
 
         this.recenterCamera();
         
@@ -124,6 +124,7 @@ export class Application {
 
     recenterCamera() {
         // Move camera to the center of all nodes
+        this.refresh();
         Application._scene.camera.centreAbsolutePosition(Application._scene.calculateCentroid());
         this.refresh();
         return true;

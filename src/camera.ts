@@ -16,7 +16,7 @@ export class Camera {
     }
 
     prepareViewport() {
-        this._canvas.translate(Math.floor(this._position.x), Math.floor(this._position.y));
+        this._canvas.translate(Math.round(this._position.x), Math.round(this._position.y));
     }
 
     moveRelative(value: Vector2) {
@@ -25,9 +25,7 @@ export class Camera {
 
     centreAbsolutePosition(value: Vector2) {
         this._position = new Vector2(
-            value.x + this._canvas.width / 2,
-            value.y + this._canvas.height / 2);
-
-        this.prepareViewport();
+            Math.round(value.x + this._canvas.width / 2),
+            Math.round(value.y + this._canvas.height / 2));
     }
 }

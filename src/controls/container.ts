@@ -7,11 +7,21 @@ export abstract class Container extends UserControl {
 
     protected children: Array<UserControl>;
     protected drawChildren: boolean = true;
+    protected horizontalFillCount: number;
+    protected verticalFillCount: number;
+    protected childrenWidth: number;
+    protected childrenHeight: number;
 
     constructor(x?: number, y?: number, zIndex?: number) {
         super(x, y, zIndex);
 
         this.children = [];
+    }
+
+    override refreshLayout() {
+        super.refreshLayout();
+
+        this.applyFills();
     }
 
     override draw(canvas: Canvas2D): void {
@@ -40,7 +50,6 @@ export abstract class Container extends UserControl {
     public add(child: UserControl): UserControl {
         this.children.push(child);
         child.parent = this;
-        this.refreshLayout();
 
         return child;
     }
@@ -48,7 +57,13 @@ export abstract class Container extends UserControl {
     public insert(child: UserControl, index: number): UserControl {
         this.children.splice(index, 0, child);
         child.parent = this;
-        this.refreshLayout();
+
+        if (child.fillParentHorizontal) {
+            child.desiredWidth = this.size.x;    
+        }
+        if (child.fillParentVertical) {
+            child.desiredHeight = this.size.y;
+        }
 
         return child;
     }
@@ -57,7 +72,7 @@ export abstract class Container extends UserControl {
         return this.children;
     }
 
-    public getSize(): Vector2 {
+    public getCalculatedSize(): Vector2 {
         
         let size = new Vector2(0, 0);
 
@@ -65,7 +80,7 @@ export abstract class Container extends UserControl {
             if (child.ignoreLayout)
                 continue;
 
-            let childSize = child.getSize();
+            let childSize = child.getCalculatedSize();
 
             size.x = Math.max(size.x, childSize.x);
             size.y = Math.max(size.y, childSize.y);
@@ -77,9 +92,6 @@ export abstract class Container extends UserControl {
 
         size.x = Math.max(size.x, (this.minWidth || 0));
         size.y = Math.max(size.y, (this.minHeight || 0));
-
-        size.x = (this.width || size.x);
-        size.y = (this.height || size.y);
 
         this.controlSize = size.copy();
 
@@ -94,6 +106,21 @@ export abstract class Container extends UserControl {
 
         return size;
     }
- 
 
+    public override isDirty(): boolean {
+        let dirty = this.dirty;
+        for (let child of this.children) {
+            dirty = dirty || child.isDirty();
+        }
+
+        return dirty;
+    }
+
+    public applyFills(remainingSize?: Vector2): void {
+        for (let child of this.children) {
+            if (child instanceof Container) {
+                child.applyFills();
+            }
+        }
+    }
 }
