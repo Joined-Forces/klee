@@ -28,7 +28,7 @@ import { GetArrayItemNodeParser } from "./get-array-item-node.parser";
 import { MakeArrayNodeParser } from "./make-array-node.parser";
 import { InputTouchNodeParser } from "./input-touch-node.parser";
 import { GetInputAxisKeyValueNodeParser } from "./get-input-axis-key-value-node.parser";
-import { SetFieldsInStructNodeParser } from "./set-fields-in-struct-node.parser";
+import { StructNodeParser } from "./struct-node.parser";
 import { StructClass } from "../../controls/utils/color-utils";
 
 
@@ -63,7 +63,9 @@ export class GenericNodeParser extends NodeParser {
         [UnrealNodeClass.MAKE_ARRAY]: () => new MakeArrayNodeParser(),
         [UnrealNodeClass.INPUT_TOUCH]: () => new InputTouchNodeParser(),
         [UnrealNodeClass.GET_INPUT_AXIS_KEY_VALUE]: () => new GetInputAxisKeyValueNodeParser(),
-        [UnrealNodeClass.SET_FIELDS_IN_STRUCT]: () => new SetFieldsInStructNodeParser(),
+        [UnrealNodeClass.SET_FIELDS_IN_STRUCT]: () => new StructNodeParser(),
+        [UnrealNodeClass.BREAK_STRUCT]: () => new StructNodeParser(),
+        [UnrealNodeClass.MAKE_STRUCT]: () => new StructNodeParser(),
     }
 
     private readonly _customPropertyParsers: {
