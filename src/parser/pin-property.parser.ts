@@ -60,18 +60,18 @@ export class PinPropertyParser implements CustomPropertyParser {
     }
 
     parse(propertyData: string, nodeName: string): PinProperty {
-
+        
         this._property = new PinProperty(nodeName);
-        //let data = propertyData.split(/,(?![^(]*\))/g);
 
         // ([a-zA-Z0-9_.]+)                     Capture key (similar to \w, but also allows dots)
         // \s*=\s*                              Equal sign between optional white spaces
         // (("[^"]*")|(\([^\)]*\))|([^,]*))     Captures a value implemented in one of 4 types
-        //      ("[^"]*")                         Type 1: capture quoted values            z.B.: PinName="self"
-        //      (\([^\)]*\))                      Type 2: capture values set in brackets   z.B.: LinkedTo=(K2Node_CallFunction_0 6A3D6AD94697B8938F5061A6BA9D5FF2,)
-        //      (\w*\([^\)]*\))                   Type 3: capture method values            z.B.: PinFriendlyName=NSLOCTEXT("K2Node", "Target", "Target")
-        //      ([^,]*)                           Type 4: capture pure values              z.B.: PinType.bIsConst=False
-        const matches = propertyData.matchAll(/([a-zA-Z0-9_.]+)\s*=\s*(("[^"]*")|(\([^\)]*\))|(\w*\([^\)]*\))|([^,]*))/g);
+        //      ("[^"]*")                         Type 1: capture quoted values            e.g.: PinName="self"
+        //      (\([^\)]*\))                      Type 2: capture values set in brackets   e.g.: LinkedTo=(K2Node_CallFunction_0 6A3D6AD94697B8938F5061A6BA9D5FF2,)
+        //      (\w*\(\w*(?:[^\(]*\([^\)]*\))*\)) Type 3: capture multilevel loctext       e.g.: PinFriendlyName=LOCGEN_FORMAT_NAMED(NSLOCTEXT("KismetSchema", "SplitPinFriendlyNameFormat", "{PinDisplayName} {ProtoPinDisplayName}"), "PinDisplayName", NSLOCTEXT("", "E767B2BA4B1D5DFDD5E21E953300AB1E", "Settings"), "ProtoPinDisplayName", NSLOCTEXT("", "182F932842DA4BEA8624D89F6CD70FDA", "Attenuation Settings"))
+        //      (\w*\([^\)]*\))                   Type 4: capture method values            e.g.: PinFriendlyName=NSLOCTEXT("K2Node", "Target", "Target")
+        //      ([^,]*)                           Type 5: capture pure values              e.g.: PinType.bIsConst=False
+        const matches = propertyData.matchAll(/([a-zA-Z0-9_.]+)\s*=\s*(("[^"]*")|(\([^\)]*\))|(\w*\(\w*(?:[^\(]*\([^\)]*\))*\))|(\w*\([^)]*\([^\)]*\)[^)]*\))|(\w*\([^\)]*\))|([^,]*))/g);
 
         for (const [fullMatch, key, value] of matches) {
             if(!fullMatch || !key) { console.warn(`Skipped property attribute because invalid key: '${fullMatch}'`); continue; }
@@ -130,6 +130,71 @@ export class PinPropertyParser implements CustomPropertyParser {
             let params = value.split(',');
             name = params[params.length - 1].replace(/"/g, '');
             return name;
+        }
+
+
+        if (value.startsWith("LOCGEN_FORMAT_NAMED")) {
+            // The following format is displayed all on one line
+            //  LOCGEN_FORMAT_NAMED(
+            //      NSLOCTEXT(
+            //          "KismetSchema",
+            //          "SplitPinFriendlyNameFormat",
+            //          "{PinDisplayName} {ProtoPinDisplayName}"
+            //      ),
+            //      "PinDisplayName",
+            //      NSLOCTEXT(
+            //          "",
+            //          "5808C87D488AE450C56BB49263E71071",
+            //          "Settings"
+            //      ),
+            //      "ProtoPinDisplayName",
+            //      NSLOCTEXT(
+            //          "",
+            //          "6FA6CBF1411267BBB10EB39B727DF7C7",
+            //          "Component To Attach To"
+            //      )
+            //  )
+
+            let prefixLength = 'LOCGEN_FORMAT_NAMED('.length;
+            value = value.substr(prefixLength, value.length - prefixLength - 1);
+
+            let format = "";
+            let args: { [key: string]: string } = {};
+
+            let properties = value.split(/,(?![^(]*\))/g);
+            let lastValue = undefined;
+            for (let prop of properties) {
+                prop = prop.trim();
+
+                if (prop.startsWith("NSLOCTEXT")) {
+                    prop = prop.substring("NSLOCTEXT(".length, prop.length - 1);
+                    let data = prop.split(',');
+                    let key = data[0].trim().replace(/"/g, '');
+                    let id = data[1].trim().replace(/"/g, '');;
+                    let value = data[2].trim().replace(/"/g, '');;
+
+                    if (key === "KismetSchema") {
+                        format = value;
+                    }
+
+                    if (key === "") {
+                        key = lastValue;
+                        args[key] = value;
+                    }
+                }
+
+                let value = prop.replace(/"/g, '');
+                lastValue = value;
+            }
+
+            let friendlyName = format;
+            for (let key in args) {
+                let value = args[key];
+
+                friendlyName = friendlyName.replace("{"+key+"}", value);
+            }
+
+            return friendlyName;
         }
 
         name = value.replace(/"/g, '');
