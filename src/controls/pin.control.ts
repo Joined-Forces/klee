@@ -12,7 +12,7 @@ import { NodeConnectionControl } from "./node-connection.control";
 import { NodeControl } from "./nodes/node.control";
 import { UserControl } from "./user-control";
 import { ColorUtils } from "./utils/color-utils";
-import { DefaultValueBox } from "./utils/default-value-box";
+// import { DefaultValueBox } from "./utils/default-value-box";
 import { IconLibrary } from "./utils/icon-library";
 import { NodePinsCreator } from "./utils/node-pins-creator";
 
@@ -23,7 +23,7 @@ export class PinControl extends UserControl {
     private static readonly PINS_PADDING_HORIZONTAL = 16;
 
     private _pinProperty: PinProperty;
-    private defaultValueBox: DefaultValueBox;
+    private defaultValueBox: UserControl;
 
     private category: PinCategory;
 
@@ -114,9 +114,10 @@ export class PinControl extends UserControl {
     }
 
     public postInit(): void {
-        if (this.pinProperty.shouldDrawDefaultValueBox) {
-            this.defaultValueBox = new DefaultValueBox(this._pinProperty, PinControl.formattedNameWidth(this._pinProperty) + PinControl.PINS_PADDING_HORIZONTAL, 0);
-            this.width += this.defaultValueBox.getWidth();
+        if (this.pinProperty.shouldDrawDefaultValueBox && this._pinProperty.defaultValueControlClass) {
+            this.defaultValueBox = new this._pinProperty.defaultValueControlClass(this._pinProperty.defaultValue);
+            this.defaultValueBox.position.x = PinControl.formattedNameWidth(this._pinProperty) + PinControl.PINS_PADDING_HORIZONTAL + 5;
+            this.width += this.defaultValueBox.width;
         }
     }
 
@@ -297,12 +298,14 @@ export class PinControl extends UserControl {
         return Application.canvas.font(Constants.NODE_FONT).getContext().measureText(pin.formattedName).width + PinControl.PIN_NAME_PADDING_LEFT;
     }
 
+    // TODO: Remove this function
     public static calculateTotalPinWidth(pin: PinProperty): number {
-        let defaultValueBoxWidth = DefaultValueBox.defaultValueWidth(pin);
-        if(defaultValueBoxWidth > 0) {
-            defaultValueBoxWidth += Constants.DEFAULT_VALUE_BOX_MARGIN_LEFT;
-        }
-        return PinControl.formattedNameWidth(pin) + defaultValueBoxWidth;
+        return 0;
+        // let defaultValueBoxWidth = DefaultValueBox.defaultValueWidth(pin);
+        // if(defaultValueBoxWidth > 0) {
+        //     defaultValueBoxWidth += Constants.DEFAULT_VALUE_BOX_MARGIN_LEFT;
+        // }
+        // return PinControl.formattedNameWidth(pin) + defaultValueBoxWidth;
     }
 
     public getPinAbsolutePosition(): Vector2 {

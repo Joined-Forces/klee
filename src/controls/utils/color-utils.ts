@@ -1,4 +1,3 @@
-import { UnrealNodeClass } from "../../data/classes/unreal-node-class";
 import { PinCategory } from "../../data/pin/pin-category";
 import { PinProperty } from "../../data/pin/pin-property";
 
@@ -6,24 +5,11 @@ export enum StructClass {
     VECTOR = "/Script/CoreUObject.Vector",
     ROTATOR = "/Script/CoreUObject.Rotator",
     LatentActionInfo = "/Script/Engine.LatentActionInfo",
+    LINEAR_COLOR = "/Script/CoreUObject.LinearColor",
+    VECTOR2D = "/Script/CoreUObject.Vector2D",
 }
 
 export class ColorUtils {
-
-    // TODO: Remove this method as soon as accepted ;)
-    //
-    // public static getNodeColorForClass(nodeClass: NodeClass): string {
-    //     switch (nodeClass) {
-    //         case NodeClass.INPUT_AXIS_EVENT:
-    //         case NodeClass.CUSTOM_EVENT:
-    //         case NodeClass.EVENT:
-    //             return '156, 36, 35';
-    //         case NodeClass.IF_THEN_ELSE:
-    //             return '150, 150, 150';
-    //         default:
-    //             return '109, 147, 104';
-    //     }
-    // }
 
     public static getPinColor(pin: PinProperty): string {
         return this.getPinColorByCategory(pin.category, pin.subCategoryObject);
@@ -60,6 +46,8 @@ export class ColorUtils {
                 return 'rgb(88, 0, 187)';
             case PinCategory.wildcard:
                 return 'rgb(128, 121, 121)';
+            case PinCategory.text:
+                return 'rgb(230, 123, 169)';
             case PinCategory.byte:
                 return 'rgb(0, 110, 100)';
             default: 

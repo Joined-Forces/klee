@@ -6,6 +6,7 @@ export enum PinCategory {
     int = "int",
     int64 = "int64",
     string = "string",
+    text = "text",
     float = "float",
     struct = "struct",
     class = "class",

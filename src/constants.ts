@@ -16,4 +16,8 @@ export class Constants {
     public static readonly DEFAULT_FUNC_BACKGROUND_COLOR = '78, 117, 142';
     public static readonly DEFAULT_FUNC_PURE_BACKGROUND_COLOR = '92, 154, 87';
     public static readonly DEFAULT_FUNC_ENTRY_BACKGROUND_COLOR = '109, 19, 132';
+
+    public static readonly DEFAULT_BOX_HEIGHT = 16;
+    public static readonly DEFAULT_BOX_RADIUS = 2;
+
 }
