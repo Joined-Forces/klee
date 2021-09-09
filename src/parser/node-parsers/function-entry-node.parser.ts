@@ -38,6 +38,6 @@ export class FunctionEntryNodeParser extends NodeParser {
 
         this.parseProperties(data);
 
-        return new HeadedNodeControl(node, IconLibrary.BREAK_STRUCT);
+        return new HeadedNodeControl(node, IconLibrary.CONSTRUCT);
     }
 }
