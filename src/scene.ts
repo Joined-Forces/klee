@@ -148,7 +148,6 @@ export class Scene {
     }
 
     private createConnectionLines() {
-        const connections: string[] = [];
         const connectedPins: string[] = [];
         const pins = this._pins;
 
@@ -216,7 +215,7 @@ export class Scene {
 
     calculateCentroid(): Vector2 {
         let centroid = new Vector2(0, 0);
-
+ 
         if (this.nodes.length == 0)
             return centroid;
 
@@ -227,5 +226,27 @@ export class Scene {
         });
 
         return new Vector2(centroid.x / this.nodes.length, centroid.y / this.nodes.length);
+    }
+
+    calculateCenterPoint() {
+        let xMin = 0;
+        let xMax = 0;
+        let yMin = 0;
+        let yMax = 0;
+
+        if (this.nodes.length == 0)
+            return new Vector2(0, 0);
+
+        this.nodes.forEach(node => {
+            xMin = Math.min(node.position.x, xMin);
+            yMin = Math.min(node.position.y, yMin);
+            xMax = Math.max(node.position.x + node.size.x, xMax);
+            yMax = Math.max(node.position.y + node.size.y, yMax);
+        });
+
+        let width = xMax - xMin;
+        let height = yMax - yMin;
+
+        return new Vector2(-width * 0.5 -xMin , -height * 0.5 -yMin);
     }
 }

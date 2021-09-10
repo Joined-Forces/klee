@@ -23,7 +23,8 @@ export class Camera {
         this._position = this._position.add(value);
     }
 
-    centreAbsolutePosition(value: Vector2) {
+    centerAbsolutePosition(value: Vector2) {
+
         this._position = new Vector2(
             Math.round(value.x + this._canvas.width / 2),
             Math.round(value.y + this._canvas.height / 2));

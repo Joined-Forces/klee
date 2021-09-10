@@ -19,6 +19,10 @@ export class Canvas2D {
         this._PI_TIMES_TWO = Math.PI * 2;
     }
 
+    getBoundingClientRect(): DOMRect {
+        return this._element.getBoundingClientRect();
+    }
+
     fillStyle(style: string | CanvasGradient | CanvasPattern) {
         this._context.fillStyle = style;
         return this;

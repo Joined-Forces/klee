@@ -111,7 +111,7 @@ export class Application {
         this._scene.unload();
         const nodes = this._parser.parseBlueprint(text);
         this._scene.load(nodes);
-        //Application._scene.refresh();
+        this.refresh();
 
         this.recenterCamera();
         
@@ -119,9 +119,7 @@ export class Application {
 
     recenterCamera() {
         // Move camera to the center of all nodes
-        this.refresh();
-        this._scene.camera.centreAbsolutePosition(this._scene.calculateCentroid());
-        this.refresh();
+        this._scene.camera.centerAbsolutePosition(this._scene.calculateCenterPoint());
         return true;
     }
 }
