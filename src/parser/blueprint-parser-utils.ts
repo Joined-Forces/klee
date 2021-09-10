@@ -46,6 +46,15 @@ export class BlueprintParserUtils {
         })
     }
 
+    static getFirstClassNameFromPinProperties(customProperties: CustomProperty[]) {
+        for (const property of customProperties) {
+            if (!(property instanceof PinProperty)) { continue };
+            if (property.name !== "Class" || property.isLinked) { continue };
+
+            return property.defaultValue || "NONE";
+        }
+    }
+
     static parseEnumValue(enumClass: string, value: string) {
         value = value.replace(/["']/g, '');
 
