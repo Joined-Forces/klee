@@ -42,7 +42,8 @@ export class MacroInstanceNodeParser extends NodeParser {
             case 'FlipFlop': return IconLibrary.FLIPFLOP;
             case 'Do': return IconLibrary.DO_N;
             case 'DoOnce': return IconLibrary.DO_ONCE;
-            default: return undefined;
+            case 'IsValid': return IconLibrary.IS_VALID;
+            default: return IconLibrary.MACRO;
         }
     }
 }

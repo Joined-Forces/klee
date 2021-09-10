@@ -38,7 +38,7 @@ export class MacroGraphReferenceParser {
         const stringWithoutQuotes = BlueprintParserUtils.parseString(value);
         const matches = /(?<=\:)\w*/g.exec(stringWithoutQuotes);
         if(!matches) {
-            return value; 
+            return stringWithoutQuotes; 
         }
         return matches[0];
     }
