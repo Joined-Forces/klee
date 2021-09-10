@@ -13,7 +13,7 @@ export class SpawnActorNodeParser extends NodeParser {
     public parse(data: ParsingNodeData): NodeControl {
         data.node.backgroundColor = SpawnActorNodeParser._DEFAULT_BACKGROUND_COLOR;
         
-        let title = "SpawnActor";
+        let title = "Spawn Actor";
 
         for (let property of data.node.customProperties) {
             if (property instanceof PinProperty) {

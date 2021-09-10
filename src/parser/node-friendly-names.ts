@@ -10,4 +10,5 @@ export const NodeFriendlyNames: { [name: string]: string; } = {
     'K2_GetTimerElapsedTimeHandle': 'Get Timer Elapsed Time by Handle',
     'K2_InvalidateTimerHandle': 'Invalidate',
     'K2_IsTimerActiveHandle': 'Is Timer Active by Handle',
+    'K2_DestroyActor': 'Destroy Actor'
 }
