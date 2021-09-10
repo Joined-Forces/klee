@@ -185,8 +185,8 @@ export class Scene {
 
         this.nodes.forEach(node => {
             centroid = new Vector2(
-                centroid.x - node.position.x,
-                centroid.y - node.position.y);
+                centroid.x - node.position.x - (node.size.x * 0.5),
+                centroid.y - node.position.y - (node.size.y * 0.5));
         });
 
         return new Vector2(centroid.x / this.nodes.length, centroid.y / this.nodes.length);
