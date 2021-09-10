@@ -35,6 +35,7 @@ import { TimelineNodeParser } from "./timeline-node.parser";
 import { SpawnActorNodeParser } from "./spawn-actor-node.parser";
 import { TunnelNodeParser } from "./tunnel-node.parser";
 import { CreateWidgetNodeParser } from "./create-widget-node.parser";
+import { CreateObjectNodeParser } from "./create-object-node.parser";
 
 
 export class GenericNodeParser extends NodeParser {
@@ -76,6 +77,7 @@ export class GenericNodeParser extends NodeParser {
         [UnrealNodeClass.SPAWN_ACTOR_FROM_CLASS]: () => new SpawnActorNodeParser(),
         [UnrealNodeClass.TUNNEL]: () => new TunnelNodeParser(),
         [UnrealNodeClass.CREATE_WIDGET]: () => new CreateWidgetNodeParser(),
+        [UnrealNodeClass.CREATE_OBJECT]: () => new CreateObjectNodeParser(),
     }
 
     private readonly _customPropertyParsers: {

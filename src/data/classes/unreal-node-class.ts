@@ -32,4 +32,5 @@ export enum UnrealNodeClass {
     SPAWN_ACTOR_FROM_CLASS = "/Script/BlueprintGraph.K2Node_SpawnActorFromClass",
     TUNNEL = "/Script/BlueprintGraph.K2Node_Tunnel",
     CREATE_WIDGET = "/Script/UMGEditor.K2Node_CreateWidget",
+    CREATE_OBJECT = "/Script/BlueprintGraph.K2Node_GenericCreateObject",
 }
