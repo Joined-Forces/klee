@@ -86,7 +86,7 @@ export class PinPropertyParser implements CustomPropertyParser {
         //      (\w*\(\w*(?:[^\(]*\([^\)]*\))*\)) Type 3: capture multilevel loctext       e.g.: PinFriendlyName=LOCGEN_FORMAT_NAMED(NSLOCTEXT("KismetSchema", "SplitPinFriendlyNameFormat", "{PinDisplayName} {ProtoPinDisplayName}"), "PinDisplayName", NSLOCTEXT("", "E767B2BA4B1D5DFDD5E21E953300AB1E", "Settings"), "ProtoPinDisplayName", NSLOCTEXT("", "182F932842DA4BEA8624D89F6CD70FDA", "Attenuation Settings"))
         //      (\w*\([^\)]*\))                   Type 4: capture method values            e.g.: PinFriendlyName=NSLOCTEXT("K2Node", "Target", "Target")
         //      ([^,]*)                           Type 5: capture pure values              e.g.: PinType.bIsConst=False
-        const matches = propertyData.matchAll(/([a-zA-Z0-9_.]+)\s*=\s*(("[^"]*")|(\([^\)]*\))|(\w*\(\w*(?:[^\(]*\([^\)]*\))*\))|(\w*\([^)]*\([^\)]*\)[^)]*\))|(\w*\([^\)]*\))|([^,]*))/g);
+        const matches = propertyData.matchAll(/([a-zA-Z0-9_.]+)\s*=\s*(("[^"]*")|(\([^)]*\))|(\w*\(\w*(?:[^(]*\([^)]*(?:"[^"]*")\))*\))|(\w*\([^)]*\([^)]*\)[^)]*\))|(\w*\([^)]*\))|([^,]*))/g);
 
         for (const [fullMatch, key, value] of matches) {
             if(!fullMatch || !key) { console.warn(`Skipped property attribute because invalid key: '${fullMatch}'`); continue; }
@@ -179,9 +179,12 @@ export class PinPropertyParser implements CustomPropertyParser {
             let format = "";
             let args: { [key: string]: string } = {};
 
-            let properties = value.split(/,(?![^(]*\))/g);
+            let matches = value.matchAll(/(\w*\((?:"[^"]*"[, ]*)+\))|("[^"]*")/g);
             let lastValue = undefined;
-            for (let prop of properties) {
+            for (const [fullMatch, key, value] of matches) {
+                console.log(fullMatch);
+
+                let prop = fullMatch;
                 prop = prop.trim();
 
                 if (prop.startsWith("NSLOCTEXT")) {
