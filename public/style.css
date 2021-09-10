@@ -179,7 +179,8 @@ a:hover {
     justify-content: center;
     font-weight: lighter;
     font-size: 0.8em;
-    height: 60px;
+    height: 80px;
+    text-align: center;
 }
 
 .footer a, .footer {
