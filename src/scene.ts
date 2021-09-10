@@ -115,7 +115,7 @@ export class Scene {
     }
 
     private createBackground() {
-        let background = new Background('/assets/sprites/bp_grid.png', this.camera);
+        let background = new Background(this.camera);
         this._controls.push(background);
     }
 
