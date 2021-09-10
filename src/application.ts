@@ -5,8 +5,8 @@ import { Scene } from "./scene";
 
 export class Application {
 
-    private static _scene: Scene;
-    private static _canvas: Canvas2D;
+    private _scene: Scene;
+    private _canvas: Canvas2D;
 
     private _controller: Controller;
     private _parser: BlueprintParser;
@@ -22,15 +22,15 @@ export class Application {
             Application.firefox = true;
         }
 
-        Application._canvas = new Canvas2D(element);
-        Application._scene = new Scene(Application._canvas);
+        this._canvas = new Canvas2D(element);
+        this._scene = new Scene(this._canvas, this);
 
         this.initializeHtmlAttributes();
 
         this._parser = new BlueprintParser();
         this.loadBlueprintIntoScene(element.innerHTML);
 
-        this._controller = new Controller(element);
+        this._controller = new Controller(element, this);
         this._controller.registerAction({
             ctrl: true,
             keycode: 'KeyC',
@@ -52,11 +52,11 @@ export class Application {
         window.addEventListener('resize', this.refresh.bind(this), false);
     }
 
-    static get scene() {
+    get scene() {
         return this._scene;
     }
 
-    static get canvas() {
+    get canvas() {
         return this._canvas;
     }
 
@@ -71,16 +71,16 @@ export class Application {
     public refresh() {
         this._element.width = this._element.offsetWidth;
         this._element.height = this._element.offsetHeight;
-        Application._scene.collectInteractables();
-        Application._scene.updateLayout();
-        Application._scene.refresh();
+        this._scene.collectInteractables();
+        this._scene.updateLayout();
+        this._scene.refresh();
     }
 
     private copyBlueprintSelectionToClipboard() {
         console.log("Copy selection");
 
         let textLines = [];
-        Application._scene.nodes.filter(n => n.selected).forEach(n => textLines = [].concat(textLines, n.sourceText));
+        this._scene.nodes.filter(n => n.selected).forEach(n => textLines = [].concat(textLines, n.sourceText));
         navigator.clipboard.writeText(textLines.join('\n'));
 
         return true;
@@ -108,9 +108,9 @@ export class Application {
     }
 
     private loadBlueprintIntoScene(text) {
-        Application._scene.unload();
+        this._scene.unload();
         const nodes = this._parser.parseBlueprint(text);
-        Application._scene.load(nodes);
+        this._scene.load(nodes);
         //Application._scene.refresh();
 
         this.recenterCamera();
@@ -120,7 +120,7 @@ export class Application {
     recenterCamera() {
         // Move camera to the center of all nodes
         this.refresh();
-        Application._scene.camera.centreAbsolutePosition(Application._scene.calculateCentroid());
+        this._scene.camera.centreAbsolutePosition(this._scene.calculateCentroid());
         this.refresh();
         return true;
     }

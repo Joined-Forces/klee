@@ -21,7 +21,7 @@ export class NodeFoldButton extends InteractableUserControl implements Interacta
     get foldoutState() { return this.foldout; }
     set foldoutState(value: boolean) { 
         this.foldout = value;
-        Application.scene.refresh();
+        this.app.scene.refresh();
     }
 
     constructor(foldOut: boolean) {
@@ -38,12 +38,12 @@ export class NodeFoldButton extends InteractableUserControl implements Interacta
 
     onMouseEnter(ev: MouseEvent): boolean {
         this.hovered = true;
-        Application.scene.refresh();
+        this.app.scene.refresh();
         return true;
     }
     onMouseLeave(ev: MouseEvent): boolean {
         this.hovered = false;
-        Application.scene.refresh();
+        this.app.scene.refresh();
         return true;
     }
 

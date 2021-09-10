@@ -6,6 +6,7 @@ import { InteractableControl, isInteractableControl } from "./controls/interface
 import { Control } from "./controls/control";
 import { UserControl } from "./controls/user-control";
 import { InteractableUserControl } from "./controls/interactable-user-control";
+import { Scene } from "./scene";
 
 export interface KeyAction {
     keycode: string
@@ -29,10 +30,13 @@ export class Controller {
     }
     private _mousePositionOfPreviousMove: Vector2;
     private _element: HTMLCanvasElement;
+    private app: Application;
 
     private hoveredControls: InteractableUserControl[] = [];
 
-    constructor(element: HTMLCanvasElement) {
+    constructor(element: HTMLCanvasElement, app: Application) {
+
+        this.app = app;
 
         this._element = element;
         if (Application.isFirefox) {
@@ -131,13 +135,13 @@ export class Controller {
             const delta = currentMousePosition.subtract(this._mouseDownData.position);
     
             if (delta.x == 0 && delta.y == 0) {
-                Application.scene.nodes.forEach(c => c.selected = false);
+                this.app.scene.nodes.forEach(c => c.selected = false);
                 this.selectIntersectingControls(mouseAbsolutePos, new Vector2(0,0));
             }
         }
 
         this._mouseDownData = null;
-        Application.scene.refresh();
+        this.app.scene.refresh();
     }
 
     onMouseMove(ev: MouseEvent) {
@@ -149,14 +153,14 @@ export class Controller {
                 const delta = currentMousePosition.subtract(this._mousePositionOfPreviousMove);
                 this._mousePositionOfPreviousMove = currentMousePosition;
 
-                Application.scene.camera.moveRelative(delta);
-                Application.scene.refresh();
+                this.app.scene.camera.moveRelative(delta);
+                this.app.scene.refresh();
                 return false;
             }
 
             if(this._mouseDownData.buttonType === MouseButton.Left) {
                 const delta = currentMousePosition.subtract(this._mouseDownData.position);
-                Application.scene.refresh();
+                this.app.scene.refresh();
 
                 const mouseDownAbsolutePos = this.getAbsoluteMouseDownPosition(ev);
                 this.drawMouseSelection(mouseDownAbsolutePos.x, mouseDownAbsolutePos.y, delta.x, delta.y);
@@ -206,8 +210,8 @@ export class Controller {
         if(this._mouseDownData) {
             if(this._mouseDownData.buttonType === MouseButton.Left) {
 
-                Application.scene.nodes.forEach(c => c.selected = false);
-                Application.scene.refresh();
+                this.app.scene.nodes.forEach(c => c.selected = false);
+                this.app.scene.refresh();
                 return false;
             }
         }
@@ -220,7 +224,7 @@ export class Controller {
     }
 
     drawMouseSelection(x: number, y: number, sizeX: number, sizeY: number) {
-        Application.canvas
+        this.app.canvas
             .save()
             .setLineDash([6])
             .strokeStyle('#fff')
@@ -231,22 +235,22 @@ export class Controller {
 
     selectIntersectingControls(pos: Vector2, size: Vector2): void {
         // Unselect all
-        Application.scene.nodes.forEach(c => c.selected = false);
+        this.app.scene.nodes.forEach(c => c.selected = false);
 
         const intersectingControls = this.getIntersectingNodeControls(pos, size);
         intersectingControls.forEach(c => c.selected = true);
     }
 
     getIntersectingNodeControls(pos: Vector2, size: Vector2): NodeControl[] {
-        return Application.scene.nodes.filter(n => BoundingBox.checkIntersection(pos, size, n.position, n.size)) || [];
+        return this.app.scene.nodes.filter(n => BoundingBox.checkIntersection(pos, size, n.position, n.size)) || [];
     }
 
     getIntersectingControls(pos: Vector2, size: Vector2): InteractableUserControl[] {
-        return Application.scene.interactables.filter(n => BoundingBox.checkIntersection(pos, size, n.getAbsolutPosition(), n.size)) || [];
+        return this.app.scene.interactables.filter(n => BoundingBox.checkIntersection(pos, size, n.getAbsolutPosition(), n.size)) || [];
     }
 
     getAbsoluteMousePosition(ev: MouseEvent) {
-        const cameraPos = Application.scene.camera.position;
+        const cameraPos = this.app.scene.camera.position;
         const currentMousePosition = this.getMousePosition(ev);
         const mouseAbsolutePos = new Vector2(currentMousePosition.x - cameraPos.x, currentMousePosition.y - cameraPos.y);
 
@@ -254,15 +258,15 @@ export class Controller {
     }
 
     getAbsoluteMouseDownPosition(ev: MouseEvent) {
-        const cameraPos = Application.scene.camera.position;
+        const cameraPos = this.app.scene.camera.position;
         const mouseAbsolutePos = new Vector2(this._mouseDownData.position.x - cameraPos.x, this._mouseDownData.position.y - cameraPos.y);
 
         return mouseAbsolutePos;
     }
 
     selectAllNodes() {
-        Application.scene.nodes.forEach(c => c.selected = true);
-        Application.scene.refresh();
+        this.app.scene.nodes.forEach(c => c.selected = true);
+        this.app.scene.refresh();
         return true;
     }
 

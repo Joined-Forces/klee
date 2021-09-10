@@ -41,8 +41,8 @@ export class WarningBar extends VerticalPanel {
     }
 
     private imageLoaded() {
-        this.pattern = Application.canvas.getContext().createPattern(this.svg, 'repeat');
-        Application.scene.refresh();
+        this.pattern = this.app.canvas.getContext().createPattern(this.svg, 'repeat');
+        this.app.scene.refresh();
     }
 
 }

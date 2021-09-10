@@ -14,7 +14,6 @@ import { UserControl } from "./user-control";
 import { ColorUtils } from "./utils/color-utils";
 // import { DefaultValueBox } from "./utils/default-value-box";
 import { IconLibrary } from "./utils/icon-library";
-import { NodePinsCreator } from "./utils/node-pins-creator";
 
 
 export class PinControl extends UserControl {
@@ -47,26 +46,32 @@ export class PinControl extends UserControl {
         if (this._pinProperty.valueType)
             this._secondaryColor = ColorUtils.getPinColorByCategory(this._pinProperty.valueType as PinCategory);
 
-        if (!pin.hidden && !pin.hideName) {
-            this.width = PinControl.formattedNameWidth(this.pinProperty) + (PinControl.PINS_PADDING_HORIZONTAL * 2);
-        } else if (!pin.hidden) {
-            this.width = (PinControl.PINS_PADDING_HORIZONTAL * 2);
-        }
+        
         this.height = 28;
+        this.width = 0;
         this.visible = !pin.hidden;
         this.category = pin.category;
 
+        this.initPinIcons();
+    }
 
-        if (this.category == PinCategory.delegate && this.pinProperty.direction === PinDirection.EGPD_Output) {
-            this.width = (PinControl.PINS_PADDING_HORIZONTAL * 2) - 8;
-            this.height = 24;
+    override initialize() {
+        if (this.visible) {
+            if (!this.pinProperty.hidden && !this.pinProperty.hideName) {
+                this.width = this.formattedNameWidth(this.pinProperty) + (PinControl.PINS_PADDING_HORIZONTAL * 2);
+            } else if (!this.pinProperty.hidden) {
+                this.width = (PinControl.PINS_PADDING_HORIZONTAL * 2);
+            }
+
+            if (this.category == PinCategory.delegate && this.pinProperty.direction === PinDirection.EGPD_Output) {
+                this.width = (PinControl.PINS_PADDING_HORIZONTAL * 2) - 8;
+                this.height = 24;
+            }
         }
 
-        this.initPinIcons();
-        NodePinsCreator.pinsControls.push(this);
-        
         this.postInit();
     }
+    
 
     private initPinIcons() {
         switch (this._pinProperty.containerType) {
@@ -117,7 +122,8 @@ export class PinControl extends UserControl {
     public postInit(): void {
         if (this.pinProperty.shouldDrawDefaultValueBox && this._pinProperty.defaultValueControlClass) {
             this.defaultValueBox = new this._pinProperty.defaultValueControlClass(this._pinProperty.defaultValue);
-            this.defaultValueBox.position.x = PinControl.formattedNameWidth(this._pinProperty) + PinControl.PINS_PADDING_HORIZONTAL + 6;
+            this.defaultValueBox.initControl(this.app);
+            this.defaultValueBox.position.x = this.formattedNameWidth(this._pinProperty) + PinControl.PINS_PADDING_HORIZONTAL + 6;
             this.width += this.defaultValueBox.width;
         }
     }
@@ -295,8 +301,8 @@ export class PinControl extends UserControl {
         return textX;
     }
 
-    public static formattedNameWidth(pin: PinProperty): number {
-        return Application.canvas.font(Constants.NODE_FONT).getContext().measureText(pin.formattedName).width + PinControl.PIN_NAME_PADDING_LEFT;
+    public formattedNameWidth(pin: PinProperty): number {
+        return this.app.canvas.font(Constants.NODE_FONT).getContext().measureText(pin.formattedName).width + PinControl.PIN_NAME_PADDING_LEFT;
     }
 
     // TODO: Remove this function

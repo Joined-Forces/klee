@@ -57,14 +57,7 @@ export abstract class Container extends UserControl {
     public insert(child: UserControl, index: number): UserControl {
         this.children.splice(index, 0, child);
         child.parent = this;
-
-        if (child.fillParentHorizontal) {
-            child.desiredWidth = this.size.x;    
-        }
-        if (child.fillParentVertical) {
-            child.desiredHeight = this.size.y;
-        }
-
+        
         return child;
     }
 

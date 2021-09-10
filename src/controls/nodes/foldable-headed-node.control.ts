@@ -27,7 +27,7 @@ export class FoldableHeadedNodeControl extends HeadedNodeControl implements Draw
         this.foldState = foldOut;
         this.applyAdvancedView(this.foldState);
 
-        Application.scene.refresh();
+        this.app.scene.refresh();
     }
 
     private applyAdvancedView(advancedView: boolean) {

@@ -29,27 +29,29 @@ export class HeadedNodeControl extends NodeControl implements DrawableControl {
     constructor(node: Node, icon?: string) {
         super(node);
 
-        let largestTitleWidth = Application.canvas.getContext().measureText(this.node.title).width;
-        if (this.node.subTitles && this.node.subTitles.length > 0) {
-            for (const subTitle of this.node.subTitles) {
-                largestTitleWidth = Math.max(largestTitleWidth, Application.canvas.getContext().measureText(subTitle.text).width);
-            }
-            this.headerHeight += (HeadedNodeControl.NODE_HEADER_SPACE_BETWEEN_TITLE_AND_SUBTITLE - 2) + (HeadedNodeControl.NODE_HEADER_SUBTITLE_HEIGHT * node.subTitles.length);
-        }
-
         this.minHeight = HeadedNodeControl.NODE_HEADER_TITLE_HEIGHT;
-        this.minWidth = largestTitleWidth + HeadedNodeControl.NODE_HEADER_ICONS_WIDTH;
-        this.minWidth = this.minWidth;
-
+        this.minWidth = 100;
+        
         this.header = new Header(node, icon);
         this.header.fillParentHorizontal = true;
 
-        this.pinPanel.padding = { top: 3, right: 0, bottom: 0, left: 0 };
+        this.pinPanel.padding = { top: 3, right: 0, bottom: 3, left: 0 };
 
         this.createPins(new Vector2(0, this.headerHeight));
         this.mainPanel.insert(this.header, 0);
 
         this.initializeEnabledState();
+    }
+
+    override initialize() {
+        let largestTitleWidth = this.app.canvas.getContext().measureText(this.node.title).width;
+        if (this.node.subTitles && this.node.subTitles.length > 0) {
+            for (const subTitle of this.node.subTitles) {
+                largestTitleWidth = Math.max(largestTitleWidth, this.app.canvas.getContext().measureText(subTitle.text).width);
+            }
+            this.headerHeight += (HeadedNodeControl.NODE_HEADER_SPACE_BETWEEN_TITLE_AND_SUBTITLE - 2) + (HeadedNodeControl.NODE_HEADER_SUBTITLE_HEIGHT * this.node.subTitles.length);
+        }
+        this.minWidth = largestTitleWidth + HeadedNodeControl.NODE_HEADER_ICONS_WIDTH;
     }
 
     protected initializeEnabledState(): void {

@@ -19,6 +19,10 @@ export class Label extends UserControl {
         this.font = (font || Constants.NODE_FONT);
         this.color = (color || Constants.NODE_TEXT_COLOR);
 
+        this.padding = { top: 0, right: 0, bottom: 0, left: 0 }
+    }
+
+    override initialize() {
         let textMetrics = this.measureText();
         this.minWidth = textMetrics.width;
         this.minHeight = textMetrics.fontBoundingBoxAscent + textMetrics.fontBoundingBoxDescent;
@@ -28,8 +32,6 @@ export class Label extends UserControl {
             console.log(this.minHeight);
         }
         this.baseLine = Math.floor(this.minHeight / 3);
-
-        this.padding = { top: 0, right: 0, bottom: 0, left: 0 }
     }
 
     protected onDraw(canvas: Canvas2D) {
@@ -45,7 +47,7 @@ export class Label extends UserControl {
     }
 
     private measureText(text?: string): TextMetrics {
-        return Application.canvas.font(this.font).getContext().measureText((text || this.text));
+        return this.app.canvas.font(this.font).getContext().measureText((text || this.text));
     }
 
     private getPosition(): Vector2 {

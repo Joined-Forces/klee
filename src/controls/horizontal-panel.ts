@@ -1,6 +1,7 @@
 import { Canvas2D } from "../canvas";
 import { Vector2 } from "../math/vector2";
 import { Container } from "./container";
+import { VerticalPanel } from "./vertical-panel";
 
 export class HorizontalPanel extends Container {
     
@@ -10,9 +11,9 @@ export class HorizontalPanel extends Container {
 
     protected onDraw(canvas: Canvas2D) {
 /// #if DEBUG_UI
-        canvas.strokeStyle("#0ee");
+        canvas.fillStyle("rgba(0,220,220,0.1)");
         canvas.lineWidth(1);
-        canvas.strokeRect(-1, -1, this.size.x + 2, this.size.y + 2);
+        canvas.fillRect(0, 0, this.size.x + this.padding.left + this.padding.right, this.size.y + this.padding.top + this.padding.bottom);
 /// #endif
     }
 
@@ -38,11 +39,6 @@ export class HorizontalPanel extends Container {
             }
         }
 
-        
-
-        size.x += this.padding.left + this.padding.right;
-        size.y += this.padding.top + this.padding.bottom;
-
         size.x = Math.max(size.x, (this.minWidth || 0));
         size.y = Math.max(size.y, (this.minHeight || 0));
 
@@ -51,6 +47,9 @@ export class HorizontalPanel extends Container {
 
         this.controlSize = size.copy();
         this.childrenWidth = childWidth;
+
+        size.x += this.padding.left + this.padding.right;
+        size.y += this.padding.top + this.padding.bottom;
         
         return size;
     }
@@ -76,7 +75,7 @@ export class HorizontalPanel extends Container {
                 child.desiredHeight = height;
             }
 
-            position.x += child.size.x + child.padding.left + child.padding.right;
+            position.x += child.size.x + (child.padding.left || 0) + (child.padding.right || 0);
 
             if (child instanceof Container) {
                 (child as Container).applyFills(new Vector2(width, height));

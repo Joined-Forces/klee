@@ -15,17 +15,21 @@ export class HeadlessNodeControl extends NodeControl {
     constructor(node: Node) {
         super(node);
 
-        if(this.node.title) {
-            this.minWidth = Application.canvas
-                .font(Constants.NODE_MATHFUNC_TITLE_FONT)
-                .getContext().measureText(this.node.title).width + HeadlessNodeControl._NODE_PIN_ICONS_WIDTH;
-        }
+        
 
         this.minHeight = 32;
         this.minWidth = Math.max(130, (!isNaN(this.minWidth)) ? this.minWidth : 0);
         this.padding = { top: 2, right: 0, bottom: 0, left: 0 };
 
         this.createPins(new Vector2(0, 0));
+    }
+
+    override initialize() {
+        if(this.node.title) {
+            this.minWidth = this.app.canvas
+                .font(Constants.NODE_MATHFUNC_TITLE_FONT)
+                .getContext().measureText(this.node.title).width + HeadlessNodeControl._NODE_PIN_ICONS_WIDTH;
+        }
     }
 
     public onDraw(canvas: Canvas2D) {

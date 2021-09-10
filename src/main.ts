@@ -1,7 +1,7 @@
 import { Application } from "./application";
 
 function initialize() {
-    document.querySelectorAll('canvas.ue-blueprint').forEach((canvas: HTMLCanvasElement) => {
+    document.querySelectorAll('canvas.klee').forEach((canvas: HTMLCanvasElement) => {
         new Application(canvas);
     });
 }

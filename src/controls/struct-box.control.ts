@@ -13,11 +13,13 @@ export class StructBoxControl extends UserControl {
 
         this.height = Constants.DEFAULT_BOX_HEIGHT;
         this.entries = [];
+    }
 
+    override initialize() {
         let totalWidth = 0;
-        entries.forEach(e => {
-            const keyWidth = Application.canvas.getContext().measureText(`${e.key}`).width + 3;
-            const valueWidth = Application.canvas.getContext().measureText(`${e.value}`).width;
+        this.entries.forEach(e => {
+            const keyWidth = this.app.canvas.getContext().measureText(`${e.key}`).width + 3;
+            const valueWidth = this.app.canvas.getContext().measureText(`${e.value}`).width;
             const boxWidth = (keyWidth + valueWidth)                            // Width of the text
                            + (Constants.DEFAULT_VALUE_BOX_TEXT_PADDING * 2)     // Left and right box padding
 

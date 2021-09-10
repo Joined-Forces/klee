@@ -19,8 +19,8 @@ export class VerticalPanel extends Container {
 
     protected onDraw(canvas: Canvas2D) { 
 /// #if DEBUG_UI
-            canvas.strokeStyle("#ee0");
-            canvas.strokeRect(0, 0, this.size.x, this.size.y);
+            canvas.fillStyle("rgba(220,220,0,0.2)");
+            canvas.fillRect(0, 0, this.size.x, this.size.y);
 /// #endif
     }
 
@@ -46,15 +46,14 @@ export class VerticalPanel extends Container {
             }
         }
 
-
-        size.x += this.padding.left + this.padding.right;
-        size.y += this.padding.top + this.padding.bottom;
-
         size.x = Math.max(size.x, (this.minWidth || 0));
         size.y = Math.max(size.y, (this.minHeight || 0));
 
         this.controlSize = size.copy();
         this.childrenHeight = childHeight;
+
+        size.x += this.padding.left + this.padding.right;
+        size.y += this.padding.top + this.padding.bottom;
 
         return size;
     }
@@ -74,7 +73,7 @@ export class VerticalPanel extends Container {
         let width = this.size.x;
         let height = remainingHeight / this.verticalFillCount;
 
-        let position = new Vector2(0, 0);
+        let position = new Vector2(this.padding.left, this.padding.top);
 
         for (let child of this.children) {
             if (child.ignoreLayout || !child.visible)
@@ -90,7 +89,7 @@ export class VerticalPanel extends Container {
                 child.desiredHeight = height;
             }
 
-            position.y += child.size.y + child.padding.top + child.padding.bottom;
+            position.y += child.size.y + (child.padding.top || 0) + (child.padding.bottom || 0);
 
             if (child instanceof Container) {
                 (child as Container).applyFills(new Vector2(width, height));

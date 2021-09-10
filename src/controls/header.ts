@@ -28,7 +28,6 @@ export class Header extends HorizontalPanel {
         super();
 
         this.node = node;
-        this.fillStyleHeader = this.getHeaderFillStyle();
         this.padding = { top: 2, right: 0, bottom: 0, left: 7 }
 
         if (icon) {
@@ -58,15 +57,19 @@ export class Header extends HorizontalPanel {
         this.add(this.delegatePanel);
     }
 
+    override initialize() {
+        this.fillStyleHeader = this.getHeaderFillStyle();
+    }
+
     protected onDraw(canvas: Canvas2D) {
         canvas.fillStyle(this.fillStyleHeader)
-            .roundedRectangle(1, 1, this.size.x, this.size.y, { radiusTopLeft: 5, radiusTopRight: 5, radiusBottomLeft: 0, radiusBottomRight: 0 })
+            .roundedRectangle(1, 1, this.size.x - 2, this.size.y, { radiusTopLeft: 5, radiusTopRight: 5, radiusBottomLeft: 0, radiusBottomRight: 0 })
             .fill();
     }
 
     private getHeaderFillStyle(): CanvasGradient {
         const backgroundColor = this.node.backgroundColor || Header.NODE_DEFAULT_BACKGROUND_COLOR;
-        const gradient = Application.canvas.getContext().createLinearGradient(0, 0, 150, 0);
+        const gradient = this.app.canvas.getContext().createLinearGradient(0, 0, 150, 0);
         gradient.addColorStop(0, `rgb(${backgroundColor})`);
         gradient.addColorStop(1, `rgba(${backgroundColor},0.15)`);
         return gradient;

@@ -1,3 +1,4 @@
+import { Application } from "../application";
 import { Vector2 } from "../math/vector2";
 
 export abstract class Control {
@@ -14,6 +15,8 @@ export abstract class Control {
     public fillParentHorizontal: boolean;
     public fillParentVertical: boolean;
 
+    protected app: Application;
+
     constructor(x?: number, y?: number, zIndex?: number) {
         this.position = new Vector2((x || 0), (y || 0));
         this.zIndex = zIndex || 0;
@@ -25,6 +28,15 @@ export abstract class Control {
 
     set position(value: Vector2) {
         this._position = value;
+    }
+
+    public initControl(app: Application) {
+        this.app = app;
+        this.initialize();
+    }
+
+    protected initialize() {
+
     }
 
     public get size(): Vector2 {

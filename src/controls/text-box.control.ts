@@ -11,9 +11,11 @@ export class TextBoxControl extends UserControl {
     constructor(text: string) {
         super();
         this.text = text;
-
-        this.width = Application.canvas.getContext().measureText(text).width + Constants.DEFAULT_VALUE_BOX_TEXT_PADDING * 2;
         this.height = Constants.DEFAULT_BOX_HEIGHT;
+    }
+
+    override initialize() {
+        this.width = this.app.canvas.getContext().measureText(this.text).width + Constants.DEFAULT_VALUE_BOX_TEXT_PADDING * 2;
     }
 
     protected onDraw(canvas: Canvas2D) {

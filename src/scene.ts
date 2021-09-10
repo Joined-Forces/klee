@@ -7,13 +7,13 @@ import { NodeConnectionControl } from "./controls/node-connection.control";
 import { NodeControl } from "./controls/nodes/node.control";
 import { Vector2 } from "./math/vector2";
 import { PinDirection } from "./data/pin/pin-direction";
-import { NodePinsCreator } from "./controls/utils/node-pins-creator";
 import { NodePartialConnectionControl } from "./controls/partial-node-connection.control";
 import { PinControl } from "./controls/pin.control";
 import { UserControl } from "./controls/user-control";
 import { Container } from "./controls/container";
 import { InteractableControl, isInteractableControl } from "./controls/interfaces/interactable";
 import { InteractableUserControl } from "./controls/interactable-user-control";
+import { Application } from "./application";
 
 export class Scene {
 
@@ -22,13 +22,18 @@ export class Scene {
 
     private _controls: Array<Control>;
     private _nodes: Array<NodeControl>;
+    private _pins: Array<PinControl>;
     private _interactables: Array<InteractableUserControl>;
 
-    constructor(canvas: Canvas2D) {
+    private app;
+
+    constructor(canvas: Canvas2D, app: Application) {
+        this.app = app;
         this._canvas = canvas;
         this._camera = new Camera(this._canvas);
         this._nodes = new Array<NodeControl>();
         this._controls = new Array<Control>();
+        this._pins = new Array<PinControl>();
     }
 
     // TODO: Move this out
@@ -100,18 +105,19 @@ export class Scene {
     }
 
     unload() {
-        NodePinsCreator.resetPinsControls();
+        this._pins = new Array<PinControl>();
         this._nodes = new Array<NodeControl>();
         this._controls = new Array<Control>();
     }
 
     load(dataNodes: NodeControl[]) {
         this.createBackground();
-
         this.createControlNodes(dataNodes);
-
         // Creates connection lines between pins
+
         this.createConnectionLines();
+
+        this.initializeControls();
     }
 
     private createBackground() {
@@ -123,13 +129,28 @@ export class Scene {
         for (const control of controls) {
             this._nodes.push(control);
             this._controls.push(control);
+
+            this.collectPins(control);
+        }
+    }
+
+    private collectPins(control: Control) {
+        if (control instanceof Container) {
+            for (let child of control.getChildren()) {
+                if (child instanceof PinControl) {
+                    this._pins.push(child);
+                }
+                if (child instanceof Container) {
+                    this.collectPins(child);
+                }
+            }
         }
     }
 
     private createConnectionLines() {
         const connections: string[] = [];
         const connectedPins: string[] = [];
-        const pins = Array.from(NodePinsCreator.pinsControls);
+        const pins = this._pins;
 
         for (let i = pins.length - 1; i >= 0; --i) {
             let pin = pins[i];
@@ -173,6 +194,22 @@ export class Scene {
                 let partialConnection = new NodePartialConnectionControl(pin);
 
                 this._controls.push(partialConnection);
+            }
+        }
+    }
+
+    private initializeControls() {
+        for (let control of this._controls) {
+            this.initializeControl(control);
+        }        
+    }
+
+    private initializeControl(control: Control) {
+        control.initControl(this.app);
+
+        if (control instanceof Container) {
+            for (let child of control.getChildren()) {
+                this.initializeControl(child);
             }
         }
     }
