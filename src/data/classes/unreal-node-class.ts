@@ -30,4 +30,5 @@ export enum UnrealNodeClass {
     SELECT = "/Script/BlueprintGraph.K2Node_Select",
     TIMELINE = "/Script/BlueprintGraph.K2Node_Timeline",
     SPAWN_ACTOR_FROM_CLASS = "/Script/BlueprintGraph.K2Node_SpawnActorFromClass",
+    TUNNEL = "/Script/BlueprintGraph.K2Node_Tunnel",
 }
