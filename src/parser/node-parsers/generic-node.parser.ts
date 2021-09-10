@@ -30,6 +30,7 @@ import { InputTouchNodeParser } from "./input-touch-node.parser";
 import { GetInputAxisKeyValueNodeParser } from "./get-input-axis-key-value-node.parser";
 import { StructNodeParser } from "./struct-node.parser";
 import { StructClass } from "../../controls/utils/color-utils";
+import { SelectNodeParser } from "./select-node.parser";
 
 
 export class GenericNodeParser extends NodeParser {
@@ -66,6 +67,7 @@ export class GenericNodeParser extends NodeParser {
         [UnrealNodeClass.SET_FIELDS_IN_STRUCT]: () => new StructNodeParser(),
         [UnrealNodeClass.BREAK_STRUCT]: () => new StructNodeParser(),
         [UnrealNodeClass.MAKE_STRUCT]: () => new StructNodeParser(),
+        [UnrealNodeClass.SELECT]: () => new SelectNodeParser(),
     }
 
     private readonly _customPropertyParsers: {
