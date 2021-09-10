@@ -1,0 +1,35 @@
+{
+    "/Script/Engine.ESpawnActorCollisionHandlingMethod" : {
+        "Undefined": "Default",
+        "AlwaysSpawn": "Always Spawn, Ignore Collisions",
+        "AdjustIfPossibleButAlwaysSpawn": "Try to Adjust Location, But Always Spawn",
+        "AdjustIfPossibleButDontSpawnIfColliding": "Try to Adjust Location, Don't Spawn If Still Colliding",
+        "DontSpawnIfColliding" : "Do Not Spawn"
+    },
+    "/Script/Engine.ETraceTypeQuery": {
+        "TraceTypeQuery1": "Visibility",
+        "TraceTypeQuery2": "Camera"
+    },
+    "/Script/Engine.ECanBeCharacterBase": {
+        "ECB_Yes": "Yes",
+        "ECB_No": "No",
+        "ECB_Owner": "(Owner)"
+    },
+    "/Script/Engine.ECollisionChannel": {
+        "ECC_WorldStatic": "WorldStatic",
+        "ECC_WorldDynamic": "WorldDynamic",
+        "ECC_Pawn": "Pawn",
+        "ECC_Visibility": "Visibility",
+        "ECC_Camera": "Camera",
+        "ECC_PhysicsBody": "PhysicsBody",
+        "ECC_Vehicle": "Vehicle",
+        "ECC_Destructible": "Destructible"
+    },
+    "/Script/UMG.ESlateVisibility": {
+        "Visible": "Visible",
+        "Collapsed": "Collapsed",
+        "Hidden": "Hidden",
+        "HitTestInvisible": "Not Hit-Testable (Self & All Children)",
+        "SelfHitTestInvisible": "Not Hit-Testable (Self Only)"
+    }
+}

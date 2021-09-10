@@ -12,6 +12,7 @@ import { CustomPropertyParser } from "./custom-property.parser";
 import { StructBoxControl } from "../controls/struct-box.control";
 import { TextBoxControl } from "../controls/text-box.control";
 import { CheckBoxControl } from "../controls/check-box.control";
+import { PinSubCategoryObject } from "../data/pin/pin-subcategory-object";
 
 export class PinPropertyParser implements CustomPropertyParser {
 
@@ -122,18 +123,19 @@ export class PinPropertyParser implements CustomPropertyParser {
     }
 
 
-    private static parseSubCategoryObject(value: string): string {
-        let obj = value;
+    private static parseSubCategoryObject(value: string): PinSubCategoryObject {
+        let className = value;
+        let type = value.substring(0, value.indexOf("'"));
         let matches = value.matchAll(/'"(.*)"'/g);
         if (matches) {
             let match = matches.next();
 
             if (match && match.value) {
-                obj = match.value[1];
+                className = match.value[1];
             }
         }
 
-        return obj;
+        return { type: type, class: className };
     }
 
     private static parsePinFriendlyName(value: string): string {
@@ -244,10 +246,20 @@ export class PinPropertyParser implements CustomPropertyParser {
             case PinCategory.bool:
                 return { control: CheckBoxControl, data: (BlueprintParserUtils.parseString(value).toLowerCase() === "true") };
             case PinCategory.struct:
-                return this.parseDefaultValueStruct(p.subCategoryObject, value);
+                return this.parseDefaultValueStruct(p.subCategoryObject.class, value);
+            case PinCategory.byte:
+                if (p.subCategoryObject.type === "Enum") {
+                    return { control: TextBoxControl, data: BlueprintParserUtils.parseEnumValue(p.subCategoryObject.class, value) };
+                } else {
+                    return { control: TextBoxControl, data: BlueprintParserUtils.parseString(value) };
+                }
             default:
                 return { control: TextBoxControl, data: BlueprintParserUtils.parseString(value) };
         }
+    }
+
+    private static parseEnumValue() {
+        
     }
 
     private static parseDefaultValueStruct(subCategoryObject: string, value: string): { data: any, control: any }  {
@@ -323,7 +335,7 @@ export class PinPropertyParser implements CustomPropertyParser {
 
         switch (p.category) {
             case PinCategory.struct:
-                switch (p.subCategoryObject) {
+                switch (p.subCategoryObject.class) {
                     case StructClass.VECTOR2D:
                         p.defaultValue = [
                             { key: 'X', value: '0.0' },

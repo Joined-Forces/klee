@@ -7,12 +7,13 @@ export enum StructClass {
     LatentActionInfo = "/Script/Engine.LatentActionInfo",
     LINEAR_COLOR = "/Script/CoreUObject.LinearColor",
     VECTOR2D = "/Script/CoreUObject.Vector2D",
+    TRANSFORM = "/Script/CoreUObject.Transform",
 }
 
 export class ColorUtils {
 
     public static getPinColor(pin: PinProperty): string {
-        return this.getPinColorByCategory(pin.category, pin.subCategoryObject);
+        return this.getPinColorByCategory(pin.category, pin.subCategoryObject.class);
     }
 
     public static getPinColorByCategory(category: PinCategory, subCategoryObject?: string): string {
@@ -32,7 +33,8 @@ export class ColorUtils {
             case PinCategory.struct:
                 const map = {
                     [StructClass.VECTOR]: 'rgb(253, 200, 35)',
-                    [StructClass.ROTATOR]: 'rgb(159, 178, 253)'
+                    [StructClass.ROTATOR]: 'rgb(159, 178, 253)',
+                    [StructClass.TRANSFORM]: 'rgb(230, 105, 2)',
                 }
                 return map[subCategoryObject] || 'rgb(0, 88, 200)';
 

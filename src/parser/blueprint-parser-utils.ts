@@ -1,6 +1,7 @@
 import { CustomProperty } from "../data/custom-property";
 import { PinProperty } from "../data/pin/pin-property";
-import { removeInsignificantTrailingZeros } from "../utils/text-utils";
+import { prettifyText } from "../utils/text-utils";
+import * as EnumNames from "./enum-names.json";
 
 export class BlueprintParserUtils {
 
@@ -43,5 +44,17 @@ export class BlueprintParserUtils {
             if (p instanceof PinProperty === false) { return false; }
             (p as PinProperty).hideName = true;
         })
+    }
+
+    static parseEnumValue(enumClass: string, value: string) {
+        value = value.replace(/["']/g, '');
+
+        let classObj = EnumNames[enumClass];
+        if (classObj) {
+            let name = classObj[value];
+            return name || prettifyText(value);
+        }
+
+        return prettifyText(value);
     }
 }

@@ -29,4 +29,5 @@ export enum UnrealNodeClass {
     MAKE_STRUCT = "/Script/BlueprintGraph.K2Node_MakeStruct",
     SELECT = "/Script/BlueprintGraph.K2Node_Select",
     TIMELINE = "/Script/BlueprintGraph.K2Node_Timeline",
+    SPAWN_ACTOR_FROM_CLASS = "/Script/BlueprintGraph.K2Node_SpawnActorFromClass",
 }

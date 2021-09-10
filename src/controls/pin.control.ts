@@ -86,7 +86,8 @@ export class PinControl extends UserControl {
                 break;
         }
 
-        if (this._pinProperty.isReference) {
+        // Overwrite only if there is no icon (Container icons stay even when they are references)
+        if (this.icon === undefined && this._pinProperty.isReference) {
             if (this._pinProperty.isLinked)
                 this.icon = new Path2D(IconLibrary.PIN_REFERENCE_CONNECTED);
             else

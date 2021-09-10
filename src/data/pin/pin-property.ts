@@ -3,6 +3,7 @@ import { PinCategory } from "./pin-category";
 import { PinContainerType } from "./pin-container-type";
 import { PinDirection } from "./pin-direction";
 import { PinLink } from "./pin-link";
+import { PinSubCategoryObject } from "./pin-subcategory-object";
 
 export class PinProperty extends CustomProperty {
 
@@ -17,7 +18,7 @@ export class PinProperty extends CustomProperty {
     toolTip: string;
 
     subCategory: string;
-    subCategoryObject: string;
+    subCategoryObject: PinSubCategoryObject;
     subCategoryMemberReference: string;
 
     containerType: PinContainerType;

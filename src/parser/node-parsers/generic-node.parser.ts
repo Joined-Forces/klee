@@ -32,6 +32,7 @@ import { StructNodeParser } from "./struct-node.parser";
 import { StructClass } from "../../controls/utils/color-utils";
 import { SelectNodeParser } from "./select-node.parser";
 import { TimelineNodeParser } from "./timeline-node.parser";
+import { SpawnActorNodeParser } from "./spawn-actor-node.parser";
 
 
 export class GenericNodeParser extends NodeParser {
@@ -69,7 +70,8 @@ export class GenericNodeParser extends NodeParser {
         [UnrealNodeClass.BREAK_STRUCT]: () => new StructNodeParser(),
         [UnrealNodeClass.MAKE_STRUCT]: () => new StructNodeParser(),
         [UnrealNodeClass.SELECT]: () => new SelectNodeParser(),
-        [UnrealNodeClass.TIMELINE]: () => new TimelineNodeParser()
+        [UnrealNodeClass.TIMELINE]: () => new TimelineNodeParser(),
+        [UnrealNodeClass.SPAWN_ACTOR_FROM_CLASS]: () => new SpawnActorNodeParser(),
     }
 
     private readonly _customPropertyParsers: {
@@ -154,7 +156,7 @@ export class GenericNodeParser extends NodeParser {
                 data.node.customProperties.push(property);
 
                 if (property instanceof PinProperty) {
-                    if ((property as PinProperty).subCategoryObject === StructClass.LatentActionInfo) {
+                    if ((property as PinProperty).subCategoryObject.class === StructClass.LatentActionInfo) {
                         data.node.latent = true;
                     }
                 }
