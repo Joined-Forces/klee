@@ -1,5 +1,6 @@
 import { HeadedNodeControl } from "../../controls/nodes/headed-node-control";
 import { NodeControl } from "../../controls/nodes/node.control";
+import { IconLibrary } from "../../controls/utils/icon-library";
 import { Node } from "../../data/nodes/node";
 import { BlueprintParserUtils } from "../blueprint-parser-utils";
 import { NodeParser } from "../node.parser";
@@ -20,6 +21,6 @@ export class TimelineNodeParser extends NodeParser {
         this.parseProperties(data);
 
         data.node.backgroundColor = TimelineNodeParser.DEFAULT_BACKGROUND_COLOR;
-        return new HeadedNodeControl(data.node); // TODO: Add icon here
+        return new HeadedNodeControl(data.node, IconLibrary.TIMER);
     }
 }
