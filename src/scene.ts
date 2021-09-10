@@ -229,13 +229,13 @@ export class Scene {
     }
 
     calculateCenterPoint() {
-        let xMin = 0;
-        let xMax = 0;
-        let yMin = 0;
-        let yMax = 0;
-
         if (this.nodes.length == 0)
             return new Vector2(0, 0);
+
+        let xMin = Number.MAX_SAFE_INTEGER;
+        let xMax = Number.MIN_SAFE_INTEGER;
+        let yMin = Number.MAX_SAFE_INTEGER;
+        let yMax = Number.MIN_SAFE_INTEGER;
 
         this.nodes.forEach(node => {
             xMin = Math.min(node.position.x, xMin);

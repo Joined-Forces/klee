@@ -11,6 +11,7 @@ body {
     width: 100vw;
     flex-direction: column;
     align-items: center;
+    font-size: 20px;
 }
 
 a {
@@ -45,6 +46,7 @@ a:hover {
     justify-content: center;
     align-items: center;
     flex: 1;
+    margin-bottom: 2em;
 }
 
 .header .navbar {
@@ -67,12 +69,19 @@ a:hover {
 }
 
 .header .title {
+    display: flex;
+    flex-direction: column;
     flex-grow: 1;
+    padding-left: 1.5em;
 }
 
 .header .title h1 {
     font-weight: normal;
-    margin: 0 1em;
+    margin: 0;
+}
+
+.header .title .subtitle {
+    font-weight: lighter;
 }
 
 
@@ -89,6 +98,11 @@ a:hover {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+}
+
+.button-github:hover {
+    text-decoration: none;
+    background-color: rgb(26, 26, 26);
 }
 
 .button-github::before {
@@ -151,23 +165,51 @@ a:hover {
 .section {
     display: flex;
     flex: 1;
+    padding-bottom: 6em;
 }
 
 .section h3 {
-    font-weight: normal;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    display: inline-block;
+    padding: 0.2em 0.5em;
+    margin-bottom: 0.2em;
+    background-color: #fff;
+    color:rgb(20, 100, 219);
+    font-weight: bold;
+    font-size: 1.2em;
+    letter-spacing: 0.025em;
 }
 
 .fill {
     flex: 1;
 }
 
+.section pre {
+    background-color: rgb(21, 18, 27);
+    border-radius: 5px;
+    padding: 0 1em;
+    display: inline-block;
+}
+
+.section canvas {
+    border-radius: 5px;
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.5);
+}
+
+
 .no-screenshot {
     background-image: url('./img/no-screenshot.png');
     width: 300px;
     height: 300px;
     margin: 0 5vw;
+}
+
+.horizontal {
+    display: flex;
+    flex-direction: row;
+}
+
+.text-left {
+    margin-right: 2em;
 }
 
 .nowrap {
@@ -185,4 +227,15 @@ a:hover {
 
 .footer a, .footer {
     color:rgb(149, 181, 228);
+}
+
+
+.code-keyword {
+    color: #E14A6E;
+}
+.code-attribute {
+    color: #FFCB6B;
+}
+.code-value {
+    color: #A6E883;
 }

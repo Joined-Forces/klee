@@ -14,6 +14,8 @@ export class Application {
 
     private static firefox: boolean;
 
+    private allowPaste: boolean;
+
     constructor(element: HTMLCanvasElement) {
 
         this._element = element;
@@ -37,17 +39,19 @@ export class Application {
             callback: this.copyBlueprintSelectionToClipboard.bind(this)
         });
         this._controller.registerAction({
-            ctrl: true,
-            keycode: 'KeyV',
-            callback: this.pasteClipboardContentToCanvas.bind(this)
-        });
-        this._controller.registerAction({
             ctrl: false,
             keycode: 'Home',
             callback: this.recenterCamera.bind(this),
         })
 
-        this._element.onpaste = (ev) => this.onPaste(ev);
+        if (this.allowPaste) {
+            this._controller.registerAction({
+                ctrl: true,
+                keycode: 'KeyV',
+                callback: this.pasteClipboardContentToCanvas.bind(this)
+            });
+            this._element.onpaste = (ev) => this.onPaste(ev);
+        }
 
         window.addEventListener('resize', this.refresh.bind(this), false);
     }
@@ -66,6 +70,9 @@ export class Application {
 
     private initializeHtmlAttributes() {
         this._element.style.outline = 'none';
+
+        let attrPaste = this._element.getAttributeNode("data-klee-paste");
+        this.allowPaste = attrPaste?.value == "true" || false;
     }
 
     public refresh() {
@@ -87,6 +94,7 @@ export class Application {
     }
 
     private pasteClipboardContentToCanvas(ev) {
+        if (!this.allowPaste) return;
         if (Application.isFirefox) {
             return false;
         }
@@ -102,6 +110,7 @@ export class Application {
     }
 
     private onPaste(ev) {
+        if (!this.allowPaste) return;
         console.log("Paste from clipboard");
         let text = ev.clipboardData.getData("text/plain");
         this.loadBlueprintIntoScene(text);
@@ -120,6 +129,7 @@ export class Application {
     recenterCamera() {
         // Move camera to the center of all nodes
         this._scene.camera.centerAbsolutePosition(this._scene.calculateCenterPoint());
+        this.refresh();
         return true;
     }
 }
