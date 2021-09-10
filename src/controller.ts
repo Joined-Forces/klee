@@ -266,8 +266,9 @@ export class Controller {
         return true;
     }
 
-    getMousePosition(ev): Vector2 {
-        return new Vector2(ev.pageX - this._element.offsetLeft, ev.pageY - this._element.offsetTop);
+    getMousePosition(ev: MouseEvent): Vector2 {
+        let rect = this._element.getBoundingClientRect();
+        return new Vector2(ev.clientX - rect.left, ev.clientY - rect.top);
     }
 }
 

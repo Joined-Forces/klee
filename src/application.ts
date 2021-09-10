@@ -26,7 +26,6 @@ export class Application {
         Application._scene = new Scene(Application._canvas);
 
         this.initializeHtmlAttributes();
-        //this.refresh();
 
         this._parser = new BlueprintParser();
         this.loadBlueprintIntoScene(element.innerHTML);
@@ -51,8 +50,6 @@ export class Application {
         this._element.onpaste = (ev) => this.onPaste(ev);
 
         window.addEventListener('resize', this.refresh.bind(this), false);
-
-        //this.refresh();
     }
 
     static get scene() {
@@ -68,8 +65,6 @@ export class Application {
     }
 
     private initializeHtmlAttributes() {
-        this._element.style.width = '100%';
-        this._element.style.minHeight = '600px';
         this._element.style.outline = 'none';
     }
 
