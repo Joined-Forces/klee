@@ -28,4 +28,5 @@ export enum UnrealNodeClass {
     BREAK_STRUCT = "/Script/BlueprintGraph.K2Node_BreakStruct",
     MAKE_STRUCT = "/Script/BlueprintGraph.K2Node_MakeStruct",
     SELECT = "/Script/BlueprintGraph.K2Node_Select",
+    TIMELINE = "/Script/BlueprintGraph.K2Node_Timeline",
 }

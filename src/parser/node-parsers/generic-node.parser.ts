@@ -31,6 +31,7 @@ import { GetInputAxisKeyValueNodeParser } from "./get-input-axis-key-value-node.
 import { StructNodeParser } from "./struct-node.parser";
 import { StructClass } from "../../controls/utils/color-utils";
 import { SelectNodeParser } from "./select-node.parser";
+import { TimelineNodeParser } from "./timeline-node.parser";
 
 
 export class GenericNodeParser extends NodeParser {
@@ -68,6 +69,7 @@ export class GenericNodeParser extends NodeParser {
         [UnrealNodeClass.BREAK_STRUCT]: () => new StructNodeParser(),
         [UnrealNodeClass.MAKE_STRUCT]: () => new StructNodeParser(),
         [UnrealNodeClass.SELECT]: () => new SelectNodeParser(),
+        [UnrealNodeClass.TIMELINE]: () => new TimelineNodeParser()
     }
 
     private readonly _customPropertyParsers: {
