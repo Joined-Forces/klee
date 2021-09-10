@@ -19,7 +19,7 @@ export class RerouteNodeControl extends NodeControl implements DrawableControl {
 
         this._stroke.lineWidth = 0.5;
         this.drawChildren = false;
-        this.color = ColorUtils.getPinColor(node.customProperties[0] as PinProperty)
+        this.color = ColorUtils.getPinColor(node.customProperties[0] as PinProperty);
 
         this.createPins();
     }

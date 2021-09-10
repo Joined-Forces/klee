@@ -41,10 +41,10 @@ export class HeadedNodeControl extends NodeControl implements DrawableControl {
         this.minWidth = largestTitleWidth + HeadedNodeControl.NODE_HEADER_ICONS_WIDTH;
         this.minWidth = this.minWidth;
 
-
-
         this.header = new Header(node, icon);
         this.header.fillParentHorizontal = true;
+
+        this.pinPanel.padding = { top: 3, right: 0, bottom: 0, left: 0 };
 
         this.createPins(new Vector2(0, this.headerHeight));
         this.mainPanel.insert(this.header, 0);

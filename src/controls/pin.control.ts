@@ -117,7 +117,7 @@ export class PinControl extends UserControl {
     public postInit(): void {
         if (this.pinProperty.shouldDrawDefaultValueBox && this._pinProperty.defaultValueControlClass) {
             this.defaultValueBox = new this._pinProperty.defaultValueControlClass(this._pinProperty.defaultValue);
-            this.defaultValueBox.position.x = PinControl.formattedNameWidth(this._pinProperty) + PinControl.PINS_PADDING_HORIZONTAL + 5;
+            this.defaultValueBox.position.x = PinControl.formattedNameWidth(this._pinProperty) + PinControl.PINS_PADDING_HORIZONTAL + 6;
             this.width += this.defaultValueBox.width;
         }
     }

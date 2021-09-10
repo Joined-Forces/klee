@@ -25,6 +25,7 @@ export abstract class NodeControl extends Container {
     protected pins: Array<PinControl> = [];
 
     protected mainPanel: VerticalPanel;
+    protected pinPanel: HorizontalPanel;
     protected inputPinPanel: VerticalPanel;
     protected outputPinPanel: VerticalPanel;
 
@@ -55,17 +56,18 @@ export abstract class NodeControl extends Container {
         this.mainPanel.fillParentHorizontal = true;
         this.add(this.mainPanel);
         
-        let pinPanel = new HorizontalPanel();
-        pinPanel.fillParentHorizontal = true;
-        this.mainPanel.add(pinPanel);
+        this.pinPanel = new HorizontalPanel();
+        this.pinPanel.fillParentHorizontal = true;
+
+        this.mainPanel.add(this.pinPanel);
 
         this.inputPinPanel = new VerticalPanel();
         this.outputPinPanel = new VerticalPanel();
         this.outputPinPanel.childAlignment = HorizontalAlignment.RIGHT;
         this.outputPinPanel.fillParentHorizontal = true;
         
-        pinPanel.add(this.inputPinPanel);
-        pinPanel.add(this.outputPinPanel);
+        this.pinPanel.add(this.inputPinPanel);
+        this.pinPanel.add(this.outputPinPanel);
         
         this.initErrorBar();
         this.addInfoIcons();
