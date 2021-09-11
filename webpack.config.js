@@ -6,7 +6,7 @@ const ifdefOptions = {
 
 module.exports = {
     mode: 'development',
-    entry: './src/main.ts',
+    entry: './src/klee.ts',
     devtool: 'inline-source-map',
     module: {
         rules: [
@@ -26,5 +26,7 @@ module.exports = {
     output: {
         filename: 'klee.min.js',
         path: path.resolve(__dirname, 'dist'),
+        library: 'Klee',
+        libraryTarget: "umd",
     }
 };

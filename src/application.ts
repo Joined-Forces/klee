@@ -13,16 +13,17 @@ export class Application {
     private _element: HTMLCanvasElement;
 
     private static firefox: boolean;
+    private static instances: Array<Application> = [];
 
     private allowPaste: boolean;
 
-    constructor(element: HTMLCanvasElement) {
-
+    private constructor(element: HTMLCanvasElement) {
         this._element = element;
 
         if (navigator.userAgent.indexOf("Firefox") > 0) {
             Application.firefox = true;
         }
+
 
         this._canvas = new Canvas2D(element);
         this._scene = new Scene(this._canvas, this);
@@ -44,14 +45,12 @@ export class Application {
             callback: this.recenterCamera.bind(this),
         })
 
-        if (this.allowPaste) {
-            this._controller.registerAction({
-                ctrl: true,
-                keycode: 'KeyV',
-                callback: this.pasteClipboardContentToCanvas.bind(this)
-            });
-            this._element.onpaste = (ev) => this.onPaste(ev);
-        }
+        this._controller.registerAction({
+            ctrl: true,
+            keycode: 'KeyV',
+            callback: this.pasteClipboardContentToCanvas.bind(this)
+        });
+        this._element.onpaste = (ev) => this.onPaste(ev);
 
         window.addEventListener('resize', this.refresh.bind(this), false);
     }
@@ -66,6 +65,12 @@ export class Application {
 
     static get isFirefox() {
         return this.firefox;
+    }
+
+    public getBlueprint(): string {
+        let textLines = [];
+        this._scene.nodes.forEach(n => textLines = [].concat(textLines, n.sourceText));
+        return textLines.join('\n');
     }
 
     private initializeHtmlAttributes() {
@@ -116,7 +121,7 @@ export class Application {
         this.loadBlueprintIntoScene(text);
     }
 
-    private loadBlueprintIntoScene(text) {
+    public loadBlueprintIntoScene(text) {
         this._scene.unload();
         const nodes = this._parser.parseBlueprint(text);
         this._scene.load(nodes);
@@ -131,5 +136,35 @@ export class Application {
         this._scene.camera.centerAbsolutePosition(this._scene.calculateCenterPoint());
         this.refresh();
         return true;
+    }
+
+    static registerInstance(element: HTMLCanvasElement, app: Application) {
+        element.setAttribute("data-klee-instance", Application.instances.length.toString());
+        Application.instances.push(app);
+    }
+
+    public static getInstance(element: HTMLCanvasElement): Application {
+        let instanceAttr = element.getAttributeNode("data-klee-instance");
+        if (instanceAttr) {
+            let id = Number.parseInt(instanceAttr.value);
+            if (!isNaN(id) && id < Application.instances.length) {
+                let instance = Application.instances[id];
+                return instance;
+            }
+        }
+
+        return undefined;
+    }
+
+    public static createOrGet(element: HTMLCanvasElement): Application {
+        let instance = this.getInstance(element);
+        if (instance !== undefined) {
+            return instance;
+        }
+
+        let app = new Application(element)
+        Application.registerInstance(element, app);
+
+        return app;
     }
 }
