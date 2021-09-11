@@ -1,11 +1,11 @@
 const path = require('path');
-
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ifdefOptions = {
     DEBUG_UI: false
 }
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     entry: './src/klee.ts',
     devtool: 'inline-source-map',
     module: {
@@ -22,6 +22,9 @@ module.exports = {
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
+    },
+    optimization: {
+        minimizer: [ new UglifyJsPlugin() ],
     },
     output: {
         filename: 'klee.min.js',
