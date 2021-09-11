@@ -1,6 +1,6 @@
 {
-    "name": "ue-blueprint",
-    "version": "0.0.1",
+    "name": "klee",
+    "version": "1.0.0",
     "description": "Unreal Engine Blueprint Visualizer for the Web",
     "private": "true",
     "scripts": {
@@ -21,6 +21,9 @@
         "name": "Martin Hodler",
         "url": "https://tinu.io"
     },
+    "contributors": [
+        "Pascal Aregger <pascal.aregger97@gmail.com>"
+    ],
     "dependencies": {},
     "devDependencies": {
         "concurrently": "^6.2.1",
