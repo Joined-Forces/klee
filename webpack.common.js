@@ -1,3 +1,4 @@
+const path = require('path');
 
 const ifdefOptions = {
     DEBUG_UI: false
@@ -9,6 +10,7 @@ module.exports = {
         rules: [
             {
                 test: /\.tsx?$/,
+                include: path.resolve(__dirname, 'src'),
                 use: [
                     { loader: 'ts-loader' }, 
                     { loader: 'ifdef-loader', options: ifdefOptions }, 
