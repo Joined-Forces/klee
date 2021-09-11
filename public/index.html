@@ -28,9 +28,9 @@
             </div>
         </div>
         <div class="jumbotron">
-            <div class="copy-paste-here"></div>
             <div class="hello-world">
-                <canvas class="klee" width="1200px" height="600px" data-klee-paste="true">
+                <div class="copy-paste-here"></div>
+                <canvas class="klee" height="600px" data-klee-paste="true">
                 Begin Object Class=/Script/BlueprintGraph.K2Node_Event Name="K2Node_Event_0"
                     EventReference=(MemberParent=Class'"/Script/Engine.Actor"',MemberName="ReceiveBeginPlay")
                     bOverrideFunction=True
@@ -59,108 +59,127 @@
             </div>
         </div>
         <div class="main">
-            <div class="section">
-                <div class="fill">
-                    <h3>A nicer way to share Blueprints</h3>
-                    <p>
-                        Klee enables simple sharing of Blueprints created in <span class="nowrap">Unreal Engine 4</span> or <span class="nowrap">Unreal Engine 5</span>.
-                    </p>
+            <div class="section light">
+                <div class="inner">
+                    <div class="fill">
+                        <h3>A nicer way to share Blueprints</h3>
+                        <p>
+                            Klee enables simple sharing of Blueprints created in <a href="https://www.unrealengine.com/en-US/"><span class="nowrap">Unreal Engine 4</span></a> or <a href="https://www.unrealengine.com/en-US/unreal-engine-5"><span class="nowrap">Unreal Engine 5</span></a>.
+                        </p>
+                    </div>
                 </div>
             </div>
             <div class="section">
-                <div class="fill">
-                    <h3>No Screenshots needed!</h3>
-                    <p>
-                        Copy and paste your Blueprints directly from Unreal Engine into any modern webbrowser without the need of taking and uploading screenshots.
-                    </p>
+                <div class="inner">
+                    <div class="fill">
+                        <h3>No Screenshots needed!</h3>
+                        <div class="horizontal break-760">
+                            <div class="vertical">
+                            <p>
+                                Copy and paste your Blueprints directly from Unreal Engine into any modern webbrowser without the need of taking and uploading screenshots.
+                            </p>
+                            <p>
+                                No more recreating nodes you found on a screenshot. Select it and copy &amp; paste it like it was text-based code.
+                            </p>
+                            </div>
+                            <div class="no-screenshot"></div>
+                        </div>
+                    </div>
+                    
                 </div>
-                <div class="no-screenshot"></div>
             </div>
-            <div class="section">
-                <div class="fill">
-                    <h3>Simple integration</h3>
-                    <p>
-                        Klee is written in TypeScript and compiled to JavaScript. All the magic without any additional dependencies.
-                    </p>
-                    <p>
-                        <pre>
-                            <code>
+            <div class="section light">
+                <div class="inner">
+                    <div class="fill">
+                        <h3>Simple integration</h3>
+                        <p>
+                            Klee is written in TypeScript and compiled to JavaScript. All the magic without any additional dependencies.
+                        </p>
+                        <p>
+                            <pre>
+                                <code>
 &lt;<span class="code-keyword">canvas</span> <span class="code-attribute">class</span>=<span class="code-value">&quot;klee&quot;</span>&gt YOUR COPIED BP CODE HERE &lt;/<span class="code-keyword">canvas</span>&gt;
 ...
 &lt;<span class="code-keyword">script</span> <span class="code-attribute">src</span>=<span class="code-value">&quot;klee.min.js&quot;</span>&gt;&lt;/<span class="code-keyword">script</span>&gt;</code>
-                        </pre>
-                    </p>
+                            </pre>
+                        </p>
+                    </div>
                 </div>
             </div>
             <div class="section">
-                <div>
-                <h3>We already support</h3>
-                <div class="horizontal">
-                    <ul>
-                        <li>Custom events nodes</li>
-                        <li>Custom function nodes</li>
-                        <li>Function nodes (construction, return node, ...)</li>
-                        <li>Call function nodes (math-, string-, array nodes, ...)</li>
-                        <li>Input event nodes (keyboard, touch, ...)</li>
-                        <li>Variable nodes (getter, setter)</li>
-                        <li>Reroute nodes (knots)</li>
-                        <li>Dynamic cast nodes</li>
-                    </ul>
-                    <ul>
-                        <li>Flow control nodes (loops, sequences, branches, ...)</li>
-                        <li>Nodes for structs (make, break, ...)</li>
-                        <li>Nodes to manage timers</li>
-                        <li>Macro nodes</li>
-                        <li>Switch nodes</li>
-                        <li>Timeline nodes</li>
-                        <li>Comment blocks</li>
-                    </ul>
-                </div>
-
-                </div>
-            </div>
-            <div class="section">
-                <div class="fill">
-                    <h3>Share everywhere</h3>
-                    <p>
-                        Klee lets you share Blueprints on your own Website like you would share text-based code. Share Blueprints in your forum, your tutoring site or your personal Blog.
-                    </p>
-                </div>
-            </div>
-            <div class="section">
-                <div class="fill">
-                    <h3>Support us</h3>
-                    <div class="horizontal">
-                        <div class="text-left">
-                            <p>
-                                Support Klee by contributing directly to our repository on Github or you can buy us a nice hot coffe &#x2615;.
-                            </p>
+                <div class="inner vertical">
+                    <div class="fill">
+                        <h3>We already support</h3>
+                        <div class="horizontal break-760 break-left padding-top">
+                            <ul class="check">
+                                <li>Custom events nodes</li>
+                                <li>Custom function nodes</li>
+                                <li>Function nodes (construction, return node, ...)</li>
+                                <li>Call function nodes (math-, string-, array nodes, ...)</li>
+                                <li>Input event nodes (keyboard, touch, ...)</li>
+                                <li>Variable nodes (getter, setter)</li>
+                                <li>Reroute nodes (knots)</li>
+                                <li>Dynamic cast nodes</li>
+                            </ul>
+                            <ul class="check">
+                                <li>Flow control nodes (loops, sequences, branches, ...)</li>
+                                <li>Nodes for structs (make, break, ...)</li>
+                                <li>Nodes to manage timers</li>
+                                <li>Macro nodes</li>
+                                <li>Switch nodes</li>
+                                <li>Timeline nodes</li>
+                                <li>Comment blocks</li>
+                            </ul>
                         </div>
-                        <canvas class="klee" width="600px" height="250px">
-                            Begin Object Class=/Script/BlueprintGraph.K2Node_FunctionEntry Name="K2Node_FunctionEntry_0"
-                                FunctionReference=(MemberParent=Class'"/Script/Engine.Actor"',MemberName="UserConstructionScript")
-                                NodeGuid=31CF83F24A5A86F9C968EF9435EC19B2
-                                CustomProperties Pin (PinId=5918C2DB45FBEE518D22F8A94841D141,PinName="then",Direction="EGPD_Output",PinType.PinCategory="exec",PinType.PinSubCategory="",PinType.PinSubCategoryObject=None,PinType.PinSubCategoryMemberReference=(),PinType.PinValueType=(),PinType.ContainerType=None,PinType.bIsReference=False,PinType.bIsConst=False,PinType.bIsWeakPointer=False,PinType.bIsUObjectWrapper=False,LinkedTo=(K2Node_GenericCreateObject_0 59041033476E48131C71D0BF0E73DD8B,),PersistentGuid=00000000000000000000000000000000,bHidden=False,bNotConnectable=False,bDefaultValueIsReadOnly=False,bDefaultValueIsIgnored=False,bAdvancedView=False,bOrphanedPin=False,)
-                             End Object
-                             Begin Object Class=/Script/BlueprintGraph.K2Node_GenericCreateObject Name="K2Node_GenericCreateObject_0"
-                                NodePosX=272
-                                NodeGuid=5F07558B4AEADF18659B4F8674C61613
-                                CustomProperties Pin (PinId=59041033476E48131C71D0BF0E73DD8B,PinName="execute",PinType.PinCategory="exec",PinType.PinSubCategory="",PinType.PinSubCategoryObject=None,PinType.PinSubCategoryMemberReference=(),PinType.PinValueType=(),PinType.ContainerType=None,PinType.bIsReference=False,PinType.bIsConst=False,PinType.bIsWeakPointer=False,PinType.bIsUObjectWrapper=False,LinkedTo=(K2Node_FunctionEntry_0 5918C2DB45FBEE518D22F8A94841D141,),PersistentGuid=00000000000000000000000000000000,bHidden=False,bNotConnectable=False,bDefaultValueIsReadOnly=False,bDefaultValueIsIgnored=False,bAdvancedView=False,bOrphanedPin=False,)
-                                CustomProperties Pin (PinId=0634B12D4BF34D6CE3B6E09F5A4F0672,PinName="then",Direction="EGPD_Output",PinType.PinCategory="exec",PinType.PinSubCategory="",PinType.PinSubCategoryObject=None,PinType.PinSubCategoryMemberReference=(),PinType.PinValueType=(),PinType.ContainerType=None,PinType.bIsReference=False,PinType.bIsConst=False,PinType.bIsWeakPointer=False,PinType.bIsUObjectWrapper=False,PersistentGuid=00000000000000000000000000000000,bHidden=False,bNotConnectable=False,bDefaultValueIsReadOnly=False,bDefaultValueIsIgnored=False,bAdvancedView=False,bOrphanedPin=False,)
-                                CustomProperties Pin (PinId=047B4B0B46677FC9F53E9CA7E088B3DD,PinName="Class",PinToolTip="Object Class Reference Class\nThe object class you want to construct",PinType.PinCategory="class",PinType.PinSubCategory="",PinType.PinSubCategoryObject=Class'"/Script/CoreUObject.Object"',PinType.PinSubCategoryMemberReference=(),PinType.PinValueType=(),PinType.ContainerType=None,PinType.bIsReference=False,PinType.bIsConst=False,PinType.bIsWeakPointer=False,PinType.bIsUObjectWrapper=False,DefaultObject="/Game/SecurityGame/Core/Player/Klee.Klee_C",PersistentGuid=00000000000000000000000000000000,bHidden=False,bNotConnectable=False,bDefaultValueIsReadOnly=False,bDefaultValueIsIgnored=False,bAdvancedView=False,bOrphanedPin=False,)
-                                CustomProperties Pin (PinId=CC8E886042726073287396A1E6452B36,PinName="ReturnValue",PinToolTip="Klee Object Reference Return Value\nThe constructed object",Direction="EGPD_Output",PinType.PinCategory="object",PinType.PinSubCategory="",PinType.PinSubCategoryObject=BlueprintGeneratedClass'"/Game/SecurityGame/Core/Player/Klee.Klee_C"',PinType.PinSubCategoryMemberReference=(),PinType.PinValueType=(),PinType.ContainerType=None,PinType.bIsReference=False,PinType.bIsConst=False,PinType.bIsWeakPointer=False,PinType.bIsUObjectWrapper=False,PersistentGuid=00000000000000000000000000000000,bHidden=False,bNotConnectable=False,bDefaultValueIsReadOnly=False,bDefaultValueIsIgnored=False,bAdvancedView=False,bOrphanedPin=False,)
-                                CustomProperties Pin (PinId=C1352C2348D55085BF1B73BAD13D1FC6,PinName="Outer",PinToolTip="Object Reference Outer\nOwner of the constructed object",PinType.PinCategory="object",PinType.PinSubCategory="",PinType.PinSubCategoryObject=Class'"/Script/CoreUObject.Object"',PinType.PinSubCategoryMemberReference=(),PinType.PinValueType=(),PinType.ContainerType=None,PinType.bIsReference=False,PinType.bIsConst=False,PinType.bIsWeakPointer=False,PinType.bIsUObjectWrapper=False,PersistentGuid=00000000000000000000000000000000,bHidden=False,bNotConnectable=False,bDefaultValueIsReadOnly=False,bDefaultValueIsIgnored=False,bAdvancedView=False,bOrphanedPin=False,)
-                                CustomProperties Pin (PinId=F5552BAC4AF8E4ABA20B65A2CAC11109,PinName="Instigator",PinToolTip="Instigator\nPawn Object Reference\n\nPawn responsible for damage and other gameplay events caused by this actor.",PinType.PinCategory="object",PinType.PinSubCategory="",PinType.PinSubCategoryObject=Class'"/Script/Engine.Pawn"',PinType.PinSubCategoryMemberReference=(),PinType.PinValueType=(),PinType.ContainerType=None,PinType.bIsReference=False,PinType.bIsConst=False,PinType.bIsWeakPointer=False,PinType.bIsUObjectWrapper=False,AutogeneratedDefaultValue="None",LinkedTo=(K2Node_VariableGet_0 4B555ED24E316A0E83E318A55AFC081C,),PersistentGuid=00000000000000000000000000000000,bHidden=False,bNotConnectable=False,bDefaultValueIsReadOnly=False,bDefaultValueIsIgnored=False,bAdvancedView=False,bOrphanedPin=False,)
-                             End Object
-                             Begin Object Class=/Script/BlueprintGraph.K2Node_VariableGet Name="K2Node_VariableGet_0"
-                                VariableReference=(MemberName="Contributors",MemberGuid=F4AC690A440E082995CE399D124513DA,bSelfContext=True)
-                                NodePosX=64
-                                NodePosY=112
-                                NodeGuid=9F77DA734AAB8575975BDABDCC802423
-                                CustomProperties Pin (PinId=4B555ED24E316A0E83E318A55AFC081C,PinName="Contributors",Direction="EGPD_Output",PinType.PinCategory="object",PinType.PinSubCategory="",PinType.PinSubCategoryObject=Class'"/Script/Engine.Pawn"',PinType.PinSubCategoryMemberReference=(),PinType.PinValueType=(),PinType.ContainerType=None,PinType.bIsReference=False,PinType.bIsConst=False,PinType.bIsWeakPointer=False,PinType.bIsUObjectWrapper=False,LinkedTo=(K2Node_GenericCreateObject_0 F5552BAC4AF8E4ABA20B65A2CAC11109,),PersistentGuid=00000000000000000000000000000000,bHidden=False,bNotConnectable=False,bDefaultValueIsReadOnly=False,bDefaultValueIsIgnored=False,bAdvancedView=False,bOrphanedPin=False,)
-                                CustomProperties Pin (PinId=B9AC038044F7AD040768AA8F9EC41DA8,PinName="self",PinFriendlyName=NSLOCTEXT("K2Node", "Target", "Target"),PinType.PinCategory="object",PinType.PinSubCategory="",PinType.PinSubCategoryObject=BlueprintGeneratedClass'"/Game/SecurityGame/Core/Player/Klee.Klee_C"',PinType.PinSubCategoryMemberReference=(),PinType.PinValueType=(),PinType.ContainerType=None,PinType.bIsReference=False,PinType.bIsConst=False,PinType.bIsWeakPointer=False,PinType.bIsUObjectWrapper=False,PersistentGuid=00000000000000000000000000000000,bHidden=True,bNotConnectable=False,bDefaultValueIsReadOnly=False,bDefaultValueIsIgnored=False,bAdvancedView=False,bOrphanedPin=False,)
-                             End Object                     
-                        </canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="section light">
+                <div class="inner">
+                    <div class="fill">
+                        <h3>Share everywhere</h3>
+                        <p>
+                            Klee lets you share Blueprints on your own Website like you would share text-based code. Share Blueprints in your forum, your tutoring site or your personal Blog.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="inner">
+                    <div class="fill">
+                        <h3>Support us</h3>
+                        <div class="horizontal break-1000">
+                            <div class="text-left">
+                                <p>
+                                    Support Klee by contributing directly to our repository on <a href="https://github.com/Joined-Forces/klee">Github</a> or spreading the word.
+                                </p>
+                            </div>
+                            <canvas class="klee contribute" height="250px">
+                                Begin Object Class=/Script/BlueprintGraph.K2Node_FunctionEntry Name="K2Node_FunctionEntry_0"
+                                    FunctionReference=(MemberParent=Class'"/Script/Engine.Actor"',MemberName="UserConstructionScript")
+                                    NodeGuid=31CF83F24A5A86F9C968EF9435EC19B2
+                                    CustomProperties Pin (PinId=5918C2DB45FBEE518D22F8A94841D141,PinName="then",Direction="EGPD_Output",PinType.PinCategory="exec",PinType.PinSubCategory="",PinType.PinSubCategoryObject=None,PinType.PinSubCategoryMemberReference=(),PinType.PinValueType=(),PinType.ContainerType=None,PinType.bIsReference=False,PinType.bIsConst=False,PinType.bIsWeakPointer=False,PinType.bIsUObjectWrapper=False,LinkedTo=(K2Node_GenericCreateObject_0 59041033476E48131C71D0BF0E73DD8B,),PersistentGuid=00000000000000000000000000000000,bHidden=False,bNotConnectable=False,bDefaultValueIsReadOnly=False,bDefaultValueIsIgnored=False,bAdvancedView=False,bOrphanedPin=False,)
+                                End Object
+                                Begin Object Class=/Script/BlueprintGraph.K2Node_GenericCreateObject Name="K2Node_GenericCreateObject_0"
+                                    NodePosX=272
+                                    NodeGuid=5F07558B4AEADF18659B4F8674C61613
+                                    CustomProperties Pin (PinId=59041033476E48131C71D0BF0E73DD8B,PinName="execute",PinType.PinCategory="exec",PinType.PinSubCategory="",PinType.PinSubCategoryObject=None,PinType.PinSubCategoryMemberReference=(),PinType.PinValueType=(),PinType.ContainerType=None,PinType.bIsReference=False,PinType.bIsConst=False,PinType.bIsWeakPointer=False,PinType.bIsUObjectWrapper=False,LinkedTo=(K2Node_FunctionEntry_0 5918C2DB45FBEE518D22F8A94841D141,),PersistentGuid=00000000000000000000000000000000,bHidden=False,bNotConnectable=False,bDefaultValueIsReadOnly=False,bDefaultValueIsIgnored=False,bAdvancedView=False,bOrphanedPin=False,)
+                                    CustomProperties Pin (PinId=0634B12D4BF34D6CE3B6E09F5A4F0672,PinName="then",Direction="EGPD_Output",PinType.PinCategory="exec",PinType.PinSubCategory="",PinType.PinSubCategoryObject=None,PinType.PinSubCategoryMemberReference=(),PinType.PinValueType=(),PinType.ContainerType=None,PinType.bIsReference=False,PinType.bIsConst=False,PinType.bIsWeakPointer=False,PinType.bIsUObjectWrapper=False,PersistentGuid=00000000000000000000000000000000,bHidden=False,bNotConnectable=False,bDefaultValueIsReadOnly=False,bDefaultValueIsIgnored=False,bAdvancedView=False,bOrphanedPin=False,)
+                                    CustomProperties Pin (PinId=047B4B0B46677FC9F53E9CA7E088B3DD,PinName="Class",PinToolTip="Object Class Reference Class\nThe object class you want to construct",PinType.PinCategory="class",PinType.PinSubCategory="",PinType.PinSubCategoryObject=Class'"/Script/CoreUObject.Object"',PinType.PinSubCategoryMemberReference=(),PinType.PinValueType=(),PinType.ContainerType=None,PinType.bIsReference=False,PinType.bIsConst=False,PinType.bIsWeakPointer=False,PinType.bIsUObjectWrapper=False,DefaultObject="/Game/SecurityGame/Core/Player/Klee.Klee_C",PersistentGuid=00000000000000000000000000000000,bHidden=False,bNotConnectable=False,bDefaultValueIsReadOnly=False,bDefaultValueIsIgnored=False,bAdvancedView=False,bOrphanedPin=False,)
+                                    CustomProperties Pin (PinId=CC8E886042726073287396A1E6452B36,PinName="ReturnValue",PinToolTip="Klee Object Reference Return Value\nThe constructed object",Direction="EGPD_Output",PinType.PinCategory="object",PinType.PinSubCategory="",PinType.PinSubCategoryObject=BlueprintGeneratedClass'"/Game/SecurityGame/Core/Player/Klee.Klee_C"',PinType.PinSubCategoryMemberReference=(),PinType.PinValueType=(),PinType.ContainerType=None,PinType.bIsReference=False,PinType.bIsConst=False,PinType.bIsWeakPointer=False,PinType.bIsUObjectWrapper=False,PersistentGuid=00000000000000000000000000000000,bHidden=False,bNotConnectable=False,bDefaultValueIsReadOnly=False,bDefaultValueIsIgnored=False,bAdvancedView=False,bOrphanedPin=False,)
+                                    CustomProperties Pin (PinId=C1352C2348D55085BF1B73BAD13D1FC6,PinName="Outer",PinToolTip="Object Reference Outer\nOwner of the constructed object",PinType.PinCategory="object",PinType.PinSubCategory="",PinType.PinSubCategoryObject=Class'"/Script/CoreUObject.Object"',PinType.PinSubCategoryMemberReference=(),PinType.PinValueType=(),PinType.ContainerType=None,PinType.bIsReference=False,PinType.bIsConst=False,PinType.bIsWeakPointer=False,PinType.bIsUObjectWrapper=False,PersistentGuid=00000000000000000000000000000000,bHidden=False,bNotConnectable=False,bDefaultValueIsReadOnly=False,bDefaultValueIsIgnored=False,bAdvancedView=False,bOrphanedPin=False,)
+                                    CustomProperties Pin (PinId=F5552BAC4AF8E4ABA20B65A2CAC11109,PinName="Instigator",PinToolTip="Instigator\nPawn Object Reference\n\nPawn responsible for damage and other gameplay events caused by this actor.",PinType.PinCategory="object",PinType.PinSubCategory="",PinType.PinSubCategoryObject=Class'"/Script/Engine.Pawn"',PinType.PinSubCategoryMemberReference=(),PinType.PinValueType=(),PinType.ContainerType=None,PinType.bIsReference=False,PinType.bIsConst=False,PinType.bIsWeakPointer=False,PinType.bIsUObjectWrapper=False,AutogeneratedDefaultValue="None",LinkedTo=(K2Node_VariableGet_0 4B555ED24E316A0E83E318A55AFC081C,),PersistentGuid=00000000000000000000000000000000,bHidden=False,bNotConnectable=False,bDefaultValueIsReadOnly=False,bDefaultValueIsIgnored=False,bAdvancedView=False,bOrphanedPin=False,)
+                                End Object
+                                Begin Object Class=/Script/BlueprintGraph.K2Node_VariableGet Name="K2Node_VariableGet_0"
+                                    VariableReference=(MemberName="Contributors",MemberGuid=F4AC690A440E082995CE399D124513DA,bSelfContext=True)
+                                    NodePosX=64
+                                    NodePosY=112
+                                    NodeGuid=9F77DA734AAB8575975BDABDCC802423
+                                    CustomProperties Pin (PinId=4B555ED24E316A0E83E318A55AFC081C,PinName="Contributors",Direction="EGPD_Output",PinType.PinCategory="object",PinType.PinSubCategory="",PinType.PinSubCategoryObject=Class'"/Script/Engine.Pawn"',PinType.PinSubCategoryMemberReference=(),PinType.PinValueType=(),PinType.ContainerType=None,PinType.bIsReference=False,PinType.bIsConst=False,PinType.bIsWeakPointer=False,PinType.bIsUObjectWrapper=False,LinkedTo=(K2Node_GenericCreateObject_0 F5552BAC4AF8E4ABA20B65A2CAC11109,),PersistentGuid=00000000000000000000000000000000,bHidden=False,bNotConnectable=False,bDefaultValueIsReadOnly=False,bDefaultValueIsIgnored=False,bAdvancedView=False,bOrphanedPin=False,)
+                                    CustomProperties Pin (PinId=B9AC038044F7AD040768AA8F9EC41DA8,PinName="self",PinFriendlyName=NSLOCTEXT("K2Node", "Target", "Target"),PinType.PinCategory="object",PinType.PinSubCategory="",PinType.PinSubCategoryObject=BlueprintGeneratedClass'"/Game/SecurityGame/Core/Player/Klee.Klee_C"',PinType.PinSubCategoryMemberReference=(),PinType.PinValueType=(),PinType.ContainerType=None,PinType.bIsReference=False,PinType.bIsConst=False,PinType.bIsWeakPointer=False,PinType.bIsUObjectWrapper=False,PersistentGuid=00000000000000000000000000000000,bHidden=True,bNotConnectable=False,bDefaultValueIsReadOnly=False,bDefaultValueIsIgnored=False,bAdvancedView=False,bOrphanedPin=False,)
+                                End Object                     
+                            </canvas>
+                        </div>
                     </div>
                 </div>
             </div>

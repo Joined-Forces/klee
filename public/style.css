@@ -17,6 +17,7 @@ body {
 a {
     text-decoration: none;
     color: #fff;
+    font-weight: bold;
 }
 
 a:hover {
@@ -36,8 +37,8 @@ a:hover {
 .page {
     display: flex;
     flex-direction: column;
-    width: 1200px;
     position: relative;
+    width: 100vw;
 }
 
 .header {
@@ -47,6 +48,7 @@ a:hover {
     align-items: center;
     flex: 1;
     margin-bottom: 2em;
+    padding: 0 2em 0 1em;
 }
 
 .header .navbar {
@@ -59,6 +61,7 @@ a:hover {
     padding: 20px;
     flex: 1;
     width: 100%;
+    max-width: 1200px;
 }
 
 .header .logo {
@@ -66,6 +69,7 @@ a:hover {
     background-size: 80px 80px;
     width: 80px;
     height: 80px;
+    min-width: 80px;
 }
 
 .header .title {
@@ -111,21 +115,25 @@ a:hover {
     margin-right: 0.5em;
     width: 32px;
     height: 32px;
+    min-width: 32px;
     background-image: url('./img/GitHub-Mark-Light-32px.png');
 }
 
 .jumbotron {
     max-width: 100vw;
     display: flex;
+    flex: 1;
+    padding: 0 2em 0 1em;
     justify-content: center;
 }
 
 .copy-paste-here {
     position: absolute;
+    top: 0px;
+    left: -30px;
     background-image: url('img/copy-paste-here.svg');
     width: 400px;
     height: 100px;
-    transform: translateX(-110%);
 }
 
 .bg-rect {
@@ -140,17 +148,20 @@ a:hover {
 }
 
 .hello-world {
+    position: relative;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex: 1;
+    justify-content: stretch;
+    align-items: stretch;
     padding: 40px 0px 100px 0;
-    width: 1200px;
+    max-width: 1200px;
 }
 
 .hello-world canvas {
+    flex: 1;
     display: flex;
-    width: 1200px;
     height: 400px;
+    width: 100%;
     border-radius: 6px;
     box-sizing: content-box;
     box-shadow: 0 0 10px 2px rgba(3, 26, 61, 0.5);
@@ -165,18 +176,37 @@ a:hover {
 .section {
     display: flex;
     flex: 1;
-    padding-bottom: 6em;
+    padding: 2em 2em 4em 1em;
+    justify-content: center;
+}
+
+.section.light {
+    background-color: #fff;
+    color: #333;
+}
+.section.light a {
+    color: #333;
+}
+
+.section .inner {
+    display: flex;
+    width: 1200px;
 }
 
 .section h3 {
     display: inline-block;
     padding: 0.2em 0.5em;
+    margin-top: 0;
     margin-bottom: 0.2em;
     background-color: #fff;
     color:rgb(20, 100, 219);
     font-weight: bold;
     font-size: 1.2em;
     letter-spacing: 0.025em;
+}
+.section.light h3 {
+    background-color:rgb(20, 100, 219);
+    color: #fff;
 }
 
 .fill {
@@ -185,22 +215,35 @@ a:hover {
 
 .section pre {
     background-color: rgb(21, 18, 27);
+    color: rgb(221, 221, 221);
     border-radius: 5px;
     padding: 0 1em;
     display: inline-block;
+    margin-left: 0.6em;
 }
+
 
 .section canvas {
     border-radius: 5px;
     box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.5);
 }
 
+.section p {
+    padding-left: 0.6em;
+}
 
 .no-screenshot {
     background-image: url('./img/no-screenshot.png');
+    background-size: 100% 100%;
     width: 300px;
     height: 300px;
-    margin: 0 5vw;
+    min-width: 300px;
+    margin: 1em 5vw 0 5vw;
+}
+
+.contribute {
+    width: 600px;
+    max-width: 600px;
 }
 
 .horizontal {
@@ -208,12 +251,32 @@ a:hover {
     flex-direction: row;
 }
 
+.vertical {
+    display: flex;
+    flex-direction: column;
+}
+
 .text-left {
     margin-right: 2em;
 }
 
+ul.check {
+    margin: 0;
+    list-style-image: url('./img/check.png');
+    margin-right: 2em;
+}
+
+ul.check li {
+    min-height: 1.5em;
+    line-height: 1.5em;
+}
+
 .nowrap {
     white-space: nowrap;
+}
+
+.padding-top {
+    padding-top: 1.5em;
 }
 
 .footer {
@@ -238,4 +301,37 @@ a:hover {
 }
 .code-value {
     color: #A6E883;
+}
+
+@media screen and (max-width: 1000px) {
+    .button-github {
+        font-size: 0.6em;
+    }
+
+    .section {
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+
+    .horizontal.break-1000 {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+@media screen and (max-width: 760px) {
+    .break-760 {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    
+    .section pre {
+        font-size: 0.7em;
+    }
+}
+
+
+.break-left {
+    align-items: flex-start;
 }
