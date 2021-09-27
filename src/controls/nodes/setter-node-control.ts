@@ -1,10 +1,16 @@
 import { Canvas2D } from "../../canvas";
 import { DrawableControl } from "../interfaces/drawable";
 import { Constants } from "../../constants";
+import { Node } from "../../data/nodes/node";
 import { HeadlessNodeControl } from "./headless-node-control";
 
 
 export class SetterNodeControl extends HeadlessNodeControl implements DrawableControl {
+
+    constructor(node: Node) {
+        super(node);
+        this.minWidth = 124; // Smallest possible size for setter nodes
+    }
 
     protected drawTitle(canvas: Canvas2D) {
         canvas
