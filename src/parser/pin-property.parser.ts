@@ -337,6 +337,9 @@ export class PinPropertyParser implements CustomPropertyParser {
         if(p.defaultValue != undefined) { return }
 
         switch (p.category) {
+            case PinCategory.bool:
+                p.defaultValue = false;
+                p.defaultValueControlClass = CheckBoxControl;
             case PinCategory.struct:
                 switch (p.subCategoryObject.class) {
                     case StructClass.VECTOR2D:
