@@ -68,9 +68,9 @@ export class PinPropertyParser implements CustomPropertyParser {
             }
         },
         "PinType.PinSubCategoryMemberReference": (p: PinProperty, value: string) => {
-            if(value && value != '()') {
-                console.log(`Found interesting attribute 'PinType.PinSubCategoryMemberReference' for which a value other than '()' was set. PinType.PinSubCategoryMemberReference='${value}' [pin-name: ${p.name}]`);
-            }
+            // if(value && value != '()') {
+            //     console.log(`Found interesting attribute 'PinType.PinSubCategoryMemberReference' for which a value other than '()' was set. PinType.PinSubCategoryMemberReference='${value}' [pin-name: ${p.name}]`);
+            // }
         },
     }
 
@@ -182,8 +182,6 @@ export class PinPropertyParser implements CustomPropertyParser {
             let matches = value.matchAll(/(\w*\((?:"[^"]*"[, ]*)+\))|("[^"]*")/g);
             let lastValue = undefined;
             for (const [fullMatch, key, value] of matches) {
-                console.log(fullMatch);
-
                 let prop = fullMatch;
                 prop = prop.trim();
 

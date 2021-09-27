@@ -26,7 +26,6 @@ export class ErrorBar extends VerticalPanel {
         this.add(this.label);
 
         this.toolTip = toolTip;
-        console.log(toolTip);
     }
 
 
@@ -36,5 +35,4 @@ export class ErrorBar extends VerticalPanel {
         .fill();
         
     }
-
 }

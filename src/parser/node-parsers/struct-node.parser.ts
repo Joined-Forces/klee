@@ -27,7 +27,7 @@ export class StructNodeParser extends NodeParser {
 
         let title = "";
         let icon = IconLibrary.PILL;
-        console.log(data.node.class);
+
         switch (data.node.class) {
             case UnrealNodeClass.SET_FIELDS_IN_STRUCT:
                 title = "Set members in ";

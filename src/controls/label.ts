@@ -29,7 +29,6 @@ export class Label extends UserControl {
         if (isNaN(this.minHeight)) {
             textMetrics = this.measureText("|_");
             this.minHeight = textMetrics.actualBoundingBoxAscent + textMetrics.actualBoundingBoxDescent + 5;
-            console.log(this.minHeight);
         }
         this.baseLine = Math.floor(this.minHeight / 3);
     }
