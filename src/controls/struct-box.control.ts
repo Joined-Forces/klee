@@ -1,4 +1,3 @@
-import { Application } from "../application";
 import { Canvas2D } from "../canvas";
 import { Constants } from "../constants";
 import { UserControl } from "./user-control";
@@ -6,13 +5,13 @@ import { UserControl } from "./user-control";
 
 export class StructBoxControl extends UserControl {
 
-    private entries: Array<{ key: string, value: string, x: number, boxWidth: number, keyWidth: number }>;
+    private entries: Array<{ key: string, value: string, x?: number, boxWidth?: number, keyWidth?: number }>;
 
     constructor(entries: Array<{ key: string, value: string }>) {
         super();
 
         this.height = Constants.DEFAULT_BOX_HEIGHT;
-        this.entries = [];
+        this.entries = entries;
     }
 
     override initialize() {
