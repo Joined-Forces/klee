@@ -1,4 +1,6 @@
 import { CustomProperty } from "../data/custom-property";
+import { PinCategory } from "../data/pin/pin-category";
+import { PinDirection } from "../data/pin/pin-direction";
 import { PinProperty } from "../data/pin/pin-property";
 import { prettifyText } from "../utils/text-utils";
 import * as EnumNames from "./enum-names.json";
@@ -44,6 +46,19 @@ export class BlueprintParserUtils {
             if (p instanceof PinProperty === false) { return false; }
             (p as PinProperty).hideName = true;
         })
+    }
+
+    static configureFirstDelegatePinInHead(customProperties: CustomProperty[]): void {
+        for (const property of customProperties) {
+            if (!(property instanceof PinProperty)) { continue };
+            if (property.direction !== PinDirection.EGPD_Output) { continue };
+            if (property.category !== PinCategory.delegate) { continue };
+            if (property.name !== 'Output Delegate') { continue };
+
+            property.showInHead = true;
+            property.hideName = true;
+            return;
+        }
     }
 
     static getFirstClassNameFromPinProperties(customProperties: CustomProperty[]) {

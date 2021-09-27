@@ -48,6 +48,7 @@ export class PinProperty extends CustomProperty {
     orphanedPin: boolean;
 
     hideName: boolean;
+    showInHead: boolean;
 
     constructor(nodeName: string) {
         super();

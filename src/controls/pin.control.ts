@@ -61,11 +61,6 @@ export class PinControl extends UserControl {
             } else if (!this.pinProperty.hidden) {
                 this.width = PinControl.PINS_PADDING_HORIZONTAL + PinControl.PIN_ICON_WIDTH;
             }
-
-            if (this.category == PinCategory.delegate && this.pinProperty.direction === PinDirection.EGPD_Output) {
-                this.width = PinControl.PINS_PADDING_HORIZONTAL + 8;
-                this.height = 24;
-            }
         }
 
         this.postInit();
@@ -245,31 +240,26 @@ export class PinControl extends UserControl {
     }
 
     private drawDelegatePin(canvas: Canvas2D) {
-        let xPos = 2;
+        canvas.save()
 
-        if (this._pinProperty.direction === PinDirection.EGPD_Input) {
-            let textX = this.setupTextDrawing(canvas);
-            canvas.fillText(this._pinProperty.formattedName, textX, 4);
-            xPos = -6;
+        let textX = this.setupTextDrawing(canvas);
+        let pinX = this.getPinX();
+
+        if(!this.pinProperty.showInHead) {
+            pinX -= 4;
         }
 
-        canvas.save()
-        .translate(this.getPinX(),  -5)
-        .fillStyle(this._color).strokeStyle(this._color);
+        // Draw pin text
+        canvas.fillText(this._pinProperty.formattedName, textX, 4);
 
-        canvas.strokeStyle(this._color)
-        .lineWidth(2)
-        
-        
+        // Set pin icon style
+        canvas.fillStyle(this._color).strokeStyle(this._color).lineWidth(2);
 
-        if (this.pinProperty.isLinked)
-            canvas.roundedRectangle(xPos, 0, 11, 11, 3)
-            .fill();
-        else
-            canvas
-            .lineWidth(2)
-            .roundedRectangle(xPos, 0, 10, 10, 3)
-            .stroke();
+        if (this.pinProperty.isLinked) {
+            canvas.roundedRectangle(pinX, -5, 11, 11, 3).fill();
+        } else {
+            canvas.roundedRectangle(pinX, -5, 10, 10, 3).stroke();
+        }
 
         canvas.restore();
     }
@@ -305,16 +295,6 @@ export class PinControl extends UserControl {
 
     public formattedNameWidth(pin: PinProperty): number {
         return this.app.canvas.font(Constants.NODE_FONT).getContext().measureText(pin.formattedName).width + PinControl.PIN_NAME_PADDING_LEFT;
-    }
-
-    // TODO: Remove this function
-    public static calculateTotalPinWidth(pin: PinProperty): number {
-        return 0;
-        // let defaultValueBoxWidth = DefaultValueBox.defaultValueWidth(pin);
-        // if(defaultValueBoxWidth > 0) {
-        //     defaultValueBoxWidth += Constants.DEFAULT_VALUE_BOX_MARGIN_LEFT;
-        // }
-        // return PinControl.formattedNameWidth(pin) + defaultValueBoxWidth;
     }
 
     public getPinAbsolutePosition(): Vector2 {

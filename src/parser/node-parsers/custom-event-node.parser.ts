@@ -3,6 +3,7 @@ import { NodeControl } from "../../controls/nodes/node.control";
 import { IconLibrary } from "../../controls/utils/icon-library";
 import { CustomEventNode } from "../../data/nodes/custom-event.node";
 import { ReplicationType } from "../../data/replication-type";
+import { BlueprintParserUtils } from "../blueprint-parser-utils";
 import { NodeParser } from "../node.parser";
 import { ParsingNodeData } from "../parsing-node-data";
 
@@ -64,6 +65,7 @@ export class CustomEventNodeParser extends NodeParser {
 
     public parse(data: ParsingNodeData): NodeControl {
         this.parseProperties(data);
+        BlueprintParserUtils.configureFirstDelegatePinInHead(data.node.customProperties);
         data.node.backgroundColor = CustomEventNodeParser._DEFAULT_BACKGROUND_COLOR;
         return new HeadedNodeControl(data.node, IconLibrary.CUSTOM_EVENT);
     }
