@@ -8,10 +8,18 @@ import { ParsingNodeData } from "../parsing-node-data";
 import { Node } from "../../data/nodes/node";
 import { insertSpacesBetweenCapitalizedWords } from "../../utils/text-utils";
 import { MacroInstanceNode } from "../../data/nodes/macro-instance.node";
+import { HeadlessNodeControl } from "../../controls/nodes/headless-node-control";
+import { BlueprintParserUtils } from "../blueprint-parser-utils";
 
 export class MacroInstanceNodeParser extends NodeParser {
 
     private static readonly _DEFAULT_BACKGROUND_COLOR = '150, 150, 150';
+    private static readonly _HEADLESS_NODES = [
+        { name: 'IncrementInt', displayName: '++' },
+        { name: 'DecrementInt', displayName: '--' },
+        { name: 'IncrementFloat', displayName: '++' },
+        { name: 'DecrementFloat', displayName: '--' },
+    ]
 
     constructor() {
         super({
@@ -30,6 +38,14 @@ export class MacroInstanceNodeParser extends NodeParser {
 
         const icon = MacroInstanceNodeParser.getIconForMacro(macroNode.macroGraphReference.macroFuncName);
         data.node.backgroundColor = MacroInstanceNodeParser._DEFAULT_BACKGROUND_COLOR;
+
+        const headlessNode = MacroInstanceNodeParser._HEADLESS_NODES.find(n => n.name === macroNode.macroGraphReference?.macroFuncName);
+        if(headlessNode) {
+            macroNode.title = headlessNode.displayName;
+            BlueprintParserUtils.hidePinNames(macroNode.customProperties);
+            return new HeadlessNodeControl(data.node);
+        }
+
         return new HeadedNodeControl(data.node, icon);
     }
 
