@@ -1,4 +1,3 @@
-import { Application } from "../application";
 import { Canvas2D } from "../canvas";
 import { Constants } from "../constants";
 import { PinCategory } from "../data/pin/pin-category";
@@ -6,20 +5,19 @@ import { PinContainerType } from "../data/pin/pin-container-type";
 import { PinDirection } from "../data/pin/pin-direction";
 import { PinProperty } from "../data/pin/pin-property";
 import { Vector2 } from "../math/vector2";
-import { Control } from "./control";
-import { DrawableControl } from "./interfaces/drawable";
 import { NodeConnectionControl } from "./node-connection.control";
 import { NodeControl } from "./nodes/node.control";
 import { UserControl } from "./user-control";
 import { ColorUtils } from "./utils/color-utils";
-// import { DefaultValueBox } from "./utils/default-value-box";
 import { IconLibrary } from "./utils/icon-library";
 
 
 export class PinControl extends UserControl {
 
-    private static readonly PIN_NAME_PADDING_LEFT = 12;
+    private static readonly PIN_NAME_PADDING_LEFT = 14;
+    private static readonly PIN_ICON_WIDTH = 10;
     private static readonly PINS_PADDING_HORIZONTAL = 16;
+    private static readonly PINS_PADDING_LEFT_DEFAULT_BOX = 8;
 
     private _pinProperty: PinProperty;
     private defaultValueBox: UserControl;
@@ -47,8 +45,9 @@ export class PinControl extends UserControl {
             this._secondaryColor = ColorUtils.getPinColorByCategory(this._pinProperty.valueType as PinCategory);
 
         
-        this.height = 28;
         this.width = 0;
+        this.height = 27;
+
         this.visible = !pin.hidden;
         this.category = pin.category;
 
@@ -58,13 +57,13 @@ export class PinControl extends UserControl {
     override initialize() {
         if (this.visible) {
             if (!this.pinProperty.hidden && !this.pinProperty.hideName) {
-                this.width = this.formattedNameWidth(this.pinProperty) + (PinControl.PINS_PADDING_HORIZONTAL * 2);
+                this.width = this.formattedNameWidth(this.pinProperty) + PinControl.PINS_PADDING_HORIZONTAL + PinControl.PIN_ICON_WIDTH;
             } else if (!this.pinProperty.hidden) {
-                this.width = (PinControl.PINS_PADDING_HORIZONTAL * 2);
+                this.width = PinControl.PINS_PADDING_HORIZONTAL + PinControl.PIN_ICON_WIDTH;
             }
 
             if (this.category == PinCategory.delegate && this.pinProperty.direction === PinDirection.EGPD_Output) {
-                this.width = (PinControl.PINS_PADDING_HORIZONTAL * 2) - 8;
+                this.width = PinControl.PINS_PADDING_HORIZONTAL + 8;
                 this.height = 24;
             }
         }
@@ -123,8 +122,11 @@ export class PinControl extends UserControl {
         if (this.pinProperty.shouldDrawDefaultValueBox && this._pinProperty.defaultValueControlClass) {
             this.defaultValueBox = new this._pinProperty.defaultValueControlClass(this._pinProperty.defaultValue);
             this.defaultValueBox.initControl(this.app);
-            this.defaultValueBox.position.x = this.formattedNameWidth(this._pinProperty) + PinControl.PINS_PADDING_HORIZONTAL + 6;
-            this.width += this.defaultValueBox.width;
+            this.defaultValueBox.position.x = this.formattedNameWidth(this._pinProperty) + PinControl.PINS_PADDING_HORIZONTAL + PinControl.PINS_PADDING_LEFT_DEFAULT_BOX;
+            this.defaultValueBox.padding.right = PinControl.PINS_PADDING_LEFT_DEFAULT_BOX;
+            this.defaultValueBox.padding.left = PinControl.PINS_PADDING_LEFT_DEFAULT_BOX;
+            this.width += this.defaultValueBox.width + this.defaultValueBox.padding.left + this.defaultValueBox.padding.right;
+            this.height += this.defaultValueBox.padding.top + this.defaultValueBox.padding.bottom;
         }
     }
 

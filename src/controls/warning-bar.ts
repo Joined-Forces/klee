@@ -18,19 +18,19 @@ export class WarningBar extends VerticalPanel {
         super();
         
         this.svg = new Image();
-        this.svg.src = 'data:image/svg+xml,' + escape('<svg width="32px" height="32px" viewBox="0 5 32 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><path d="M16,6.988l-16,0l-16,18.024l16,-0l16,-18.024Z" style="fill:'+this.color+';fill-opacity:0.4;"/><path d="M48,6.988l-16,0l-16,18.024l16,-0l16,-18.024Z" style="fill:'+this.color+';fill-opacity:0.4;"/></svg>');
+        this.svg.src = 'data:image/svg+xml,' + escape('<svg width="32px" height="32px" viewBox="0 12 32 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"><path d="M16,6.988l-16,0l-16,18.024l16,-0l16,-18.024Z" style="fill:'+this.color+';fill-opacity:0.4;"/><path d="M48,6.988l-16,0l-16,18.024l16,-0l16,-18.024Z" style="fill:'+this.color+';fill-opacity:0.4;"/></svg>');
         this.svg.width = "25px";
-        this.svg.height = "25px";
+        this.svg.height = "22px";
         this.svg.onload = () => { this.imageLoaded() };
 
         this.fillParentHorizontal = true;
 
-        this.minHeight = 25;
+        this.minHeight = 22;
 
         this.label = new Label(text);
         this.label.fillParentHorizontal = true;
         this.label.textAlign = 'center';
-        this.label.padding = { top: 7, right: 0, bottom: 5, left: 0 }
+        this.label.padding = { top: 3, right: 0, bottom: 2, left: 0 }
         this.add(this.label);
     }
 

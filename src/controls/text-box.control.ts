@@ -12,6 +12,8 @@ export class TextBoxControl extends UserControl {
         super();
         this.text = text;
         this.height = Constants.DEFAULT_BOX_HEIGHT;
+        this.padding.top = 1;
+        this.padding.bottom = 1;
     }
 
     override initialize() {

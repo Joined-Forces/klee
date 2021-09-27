@@ -12,6 +12,8 @@ export class CheckBoxControl extends UserControl {
         this.isTrue = isTrue;
         this.width = Constants.DEFAULT_BOX_HEIGHT;
         this.height = Constants.DEFAULT_BOX_HEIGHT;
+        this.padding.top = 1;
+        this.padding.bottom = 1;
     }
 
     protected onDraw(canvas: Canvas2D) {

@@ -12,6 +12,8 @@ export class StructBoxControl extends UserControl {
 
         this.height = Constants.DEFAULT_BOX_HEIGHT;
         this.entries = entries;
+        this.padding.top = 1;
+        this.padding.bottom = 1;
     }
 
     override initialize() {
