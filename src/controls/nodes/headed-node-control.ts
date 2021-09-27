@@ -30,7 +30,6 @@ export class HeadedNodeControl extends NodeControl implements DrawableControl {
         super(node);
 
         this.minHeight = HeadedNodeControl.NODE_HEADER_TITLE_HEIGHT;
-        this.minWidth = 100;
         
         this.header = new Header(node, icon);
         this.header.fillParentHorizontal = true;
@@ -41,17 +40,6 @@ export class HeadedNodeControl extends NodeControl implements DrawableControl {
         this.mainPanel.insert(this.header, 0);
 
         this.initializeEnabledState();
-    }
-
-    override initialize() {
-        let largestTitleWidth = this.app.canvas.getContext().measureText(this.node.title).width;
-        if (this.node.subTitles && this.node.subTitles.length > 0) {
-            for (const subTitle of this.node.subTitles) {
-                largestTitleWidth = Math.max(largestTitleWidth, this.app.canvas.getContext().measureText(subTitle.text).width);
-            }
-            this.headerHeight += (HeadedNodeControl.NODE_HEADER_SPACE_BETWEEN_TITLE_AND_SUBTITLE - 2) + (HeadedNodeControl.NODE_HEADER_SUBTITLE_HEIGHT * this.node.subTitles.length);
-        }
-        this.minWidth = largestTitleWidth + HeadedNodeControl.NODE_HEADER_ICONS_WIDTH;
     }
 
     protected initializeEnabledState(): void {
@@ -87,6 +75,4 @@ export class HeadedNodeControl extends NodeControl implements DrawableControl {
         canvas.roundedRectangle(0, 0, this.size.x, this.size.y, 5);
         this.drawStroke(canvas);
     }
-
-
 }
