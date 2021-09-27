@@ -1,3 +1,4 @@
+import { Constants } from "../../constants";
 import { HeadedNodeControl } from "../../controls/nodes/headed-node-control";
 import { NodeControl } from "../../controls/nodes/node.control";
 import { IconLibrary } from "../../controls/utils/icon-library";
@@ -38,6 +39,7 @@ export class SelectNodeParser extends NodeParser {
         this.parseProperties(data);
 
         data.node.title = "Select";
+        data.node.backgroundColor = Constants.DEFAULT_FUNC_PURE_BACKGROUND_COLOR;
 
         SelectNodeParser.changePinsToReference(data);
 
