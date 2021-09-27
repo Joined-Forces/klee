@@ -31,7 +31,7 @@ export class VariableNodeParser extends NodeParser {
 
         if(isSetter) {
             variableNode.variableType = VariableType.Setter;
-            data.node.title = "SET";
+            data.node.title = "";
             this.hideOutputPinNames(variableNode);
             return new SetterNodeControl(data.node);
         } else {
