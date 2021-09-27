@@ -1,7 +1,7 @@
-import { Canvas2D } from "../../canvas";
-import { UserControl } from "../user-control";
-import { Color } from "../../data/color";
-import { Constants } from "../../constants";
+import { Canvas2D } from "../canvas";
+import { UserControl } from "./user-control";
+import { Color } from "../data/color";
+import { Constants } from "../constants";
 
 
 export class ColorBoxControl extends UserControl {
@@ -14,6 +14,8 @@ export class ColorBoxControl extends UserControl {
         this.color = color;
         this.height = Constants.DEFAULT_BOX_HEIGHT;
         this.width = this.height;
+        this.padding.top = 1;
+        this.padding.bottom = 1;
     }
 
     protected onDraw(canvas: Canvas2D) {

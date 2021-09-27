@@ -1,5 +1,5 @@
 import { StructClass } from "../controls/utils/color-utils";
-import { ColorBoxControl } from "../controls/utils/color-box.control";
+import { ColorBoxControl } from "../controls/color-box.control";
 import { Color } from "../data/color";
 import { PinCategory } from "../data/pin/pin-category";
 import { PinContainerType } from "../data/pin/pin-container-type";
