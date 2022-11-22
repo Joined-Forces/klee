@@ -174,18 +174,24 @@ export class PinPropertyParser implements CustomPropertyParser {
             //  )
 
             let prefixLength = 'LOCGEN_FORMAT_NAMED('.length;
-            value = value.substr(prefixLength, value.length - prefixLength - 1);
+            value = value.substring(prefixLength, value.length - 1);
 
             let format = "";
             let args: { [key: string]: string } = {};
 
             let matches = value.matchAll(/(\w*\((?:"[^"]*"[, ]*)+\))|("[^"]*")/g);
             let lastValue = undefined;
+
+            let offset = 0;
+            let index = 0;
+            let namingkKey = undefined;
+
             for (const [fullMatch, key, value] of matches) {
                 let prop = fullMatch;
                 prop = prop.trim();
 
                 if (prop.startsWith("NSLOCTEXT")) {
+                    offset -= 1;
                     prop = prop.substring("NSLOCTEXT(".length, prop.length - 1);
                     let data = prop.split(',');
                     let key = data[0].trim().replace(/"/g, '');
@@ -200,17 +206,25 @@ export class PinPropertyParser implements CustomPropertyParser {
                         key = lastValue;
                         args[key] = value;
                     }
+                } else {
+                    if ((index + offset) % 2 == 0) {
+                        namingkKey = prop.replace(/"/g, '');
+                    } else {
+                        args[namingkKey] = prop.replace(/"/g, '');
+                    }
                 }
 
                 let value = prop.replace(/"/g, '');
                 lastValue = value;
+                index++;
             }
 
             let friendlyName = format;
             for (let key in args) {
                 let value = args[key];
+                let re = new RegExp("{" + key + "}", "g");
 
-                friendlyName = friendlyName.replace("{"+key+"}", value);
+                friendlyName = friendlyName.replace(re, value);
             }
 
             return friendlyName;
