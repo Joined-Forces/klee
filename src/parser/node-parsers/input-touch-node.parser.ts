@@ -4,10 +4,11 @@ import { IconLibrary } from "../../controls/utils/icon-library";
 import { InputAxisNode } from "../../data/nodes/input-axis.node";
 import { NodeParser } from "../node.parser";
 import { ParsingNodeData } from "../parsing-node-data";
+import { Constants } from "../../constants";
 
 export class InputTouchNodeParser extends NodeParser {
 
-    private static readonly _DEFAULT_BACKGROUND_COLOR = '156, 36, 35';
+    private static readonly _DEFAULT_BACKGROUND_COLOR = Constants.RED;
 
     public parse(data: ParsingNodeData): NodeControl {
         data.node.title = "Input Touch";

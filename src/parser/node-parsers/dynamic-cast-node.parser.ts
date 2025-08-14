@@ -6,6 +6,7 @@ import { BlueprintParserUtils } from "../blueprint-parser-utils";
 import { NodeDataReferenceParser } from "../node-data-reference.parser";
 import { NodeParser } from "../node.parser";
 import { ParsingNodeData } from "../parsing-node-data";
+import { Constants } from "../../constants";
 
 
 export class DynamicCastNodeParser extends NodeParser {
@@ -23,7 +24,7 @@ export class DynamicCastNodeParser extends NodeParser {
 
         let castNode = (data.node as DynamicCastNode);
         castNode.title = "Cast to " + castNode.targetType.className;
-        castNode.backgroundColor = "32, 116, 120";
+        castNode.backgroundColor = Constants.TEAL;
         
 
         return new HeadedNodeControl(data.node, IconLibrary.CAST);

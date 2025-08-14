@@ -6,10 +6,11 @@ import { ParsingNodeData } from "../parsing-node-data";
 import { NodeDataReferenceParser } from "../node-data-reference.parser";
 import { StructNode } from "../../data/nodes/struct.node";
 import { UnrealNodeClass } from "../../data/classes/unreal-node-class";
+import { Constants } from "../../constants";
 
 export class StructNodeParser extends NodeParser {
 
-    private static readonly _DEFAULT_BACKGROUND_COLOR = '19, 42, 79';
+    private static readonly _DEFAULT_BACKGROUND_COLOR = Constants.DARK_BLUE;
 
     constructor() {
         super({

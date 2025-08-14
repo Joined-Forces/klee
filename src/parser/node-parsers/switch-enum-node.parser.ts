@@ -7,6 +7,7 @@ import { SwitchEnumNode } from "../../data/nodes/switch-enum.node";
 import { BlueprintParserUtils } from "../blueprint-parser-utils";
 import { NodeParser } from "../node.parser";
 import { ParsingNodeData } from "../parsing-node-data";
+import { Constants } from "../../constants";
 
 
 export class SwitchEnumNodeParser extends NodeParser {
@@ -28,7 +29,7 @@ export class SwitchEnumNodeParser extends NodeParser {
 
         let switchNode = (data.node as SwitchEnumNode);
         switchNode.title = "Switch on " + BlueprintParserUtils.getClassFriendlyName(switchNode.enum);
-        switchNode.backgroundColor = "162, 161, 35";
+        switchNode.backgroundColor = Constants.LIGHT_GREEN;
         
         return new FoldableHeadedNodeControl(data.node, IconLibrary.SWITCH);
     }

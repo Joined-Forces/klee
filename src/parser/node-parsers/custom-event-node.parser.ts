@@ -6,6 +6,7 @@ import { ReplicationType } from "../../data/replication-type";
 import { BlueprintParserUtils } from "../blueprint-parser-utils";
 import { NodeParser } from "../node.parser";
 import { ParsingNodeData } from "../parsing-node-data";
+import { Constants } from "../../constants";
 
 
 /*
@@ -40,7 +41,7 @@ export class CustomEventNodeParser extends NodeParser {
         [ReplicationType.RunOnOwningClient]: 'Executes On Owning Client',
     }
 
-    private static readonly _DEFAULT_BACKGROUND_COLOR = '156, 36, 35';
+    private static readonly _DEFAULT_BACKGROUND_COLOR = Constants.RED;
 
     constructor() {
         super({

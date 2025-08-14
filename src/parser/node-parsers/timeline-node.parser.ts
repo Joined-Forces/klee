@@ -5,11 +5,12 @@ import { Node } from "../../data/nodes/node";
 import { BlueprintParserUtils } from "../blueprint-parser-utils";
 import { NodeParser } from "../node.parser";
 import { ParsingNodeData } from "../parsing-node-data";
+import { Constants } from "../../constants";
 
 
 export class TimelineNodeParser extends NodeParser {
 
-    private static readonly DEFAULT_BACKGROUND_COLOR = '138, 108, 19';
+    private static readonly DEFAULT_BACKGROUND_COLOR = Constants.YELLOW_BROWN;
 
     constructor() {
         super({

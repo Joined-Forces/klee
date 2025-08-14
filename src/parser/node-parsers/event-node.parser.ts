@@ -6,12 +6,10 @@ import { BlueprintParserUtils } from "../blueprint-parser-utils";
 import { NodeDataReferenceParser } from "../node-data-reference.parser";
 import { NodeParser } from "../node.parser";
 import { ParsingNodeData } from "../parsing-node-data";
+import { Constants } from "../../constants";
 
 
 export class EventNodeParser extends NodeParser {
-
-    private static readonly _DEFAULT_BACKGROUND_COLOR = '156, 36, 35';
-
     constructor() {
         super({
             "EventReference": (node: EventNode, value: string) => {
@@ -25,7 +23,7 @@ export class EventNodeParser extends NodeParser {
 
     public parse(data: ParsingNodeData): NodeControl {
         this.parseProperties(data);
-        data.node.backgroundColor = EventNodeParser._DEFAULT_BACKGROUND_COLOR;
+        data.node.backgroundColor = Constants.RED;
         BlueprintParserUtils.configureFirstDelegatePinInHead(data.node.customProperties);
         return new HeadedNodeControl(data.node, IconLibrary.EVENT);
     }

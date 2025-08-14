@@ -5,10 +5,11 @@ import { InputAxisNode } from "../../data/nodes/input-axis.node";
 import { BlueprintParserUtils } from "../blueprint-parser-utils";
 import { NodeParser } from "../node.parser";
 import { ParsingNodeData } from "../parsing-node-data";
+import { Constants } from "../../constants";
 
 export class InputAxisNodeParser extends NodeParser {
 
-    private static readonly _DEFAULT_BACKGROUND_COLOR = '156, 36, 35';
+    private static readonly _DEFAULT_BACKGROUND_COLOR = Constants.RED;
 
     constructor() {
         super({

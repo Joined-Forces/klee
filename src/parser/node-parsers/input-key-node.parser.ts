@@ -5,11 +5,12 @@ import { InputKeyNode } from "../../data/nodes/input-key.node";
 import { prettifyText } from "../../utils/text-utils";
 import { NodeParser } from "../node.parser";
 import { ParsingNodeData } from "../parsing-node-data";
+import { Constants } from "../../constants";
 
 
 export class InputKeyNodeParser extends NodeParser {
 
-    private static readonly DEFAULT_BACKGROUND_COLOR = '156, 36, 35';
+    private static readonly DEFAULT_BACKGROUND_COLOR = Constants.RED;
 
     constructor() {
         super({

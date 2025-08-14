@@ -14,7 +14,7 @@ import { PinControl } from "./pin.control";
 export class Header extends HorizontalPanel {
 
     private static readonly HEADER_TITLE_HEIGHT = 23;
-    private static readonly NODE_DEFAULT_BACKGROUND_COLOR = '78, 117, 142';
+    private static readonly NODE_DEFAULT_BACKGROUND_COLOR = Constants.BLUE;
 
     private fillStyleHeader: CanvasGradient;
     protected headerHeight = Header.HEADER_TITLE_HEIGHT;
