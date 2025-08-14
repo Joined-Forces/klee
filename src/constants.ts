@@ -19,6 +19,7 @@ export class Constants {
     public static readonly BLUE = "78, 117, 142"; // rgb(78, 117, 142)
     public static readonly GREEN = "92, 154, 87"; // rgb(92, 154, 87)
     public static readonly PURPLE = "109, 19, 132"; // rgb(109, 19, 132)
+    public static readonly BROWN = "175, 107, 43"; // rgb(175, 107, 43)
     public static readonly DARK_BLUE = '19, 42, 79'; // rgb(19, 42, 79)
     public static readonly YELLOW_BROWN = '138, 108, 19'; // rgb(138, 108, 19)
     public static readonly DEFAULT_FUNC_BACKGROUND_COLOR = Constants.BLUE;
