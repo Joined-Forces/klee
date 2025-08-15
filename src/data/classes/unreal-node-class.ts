@@ -33,17 +33,4 @@ export enum UnrealNodeClass {
     TUNNEL = "/Script/BlueprintGraph.K2Node_Tunnel",
     CREATE_WIDGET = "/Script/UMGEditor.K2Node_CreateWidget",
     CREATE_OBJECT = "/Script/BlueprintGraph.K2Node_GenericCreateObject",
-
-    // Artificial.Agency custom nodes
-    ADD_DELEGATE = "/Script/BlueprintGraph.K2Node_AddDelegate",
-    AGENCY_FUNCTION_RESULT = "/Script/ABEUncooked.K2Node_AgencyFunctionResult",
-    AI_MOVE_TO = "/Script/AIGraph.K2Node_AIMoveTo",
-    BREAK_COMPLEX_FUNCTION_PARAM_VALUES = "/Script/ABEUncooked.K2Node_BreakComplexFunctionParamValues",
-    CALL_PARENT_FUNCTION = "/Script/BlueprintGraph.K2Node_CallParentFunction",
-    CONV_TEXT = "/Script/ABEUncooked.Conv_Text",
-    CREATE_DELEGATE = "/Script/BlueprintGraph.K2Node_CreateDelegate",
-    FORMAT_TEXT = "/Script/BlueprintGraph.K2Node_FormatText",
-    GET_SUBSYSTEM = "/Script/BlueprintGraph.K2Node_GetSubsystem",
-    PROJECT_POINT_TO_NAVIGATION = "/Script/NavigationSystem.NavigationSystemV1",
-    PROMOTABLE_OPERATOR = "/Script/BlueprintGraph.K2Node_PromotableOperator",
 }
