@@ -36,6 +36,8 @@ import { SpawnActorNodeParser } from "./spawn-actor-node.parser";
 import { TunnelNodeParser } from "./tunnel-node.parser";
 import { CreateWidgetNodeParser } from "./create-widget-node.parser";
 import { CreateObjectNodeParser } from "./create-object-node.parser";
+import { NodeParserRegistry } from "../node-parser-registry";
+
 
 
 export class GenericNodeParser extends NodeParser {
@@ -98,6 +100,14 @@ export class GenericNodeParser extends NodeParser {
             "ErrorType": (node: Node, v: string) => { node.errorType = Number.parseInt(v); },
             "ErrorMsg": (node: Node, v: string) => { node.errorMsg = v.replace(/["]/g, '').replace(/\\\'/g, '\''); }
         });
+        const registry = NodeParserRegistry.getInstance();
+        for (const nodeClass of Object.values(UnrealNodeClass)) {
+            const pluginParser = registry.getParser(nodeClass);
+            if (pluginParser) {
+                this._nodeParsers[nodeClass] = pluginParser;
+            }
+        }
+        registry.autoLoadPlugins();
     }
 
     public parse(data: ParsingNodeData): NodeControl {
@@ -122,13 +132,13 @@ export class GenericNodeParser extends NodeParser {
 
         this.parseCustomProperties(data);
 
-        const particularImplementation = this._nodeParsers[data.node.class];
-        if(!particularImplementation) {
+        const parserFactory = this._nodeParsers[data.node.class];
+        if(!parserFactory) {
             console.info(`There is no particular implementation for class ${data.node.class}. Falling back to the generic node class.`);
             return new HeadedNodeControl(data.node);
         }
 
-        const parser: NodeParser = particularImplementation();
+        const parser: NodeParser = parserFactory();
         return parser.parse(data);
     }
 
