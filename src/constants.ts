@@ -22,6 +22,7 @@ export class Constants {
     public static readonly BROWN = "175, 107, 43"; // rgb(175, 107, 43)
     public static readonly DARK_BLUE = '19, 42, 79'; // rgb(19, 42, 79)
     public static readonly YELLOW_BROWN = '138, 108, 19'; // rgb(138, 108, 19)
+
     public static readonly DEFAULT_FUNC_BACKGROUND_COLOR = Constants.BLUE;
     public static readonly DEFAULT_FUNC_PURE_BACKGROUND_COLOR = Constants.GREEN;
     public static readonly DEFAULT_FUNC_ENTRY_BACKGROUND_COLOR = Constants.PURPLE;
