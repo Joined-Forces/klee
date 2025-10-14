@@ -7,6 +7,8 @@
         "outDir": "./dist/",
         "sourceMap": true,
         "jsx": "react",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
         "paths": {
             "src/*": [
                 "src/*"
@@ -18,6 +20,6 @@
     },
     "include": [
         "src/**/*",
-        "plugins/**/*"    
+        "plugins/**/*"
     ]
 }

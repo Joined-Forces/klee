@@ -158,6 +158,14 @@ export class PinPropertyParser implements CustomPropertyParser {
     private static parsePinFriendlyName(value: string): string {
         let name:string = "";
 
+        if (value.startsWith("INVTEXT")) {
+            let prefixLength = 'INVTEXT('.length;
+            value = value.substr(prefixLength, value.length - prefixLength - 1);
+
+            name = value.replace(/"/g, '');
+            return name;
+        }
+
         if (value.startsWith("NSLOCTEXT")) {
             let prefixLength = 'NSLOCTEXT('.length - 1;
             value = value.substr(prefixLength, value.length - prefixLength - 1);
