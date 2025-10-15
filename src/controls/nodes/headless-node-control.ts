@@ -21,10 +21,24 @@ export class HeadlessNodeControl extends NodeControl {
 
     override initialize() {
         if(this.node.title) {
-            const textWidth = this.measureText(Constants.NODE_MATHFUNC_TITLE_FONT, this.node.title).width + 32;
+            const lines = this.node.title.split('\n');
+            let maxWidth = 0;
+
+            // Find the widest line
+            for (const line of lines) {
+                const lineWidth = this.measureText(Constants.NODE_MATHFUNC_TITLE_FONT, line).width;
+                maxWidth = Math.max(maxWidth, lineWidth);
+            }
+
+            const textWidth = maxWidth + 32;
+            const textHeight = lines.length * 20 + 16; // 20px per line + padding
+
             const spacer = new HorizontalSpacerControl(textWidth);
             spacer.fillParentVertical = true;
             this.pinPanel.insert(spacer, 1);
+
+            // Update minimum height for multiline text
+            this.minHeight = Math.max(32, textHeight);
         }
     }
 
@@ -44,8 +58,16 @@ export class HeadlessNodeControl extends NodeControl {
         canvas
             .font(Constants.NODE_MATHFUNC_TITLE_FONT)
             .textAlign('center')
-            .fillStyle(Constants.NODE_MATHFUNC_TITLE_COLOR)
-            .fillText(this.node.title, this.size.x * 0.5, this.size.y * 0.5 + 8);
+            .fillStyle(Constants.NODE_MATHFUNC_TITLE_COLOR);
+
+        // Handle multiline text
+        const lines = this.node.title.split('\n');
+        const lineHeight = 20;
+        const startY = this.size.y * 0.5 + 8 - ((lines.length - 1) * lineHeight / 2);
+
+        for (let i = 0; i < lines.length; i++) {
+            canvas.fillText(lines[i], this.size.x * 0.5, startY + (i * lineHeight));
+        }
     }
 
 
