@@ -2,6 +2,7 @@ import { Canvas2D } from "./canvas";
 import { Controller } from "./controller";
 import { BlueprintParser } from "./parser/blueprint-parser";
 import { Scene } from "./scene";
+import { StartingPositionType } from "./camera";
 
 export class Application {
 
@@ -127,13 +128,46 @@ export class Application {
         this._scene.load(nodes);
         this.refresh();
 
-        this.recenterCamera();
+        const cameraPosition = this._element.getAttribute('data-camera-position');
+        if (cameraPosition && cameraPosition === 'top-left') {
+            this._scene.camera.startingPosition = StartingPositionType.TOP_LEFT;
+            this.positionCameraTopLeft();
+        }
+        else {
+            this.recenterCamera();
+        }
         
     }
 
     recenterCamera() {
         // Move camera to the center of all nodes
         this._scene.camera.centerAbsolutePosition(this._scene.calculateCenterPoint());
+        this.refresh();
+        return true;
+    }
+
+    positionCameraTopLeft() {
+        const topLeftPoint = this._scene.calculateTopLeftPoint();
+        this._scene.camera.positionAt(topLeftPoint);
+        this._scene.camera.setStartingPosition(topLeftPoint);
+        this.refresh();
+        return true;
+    }
+
+    zoomIn() {
+        this._scene.camera.zoomIn();
+        this.refresh();
+        return true;
+    }
+
+    zoomOut() {
+        this._scene.camera.zoomOut();
+        this.refresh();
+        return true;
+    }
+
+    resetZoom() {
+        this._scene.camera.resetZoom();
         this.refresh();
         return true;
     }
@@ -168,3 +202,9 @@ export class Application {
         return app;
     }
 }
+
+// Export Application to global scope for external controls
+if (window) {
+    window.KleeApplication = Application;
+}
+

@@ -15,6 +15,13 @@ import { InteractableControl, isInteractableControl } from "./controls/interface
 import { InteractableUserControl } from "./controls/interactable-user-control";
 import { Application } from "./application";
 
+export interface ContentBounds {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
 export class Scene {
 
     private _canvas: Canvas2D;
@@ -26,6 +33,7 @@ export class Scene {
     private _interactables: Array<InteractableUserControl>;
 
     private app;
+    private _cachedBounds: ContentBounds | null = null;
 
     constructor(canvas: Canvas2D, app: Application) {
         this.app = app;
@@ -108,6 +116,7 @@ export class Scene {
         this._pins = new Array<PinControl>();
         this._nodes = new Array<NodeControl>();
         this._controls = new Array<Control>();
+        this._cachedBounds = null;
     }
 
     load(dataNodes: NodeControl[]) {
@@ -228,9 +237,16 @@ export class Scene {
         return new Vector2(centroid.x / this.nodes.length, centroid.y / this.nodes.length);
     }
 
-    calculateCenterPoint() {
-        if (this.nodes.length == 0)
-            return new Vector2(0, 0);
+    // calculate and cache the bounds for this canvas
+    private calculateBounds(): ContentBounds {
+        if (this._cachedBounds !== null) {
+            return this._cachedBounds;
+        }
+
+        if (this.nodes.length == 0) {
+            this._cachedBounds = { x: 0, y: 0, width: 0, height: 0 };
+            return this._cachedBounds;
+        }
 
         let xMin = Number.MAX_SAFE_INTEGER;
         let xMax = Number.MIN_SAFE_INTEGER;
@@ -244,9 +260,66 @@ export class Scene {
             yMax = Math.max(node.position.y + node.size.y, yMax);
         });
 
-        let width = xMax - xMin;
-        let height = yMax - yMin;
+        this._cachedBounds = {
+            x: xMin,
+            y: yMin,
+            width: xMax - xMin,
+            height: yMax - yMin
+        };
 
-        return new Vector2(-width * 0.5 -xMin , -height * 0.5 -yMin);
+        return this._cachedBounds;
+    }
+
+    calculateCenterPoint() {
+        const bounds = this.calculateBounds();
+        if (bounds.width === 0 && bounds.height === 0) {
+            return new Vector2(0, 0);
+        }
+
+        return new Vector2(-bounds.width * 0.5 - bounds.x, -bounds.height * 0.5 - bounds.y);
+    }
+
+    // calculate the top-left point for this blueprint, based on the x and y position for all nodes.
+    //
+    // if you prefer to calculate this at build time - you can provide the data attributes
+    //  data-top-left-x
+    //  data-top-left-y
+    // on your html canvas element to automatically read and detect the top-left point
+    // and avoid calculating it in javascript at runtime.
+    // e.g.
+    //
+    // <canvas id="{canvas_id}" data-top-left-x="{min_x}" data-top-left-y="{min_y}" {blueprint_source_text} />
+    calculateTopLeftPoint :() => Vector2 = () => {
+        let yOffset = parseInt(this.app._element.getAttribute('data-camera-position-height-offset'), 10); // px
+        if (isNaN(yOffset)) {
+            yOffset = 0;
+        }
+
+        const dataTopLeftX = this.app._element.getAttribute('data-top-left-x');
+        const dataTopLeftY = this.app._element.getAttribute('data-top-left-y');
+
+        if (dataTopLeftX !== null && dataTopLeftY !== null) {
+            const x = parseInt(dataTopLeftX, 10);
+            const y = parseInt(dataTopLeftY, 10);
+            if (!isNaN(x) && !isNaN(y)) {
+                // used cached value
+                this.app._element.setAttribute('data-top-left-x', x);
+                this.app._element.setAttribute('data-top-left-y', y);
+                return new Vector2(-x, -y + yOffset);
+            }
+        }
+
+        // Fallback to JavaScript calculation
+
+        const bounds = this.calculateBounds();
+        if (bounds.width === 0 && bounds.height === 0) {
+            return new Vector2(0, 0);
+        }
+
+        return new Vector2(-bounds.x, -bounds.y + yOffset);
+    }
+
+    calculateContentBounds(): ContentBounds {
+        return this.calculateBounds();
     }
 }
