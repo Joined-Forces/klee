@@ -126,6 +126,11 @@ export class Canvas2D {
         return this;
     }
 
+    scale(x: number, y: number) {
+        this._context.scale(x, y);
+        return this;
+    }
+
     fillRect(x: number, y: number, width: number, height: number) {
         this._context.fillRect(x, y, width, height);
         return this;

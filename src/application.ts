@@ -138,6 +138,24 @@ export class Application {
         return true;
     }
 
+    zoomIn() {
+        this._scene.camera.zoomIn();
+        this.refresh();
+        return true;
+    }
+
+    zoomOut() {
+        this._scene.camera.zoomOut();
+        this.refresh();
+        return true;
+    }
+
+    resetZoom() {
+        this._scene.camera.resetZoom();
+        this.refresh();
+        return true;
+    }
+
     static registerInstance(element: HTMLCanvasElement, app: Application) {
         element.setAttribute("data-klee-instance", Application.instances.length.toString());
         Application.instances.push(app);
@@ -168,3 +186,9 @@ export class Application {
         return app;
     }
 }
+
+// Export Application to global scope for external controls
+if (window) {
+    window.KleeApplication = Application;
+}
+
