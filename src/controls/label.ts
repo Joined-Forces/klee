@@ -18,6 +18,7 @@ export class Label extends UserControl {
         this.text = text;
         this.font = (font || Constants.NODE_FONT);
         this.color = (color || Constants.NODE_TEXT_COLOR);
+        this.textAlign = 'left';
 
         this.padding = { top: 0, right: 0, bottom: 0, left: 0 }
     }

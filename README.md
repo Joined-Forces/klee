@@ -21,3 +21,8 @@ npm install
 npm run dev
 ```
 
+### Run the tests
+
+```bash
+npx jest
+```
